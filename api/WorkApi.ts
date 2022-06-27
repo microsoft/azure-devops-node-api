@@ -107,7 +107,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "7799f497-3cb5-4f16-ad4f-5cd06012db64",
                     routeValues);
@@ -159,7 +159,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "7c468d96-ab1d-4294-a360-92f07e9ccd98",
                     routeValues);
@@ -211,7 +211,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "a93726f9-7867-4e38-b4f2-0bfafc2f6a94",
                     routeValues);
@@ -260,7 +260,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "a93726f9-7867-4e38-b4f2-0bfafc2f6a94",
                     routeValues);
@@ -321,7 +321,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0120b002-ab6c-4ca0-98cf-a8d7492f865c",
                     routeValues,
@@ -383,7 +383,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0120b002-ab6c-4ca0-98cf-a8d7492f865c",
                     routeValues,
@@ -425,7 +425,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "eb7ec5a3-1ba3-4fd1-b834-49a5a387e57d",
                     routeValues);
@@ -489,7 +489,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "186abea3-5c35-432f-9e28-7a15b4312a0e",
                     routeValues,
@@ -531,7 +531,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "bb494cc6-a0f5-4c6c-8dca-ea6912e79eb9",
                     routeValues);
@@ -583,7 +583,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "23ad19fc-3b8e-4877-8462-b3f92bc06b40",
                     routeValues);
@@ -632,7 +632,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "23ad19fc-3b8e-4877-8462-b3f92bc06b40",
                     routeValues);
@@ -686,7 +686,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "23ad19fc-3b8e-4877-8462-b3f92bc06b40",
                     routeValues);
@@ -738,7 +738,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "b30d9f58-1891-4b0a-b168-c46408f919b0",
                     routeValues);
@@ -792,7 +792,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "b30d9f58-1891-4b0a-b168-c46408f919b0",
                     routeValues);
@@ -844,7 +844,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "work",
                     "74412d15-8c1a-4352-a48d-ef1ed5587d57",
                     routeValues);
@@ -899,7 +899,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "work",
                     "74412d15-8c1a-4352-a48d-ef1ed5587d57",
                     routeValues);
@@ -953,7 +953,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "work",
                     "74412d15-8c1a-4352-a48d-ef1ed5587d57",
                     routeValues);
@@ -1010,7 +1010,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "work",
                     "74412d15-8c1a-4352-a48d-ef1ed5587d57",
                     routeValues);
@@ -1062,7 +1062,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "b044a3d9-02ea-49c7-91a1-b730949cc896",
                     routeValues);
@@ -1116,7 +1116,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "b044a3d9-02ea-49c7-91a1-b730949cc896",
                     routeValues);
@@ -1167,7 +1167,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "3f84a8d1-1aab-423e-a94b-6dcbdcca511f",
                     routeValues);
@@ -1219,7 +1219,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "07c3b467-bc60-4f05-8e34-599ce288fafc",
                     routeValues);
@@ -1273,7 +1273,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "07c3b467-bc60-4f05-8e34-599ce288fafc",
                     routeValues);
@@ -1324,7 +1324,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "work",
                     "0d63745f-31f3-4cf3-9056-2a064e567637",
                     routeValues);
@@ -1379,7 +1379,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "45fe888c-239e-49fd-958c-df1a1ab21d97",
                     routeValues);
@@ -1431,7 +1431,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "45fe888c-239e-49fd-958c-df1a1ab21d97",
                     routeValues);
@@ -1488,7 +1488,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "45fe888c-239e-49fd-958c-df1a1ab21d97",
                     routeValues);
@@ -1540,7 +1540,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c555d7ff-84e1-47df-9923-a3fe0cd8751b",
                     routeValues);
@@ -1594,7 +1594,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c555d7ff-84e1-47df-9923-a3fe0cd8751b",
                     routeValues);
@@ -1650,7 +1650,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "bdd0834e-101f-49f0-a6ae-509f384a12b4",
                     routeValues,
@@ -1695,7 +1695,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "1e385ce0-396b-4273-8171-d64562c18d37",
                     routeValues);
@@ -1747,7 +1747,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c9175577-28a1-4b06-9197-8636af9f64ad",
                     routeValues);
@@ -1799,7 +1799,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c9175577-28a1-4b06-9197-8636af9f64ad",
                     routeValues);
@@ -1854,7 +1854,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c9175577-28a1-4b06-9197-8636af9f64ad",
                     routeValues,
@@ -1906,7 +1906,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c9175577-28a1-4b06-9197-8636af9f64ad",
                     routeValues);
@@ -1949,7 +1949,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0b42cb47-cd73-4810-ac90-19c9ba147453",
                     routeValues);
@@ -1993,7 +1993,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0b42cb47-cd73-4810-ac90-19c9ba147453",
                     routeValues);
@@ -2037,7 +2037,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0b42cb47-cd73-4810-ac90-19c9ba147453",
                     routeValues);
@@ -2078,7 +2078,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0b42cb47-cd73-4810-ac90-19c9ba147453",
                     routeValues);
@@ -2124,7 +2124,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0b42cb47-cd73-4810-ac90-19c9ba147453",
                     routeValues);
@@ -2165,7 +2165,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "f901ba42-86d2-4b0c-89c1-3f86d06daa84",
                     routeValues);
@@ -2217,7 +2217,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0863355d-aefd-4d63-8669-984c9b7b0e78",
                     routeValues);
@@ -2271,7 +2271,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "0863355d-aefd-4d63-8669-984c9b7b0e78",
                     routeValues);
@@ -2318,7 +2318,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c6815dbe-8e7e-4ffe-9a79-e83ee712aa92",
                     routeValues);
@@ -2367,7 +2367,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c6815dbe-8e7e-4ffe-9a79-e83ee712aa92",
                     routeValues);
@@ -2417,7 +2417,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "1be23c36-8872-4abc-b57d-402cd6c669d9",
                     routeValues);
@@ -2472,7 +2472,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "1be23c36-8872-4abc-b57d-402cd6c669d9",
                     routeValues);
@@ -2524,7 +2524,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "2d4faa2e-9150-4cbf-a47a-932b1b4a0773",
                     routeValues);
@@ -2578,7 +2578,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "2d4faa2e-9150-4cbf-a47a-932b1b4a0773",
                     routeValues);
@@ -2627,7 +2627,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "07ced576-58ed-49e6-9c1e-5cb53ab8bf2a",
                     routeValues);
@@ -2678,7 +2678,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "07ced576-58ed-49e6-9c1e-5cb53ab8bf2a",
                     routeValues);
@@ -2727,7 +2727,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c3c1012b-bea7-49d7-b45e-1664e566f84c",
                     routeValues);
@@ -2778,7 +2778,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "c3c1012b-bea7-49d7-b45e-1664e566f84c",
                     routeValues);
@@ -2830,7 +2830,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "5b3ef1a6-d3ab-44cd-bafd-c7f45db850fa",
                     routeValues);
@@ -2881,7 +2881,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "1c22b714-e7e4-41b9-85e0-56ee13ef55ed",
                     routeValues);
@@ -2935,7 +2935,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "work",
                     "47755db2-d7eb-405a-8c25-675401525fc9",
                     routeValues);

@@ -66,7 +66,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -118,7 +118,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -170,7 +170,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -219,7 +219,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -273,7 +273,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -324,7 +324,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Dashboard",
                     "454b3e51-2e6e-48d4-ad81-978154089351",
                     routeValues);
@@ -378,7 +378,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -433,7 +433,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -488,7 +488,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -545,7 +545,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -602,7 +602,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Dashboard",
                     "bdcff53a-8355-4172-a00a-40497ea23afc",
                     routeValues);
@@ -646,7 +646,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Dashboard",
                     "6b3628d3-e96f-4fc7-b176-50240b03b515",
                     routeValues);
@@ -696,7 +696,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Dashboard",
                     "6b3628d3-e96f-4fc7-b176-50240b03b515",
                     routeValues,

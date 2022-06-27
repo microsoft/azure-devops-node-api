@@ -40,6 +40,7 @@ export interface INotificationApi extends basem.ClientApiBase {
     listSubscriptions(targetId?: string, ids?: string[], queryFlags?: NotificationInterfaces.SubscriptionQueryFlags): Promise<NotificationInterfaces.NotificationSubscription[]>;
     updateSubscription(updateParameters: NotificationInterfaces.NotificationSubscriptionUpdateParameters, subscriptionId: string): Promise<NotificationInterfaces.NotificationSubscription>;
     getSubscriptionTemplates(): Promise<NotificationInterfaces.NotificationSubscriptionTemplate[]>;
+    publishTokenEvent(notificationEvent: VSSInterfaces.VssNotificationEvent): Promise<VSSInterfaces.VssNotificationEvent>;
     updateSubscriptionUserSettings(userSettings: NotificationInterfaces.SubscriptionUserSettings, subscriptionId: string, userId: string): Promise<NotificationInterfaces.SubscriptionUserSettings>;
 }
 
@@ -61,7 +62,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "8f3c6ab2-5bae-4537-b16e-f84e0955599e",
                     routeValues);
@@ -114,7 +115,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "991842f3-eb16-4aea-ac81-81353ef2b75c",
                     routeValues,
@@ -156,7 +157,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
@@ -199,7 +200,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "20f1929d-4be7-4c2e-a74e-d47640ff3418",
                     routeValues);
@@ -239,7 +240,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "14c57b7a-c0e6-4555-9f51-e067188fdd8e",
                     routeValues);
@@ -279,7 +280,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "9463a800-1b44-450e-9083-f948ea174b45",
                     routeValues);
@@ -320,7 +321,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "b5bbdd21-c178-4398-b6db-0166d910028a",
                     routeValues);
@@ -361,7 +362,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues);
@@ -405,7 +406,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "cc84fb5f-6247-4c7a-aeae-e5a3c3fddb21",
                     routeValues,
@@ -445,7 +446,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "19824fa9-1c76-40e6-9cce-cf0b9ca1cb60",
                     routeValues);
@@ -487,7 +488,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "19824fa9-1c76-40e6-9cce-cf0b9ca1cb60",
                     routeValues,
@@ -524,7 +525,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
@@ -562,7 +563,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "cbe076d8-2803-45ff-8d8d-44653686ea2a",
                     routeValues);
@@ -603,7 +604,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
@@ -646,7 +647,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "4d5caff1-25ba-430b-b808-7a1f352cc197",
                     routeValues);
@@ -686,7 +687,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "6864db85-08c0-4006-8e8e-cc1bebe31675",
                     routeValues);
@@ -726,7 +727,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
@@ -767,7 +768,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
@@ -814,7 +815,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues,
@@ -865,7 +866,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues,
@@ -909,7 +910,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "70f911d6-abac-488c-85b3-a206bf57e165",
                     routeValues);
@@ -947,7 +948,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "fa5d24ba-7484-4f3d-888d-4ec6b1974082",
                     routeValues);
@@ -962,6 +963,46 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let ret = this.formatResponse(res.result,
                                               NotificationInterfaces.TypeInfo.NotificationSubscriptionTemplate,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Publish an event. This request is only for the Token service since it's a deploy only service.
+     * 
+     * @param {VSSInterfaces.VssNotificationEvent} notificationEvent
+     */
+    public async publishTokenEvent(
+        notificationEvent: VSSInterfaces.VssNotificationEvent
+        ): Promise<VSSInterfaces.VssNotificationEvent> {
+
+        return new Promise<VSSInterfaces.VssNotificationEvent>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.1-preview.1",
+                    "notification",
+                    "31dc86a2-67e8-4452-99a4-2b301ba28291",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.VssNotificationEvent>;
+                res = await this.rest.create<VSSInterfaces.VssNotificationEvent>(url, notificationEvent, options);
+
+                let ret = this.formatResponse(res.result,
+                                              VSSInterfaces.TypeInfo.VssNotificationEvent,
+                                              false);
 
                 resolve(ret);
                 
@@ -993,7 +1034,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "notification",
                     "ed5a3dff-aeb5-41b1-b4f7-89e66e58b62e",
                     routeValues);

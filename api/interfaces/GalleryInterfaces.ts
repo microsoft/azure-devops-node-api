@@ -836,6 +836,10 @@ export enum ExtensionQueryFlags {
      */
     IncludeSharedOrganizations = 16384,
     /**
+     * Include the details if an extension is in conflict list or not Currently being used for VSCode extensions.
+     */
+    IncludeNameConflictInfo = 32768,
+    /**
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
     AllAttributes = 16863,
@@ -925,8 +929,10 @@ export interface FilterCriteria {
 }
 
 export interface InstallationTarget {
+    extensionVersion?: string;
     productArchitecture?: string;
     target?: string;
+    targetPlatform?: string;
     targetVersion?: string;
 }
 
@@ -1034,6 +1040,10 @@ export interface PublishedExtension {
     installationTargets?: InstallationTarget[];
     lastUpdated?: Date;
     longDescription?: string;
+    /**
+     * Check if Extension is in conflict list or not. Taking as String and not as boolean because we don't want end customer to see this flag and by making it Boolean it is coming as false for all the cases.
+     */
+    presentInConflictList?: string;
     /**
      * Date on which the extension was first uploaded.
      */
@@ -2112,6 +2122,7 @@ export var TypeInfo = {
             "includeMinimalPayloadForVsIde": 4096,
             "includeLcids": 8192,
             "includeSharedOrganizations": 16384,
+            "includeNameConflictInfo": 32768,
             "allAttributes": 16863
         }
     },

@@ -59,7 +59,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
@@ -103,7 +103,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
@@ -147,7 +147,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
@@ -197,7 +197,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues,
@@ -244,7 +244,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "dad91cbe-d183-45f8-9c6e-9c1164472121",
                     routeValues);
@@ -288,7 +288,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
@@ -332,7 +332,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "46aecb7a-5d2c-4647-897b-0209505a9fe4",
                     routeValues);
@@ -391,7 +391,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "c23ddff5-229c-4d04-a80b-0fdce9f360c8",
                     routeValues,
@@ -439,7 +439,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "fe1e68a2-60d3-43cb-855b-85e41ae97c95",
                     routeValues);
@@ -492,7 +492,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "fe1e68a2-60d3-43cb-855b-85e41ae97c95",
                     routeValues,
@@ -537,7 +537,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);
@@ -578,7 +578,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "policy",
                     "44096322-2d3d-466a-bb30-d1b7de69f61f",
                     routeValues);

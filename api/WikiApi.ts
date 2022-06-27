@@ -79,7 +79,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "5100d976-363d-42e7-a19d-4171ecb44782",
                     routeValues);
@@ -130,7 +130,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "5100d976-363d-42e7-a19d-4171ecb44782",
                     routeValues);
@@ -175,7 +175,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "7a5bc693-aab7-4d48-8f34-36f373022063",
                     routeValues);
@@ -228,7 +228,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "7a5bc693-aab7-4d48-8f34-36f373022063",
                     routeValues);
@@ -290,7 +290,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "598a5268-41a7-4162-b7dc-344131e4d1fa",
                     routeValues,
@@ -340,7 +340,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "9b394e93-7db5-46cb-9c26-09a36aa5c895",
                     routeValues);
@@ -390,7 +390,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "9b394e93-7db5-46cb-9c26-09a36aa5c895",
                     routeValues);
@@ -449,7 +449,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "9b394e93-7db5-46cb-9c26-09a36aa5c895",
                     routeValues,
@@ -518,7 +518,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "9b394e93-7db5-46cb-9c26-09a36aa5c895",
                     routeValues,
@@ -571,7 +571,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "9b394e93-7db5-46cb-9c26-09a36aa5c895",
                     routeValues);
@@ -630,7 +630,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "25d3fbc7-fe3d-46cb-b5a5-0b6f79caf27b",
                     routeValues,
@@ -682,7 +682,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "25d3fbc7-fe3d-46cb-b5a5-0b6f79caf27b",
                     routeValues,
@@ -731,7 +731,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "ceddcf75-1068-452d-8b13-2d4d76e1f970",
                     routeValues,
@@ -780,7 +780,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "ceddcf75-1068-452d-8b13-2d4d76e1f970",
                     routeValues,
@@ -825,7 +825,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "71323c46-2592-4398-8771-ced73dd87207",
                     routeValues,
@@ -879,7 +879,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "81c4e0fe-7663-4d62-ad46-6ab78459f274",
                     routeValues,
@@ -942,7 +942,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "wiki",
                     "1087b746-5d15-41b9-bea6-14e325e7f880",
                     routeValues,
@@ -986,7 +986,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
@@ -1030,7 +1030,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
@@ -1071,7 +1071,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
@@ -1115,7 +1115,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
@@ -1161,7 +1161,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "wiki",
                     "288d122c-dbd4-451d-aa5f-7dbbba070728",
                     routeValues);
