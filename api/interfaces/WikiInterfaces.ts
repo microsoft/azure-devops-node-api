@@ -337,6 +337,10 @@ export interface WikiV2 extends WikiCreateBaseParameters {
      */
     id?: string;
     /**
+     * Is wiki repository disabled
+     */
+    isDisabled?: boolean;
+    /**
      * Properties of the wiki.
      */
     properties?: { [key: string] : string; };

@@ -21,6 +21,10 @@ export interface CopyDashboardOptions {
      */
     copyDashboardScope: DashboardScope;
     /**
+     * When this flag is set to true,option to select the folder to copy Queries of copy dashboard will appear.
+     */
+    copyQueriesFlag?: boolean;
+    /**
      * Description of the dashboard
      */
     description?: string;
@@ -32,6 +36,10 @@ export interface CopyDashboardOptions {
      * ID of the project. Provided by service at creation time.
      */
     projectId: string;
+    /**
+     * Path to which the queries should be copied of copy dashboard
+     */
+    queryFolderPath?: string;
     /**
      * Refresh interval of dashboard
      */
