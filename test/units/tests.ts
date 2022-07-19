@@ -4,7 +4,7 @@ import nock = require('nock');
 import os = require('os');
 import vsom = require('../../_build/VsoClient');
 import WebApi = require('../../_build/WebApi');
-import * as rm from '../../_build/node_modules/typed-rest-client/RestClient';
+import * as rm from 'typed-rest-client/RestClient';
 import { ApiResourceLocation } from '../../_build/interfaces/common/VsoBaseInterfaces';
 import semver = require('semver');
 
