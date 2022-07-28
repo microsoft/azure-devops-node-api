@@ -4074,6 +4074,10 @@ export interface WorkflowTask {
      */
     refName?: string;
     /**
+     * Gets or sets the task retryCount.
+     */
+    retryCountOnTaskFailure?: number;
+    /**
      * Gets or sets the ID of the task.
      */
     taskId: string;

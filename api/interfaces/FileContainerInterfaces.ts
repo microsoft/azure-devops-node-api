@@ -28,6 +28,7 @@ export interface ContainerItemBlobReference {
     artifactId?: number;
     compressionType?: BlobCompressionType;
     scopeIdentifier?: string;
+    sessionId?: string;
 }
 
 /**

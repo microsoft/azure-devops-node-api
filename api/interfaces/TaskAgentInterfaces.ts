@@ -1145,6 +1145,11 @@ export interface EnvironmentUpdateParameter {
 export interface EventsConfig {
 }
 
+export enum ExclusiveLockType {
+    RunLatest = 0,
+    Sequential = 1,
+}
+
 export interface ExpressionValidationItem extends ValidationItem {
 }
 
@@ -1185,6 +1190,11 @@ export enum IssueType {
 
 export interface JobAssignedEvent extends JobEvent {
     request?: TaskAgentJobRequest;
+}
+
+export interface JobCanceledEvent extends JobEvent {
+    reason?: string;
+    timeout?: any;
 }
 
 export interface JobCancelMessage {
@@ -1545,6 +1555,10 @@ export interface ResourceLockRequest {
      */
     finishTime?: Date;
     /**
+     * The behavior this request should exhibit in relation to other lock requests
+     */
+    lockType?: ExclusiveLockType;
+    /**
      * Attempt of the graph node
      */
     nodeAttempt?: number;
@@ -1589,6 +1603,7 @@ export enum ResourceLockStatus {
     TimedOut = 3,
     Canceled = 4,
     Abandoned = 5,
+    WaitingOnChecks = 6,
 }
 
 export interface ResourcesHubData {
@@ -2113,6 +2128,7 @@ export interface TaskAgentJobStep {
     id?: string;
     inputs?: { [key: string] : string; };
     name?: string;
+    retryCountOnTaskFailure?: number;
     task?: TaskAgentJobTask;
     timeoutInMinutes?: number;
     type?: TaskAgentJobStepType;
@@ -2994,6 +3010,10 @@ export interface TaskGroupStep {
      */
     inputs?: { [key: string] : string; };
     /**
+     * Gets or sets the maximum number of retries
+     */
+    retryCountOnTaskFailure?: number;
+    /**
      * Gets or sets the reference of the task.
      */
     task?: TaskDefinitionReference;
@@ -3108,6 +3128,7 @@ export interface TaskInstance extends TaskReference {
     environment?: { [key: string] : string; };
     instanceId?: string;
     refName?: string;
+    retryCountOnTaskFailure?: number;
     timeoutInMinutes?: number;
 }
 
@@ -3712,6 +3733,12 @@ export var TypeInfo = {
             "kubernetes": 4
         }
     },
+    ExclusiveLockType: {
+        enumValues: {
+            "runLatest": 0,
+            "sequential": 1
+        }
+    },
     Issue: <any>{
     },
     IssueType: {
@@ -3794,7 +3821,8 @@ export var TypeInfo = {
             "finished": 2,
             "timedOut": 3,
             "canceled": 4,
-            "abandoned": 5
+            "abandoned": 5,
+            "waitingOnChecks": 6
         }
     },
     ResourceUsage: <any>{
@@ -4420,6 +4448,9 @@ TypeInfo.ResourceLockRequest.fields = {
     },
     finishTime: {
         isDate: true,
+    },
+    lockType: {
+        enumType: TypeInfo.ExclusiveLockType
     },
     queueTime: {
         isDate: true,

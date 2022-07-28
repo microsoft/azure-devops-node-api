@@ -134,7 +134,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "f2571c27-bf50-4938-b396-32d109ddef26",
                     routeValues);
@@ -202,7 +202,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Release",
                     "b47c6458-e73b-47cb-a770-4df1e8813a91",
                     routeValues,
@@ -247,7 +247,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Release",
                     "250c7158-852e-4130-a00f-a0cce9b72d05",
                     routeValues);
@@ -297,7 +297,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Release",
                     "9328e074-59fb-465a-89d9-b09c82ee5109",
                     routeValues,
@@ -344,7 +344,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Release",
                     "9328e074-59fb-465a-89d9-b09c82ee5109",
                     routeValues);
@@ -385,7 +385,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.3",
+                    "7.1-preview.3",
                     "Release",
                     "c957584a-82aa-4131-8222-6d47f78bfa7a",
                     routeValues);
@@ -447,7 +447,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c4071f6d-3697-46ca-858e-8b10ff09e52f",
                     routeValues);
@@ -504,7 +504,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "60b86efb-7b8c-4853-8f9f-aa142b77b479",
                     routeValues);
@@ -552,7 +552,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "214111ee-2415-4df2-8ed2-74417f7d61f9",
                     routeValues);
@@ -608,7 +608,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "a4d06688-0dfa-4895-82a5-f43ec9452306",
                     routeValues);
@@ -668,7 +668,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c1a68497-69da-40fb-9423-cab19cfeeca9",
                     routeValues,
@@ -719,7 +719,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "1a60a35d-b8c9-45fb-bf67-da0829711147",
                     routeValues);
@@ -773,7 +773,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "8dcf9fe9-ca37-4113-8ee1-37928e98407c",
                     routeValues,
@@ -822,7 +822,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "12b5d21a-f54c-430e-a8c1-7515d196890e",
                     routeValues,
@@ -866,7 +866,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
@@ -919,7 +919,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
@@ -970,7 +970,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
@@ -1024,7 +1024,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
@@ -1103,7 +1103,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues,
@@ -1150,7 +1150,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
@@ -1193,7 +1193,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "d8f96f24-8ea7-4cb6-baab-2df8fc515665",
                     routeValues);
@@ -1280,7 +1280,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "b005ef73-cddc-448e-9ba2-5193bf36b19f",
                     routeValues,
@@ -1322,7 +1322,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "b005ef73-cddc-448e-9ba2-5193bf36b19f",
                     routeValues);
@@ -1375,7 +1375,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.7",
+                    "7.1-preview.7",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues,
@@ -1425,7 +1425,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.7",
+                    "7.1-preview.7",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
@@ -1468,7 +1468,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues);
@@ -1518,7 +1518,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
@@ -1569,7 +1569,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
@@ -1617,7 +1617,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
@@ -1668,7 +1668,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.4",
+                    "7.1-preview.4",
                     "Release",
                     "6b03b696-824e-4479-8eb2-6644a51aba89",
                     routeValues,
@@ -1719,7 +1719,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
@@ -1771,7 +1771,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
@@ -1820,7 +1820,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "938f7222-9acb-48fe-b8a3-4eda04597171",
                     routeValues,
@@ -1863,7 +1863,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "409d301f-3046-46f3-beb9-4357fbce0a8c",
                     routeValues,
@@ -1910,7 +1910,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
@@ -1954,7 +1954,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
@@ -2004,7 +2004,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues,
@@ -2051,7 +2051,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "f7ddf76d-ce0c-4d68-94ff-becaec5d9dea",
                     routeValues);
@@ -2097,7 +2097,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "2666a539-2001-4f80-bcc7-0379956749d4",
                     routeValues);
@@ -2139,7 +2139,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "23f461c8-629a-4144-a076-3054fa5f268a",
                     routeValues);
@@ -2180,7 +2180,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "71dd499b-317d-45ea-9134-140ea1932b5e",
                     routeValues);
@@ -2228,7 +2228,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "cd42261a-f5c6-41c8-9259-f078989b9f25",
                     routeValues,
@@ -2282,7 +2282,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "dec7ca5a-7f7f-4797-8bf1-8efc0dc93b28",
                     routeValues);
@@ -2318,7 +2318,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "c37fbab5-214b-48e4-a55b-cb6b4f6e4038",
                     routeValues);
@@ -2366,7 +2366,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "e71ba1ed-c0a4-4a28-a61f-2dd5f68cf3fd",
                     routeValues,
@@ -2424,7 +2424,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "2577e6c3-6999-4400-bc69-fe1d837755fe",
                     routeValues,
@@ -2479,7 +2479,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "17c91af7-09fd-4256-bff1-c24ee4f73bc0",
                     routeValues,
@@ -2519,7 +2519,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2563,7 +2563,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2612,7 +2612,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2657,7 +2657,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "cd1502bb-3c73-4e11-80a6-d11308dceae5",
                     routeValues,
@@ -2696,7 +2696,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "d156c759-ca4e-492b-90d4-db03971796ea",
                     routeValues);
@@ -2736,7 +2736,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "d156c759-ca4e-492b-90d4-db03971796ea",
                     routeValues);
@@ -2777,7 +2777,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "e816b9f4-f9fe-46ba-bdcc-a9af6abf3144",
                     routeValues);
@@ -2820,7 +2820,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "e816b9f4-f9fe-46ba-bdcc-a9af6abf3144",
                     routeValues);
@@ -2871,7 +2871,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "917ace4a-79d1-45a7-987c-7be4db4268fa",
                     routeValues,
@@ -2979,7 +2979,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3023,7 +3023,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
@@ -3073,7 +3073,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3133,7 +3133,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3196,7 +3196,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3250,7 +3250,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3296,7 +3296,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3343,7 +3343,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
@@ -3389,7 +3389,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.8",
+                    "7.1-preview.8",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
@@ -3430,7 +3430,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
@@ -3473,7 +3473,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c63c3718-7cfd-41e0-b89b-81c1ca143437",
                     routeValues);
@@ -3520,7 +3520,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
@@ -3556,7 +3556,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
@@ -3598,7 +3598,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
@@ -3642,7 +3642,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "224e92b2-8d13-4c14-b120-13d877c516f8",
                     routeValues);
@@ -3684,7 +3684,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "0e5def23-78b3-461f-8198-1558f25041c8",
                     routeValues);
@@ -3731,7 +3731,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
@@ -3777,7 +3777,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
@@ -3824,7 +3824,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
@@ -3868,7 +3868,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "3d21b4c8-c32e-45b2-a7cb-770a369012f4",
                     routeValues);
@@ -3915,7 +3915,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
@@ -3961,7 +3961,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
@@ -4008,7 +4008,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
@@ -4052,7 +4052,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "c5b602b6-d1b3-4363-8a51-94384f78068f",
                     routeValues);
@@ -4091,7 +4091,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "86cee25a-68ba-4ba3-9171-8ad6ffc6df93",
                     routeValues);
@@ -4139,7 +4139,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "4259191d-4b0a-4409-9fb3-09f22ab9bc47",
                     routeValues);
@@ -4190,7 +4190,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "4259291d-4b0a-4409-9fb3-04f22ab9bc47",
                     routeValues);
@@ -4241,7 +4241,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.2",
+                    "7.1-preview.2",
                     "Release",
                     "36b276e0-3c70-4320-a63c-1a2e1466a0d1",
                     routeValues,
@@ -4281,7 +4281,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "8efc2a3c-1fc8-4f6d-9822-75e98cecb48f",
                     routeValues);
@@ -4329,7 +4329,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
                     routeValues,
@@ -4371,7 +4371,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "30fc787e-a9e0-4a07-9fbc-3e903aa051d2",
                     routeValues);
@@ -4425,7 +4425,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "6.1-preview.1",
+                    "7.1-preview.1",
                     "Release",
                     "4f165cc0-875c-4768-b148-f12f78769fab",
                     routeValues,

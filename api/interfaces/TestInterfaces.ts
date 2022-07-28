@@ -729,7 +729,7 @@ export interface FailingSince {
      */
     build?: BuildReference;
     /**
-     * Time since failing.
+     * Time since failing(UTC).
      */
     date: Date;
     /**
@@ -1512,7 +1512,7 @@ export interface ReleaseReference {
      */
     attempt?: number;
     /**
-     * Release Creation Date.
+     * Release Creation Date(UTC).
      */
     creationDate?: Date;
     /**
@@ -1520,7 +1520,7 @@ export interface ReleaseReference {
      */
     definitionId?: number;
     /**
-     * Environment creation Date.
+     * Environment creation Date(UTC).
      */
     environmentCreationDate?: Date;
     /**
@@ -2446,7 +2446,7 @@ export interface TestActionResult2 {
  */
 export interface TestActionResultModel extends TestResultModelBase {
     /**
-     * Path identifier test step in test case workitem.
+     * Path identifier for test step in test case workitem. Note: 1) It is represented in Hexadecimal format with 8 digits for a step. 2) Internally, the step ID value for first step starts with 2 so actionPath = 00000002 step 9, will have an ID = 10 and actionPath = 0000000a step 15, will have an ID =16 and actionPath = 00000010 3) actionPath of shared step is concatenated with the parent step of test case. Example, it would be something of type -  0000000300000001 where 00000003 denotes action path of test step and 00000001 denotes action path for shared step
      */
     actionPath?: string;
     /**
@@ -2624,7 +2624,7 @@ export interface TestCaseResult {
      */
     comment?: string;
     /**
-     * Time when test execution completed. Completed date should be greater than StartedDate.
+     * Time when test execution completed(UTC). Completed date should be greater than StartedDate.
      */
     completedDate?: Date;
     /**
@@ -2636,7 +2636,7 @@ export interface TestCaseResult {
      */
     configuration?: ShallowReference;
     /**
-     * Timestamp when test result created.
+     * Timestamp when test result created(UTC).
      */
     createdDate?: Date;
     /**
@@ -2672,7 +2672,7 @@ export interface TestCaseResult {
      */
     lastUpdatedBy?: VSSInterfaces.IdentityRef;
     /**
-     * Last updated datetime of test result.
+     * Last updated datetime of test result(UTC).
      */
     lastUpdatedDate?: Date;
     /**
@@ -2728,7 +2728,7 @@ export interface TestCaseResult {
      */
     stackTrace?: string;
     /**
-     * Time when test execution started.
+     * Time when test execution started(UTC).
      */
     startedDate?: Date;
     /**
@@ -3057,7 +3057,7 @@ export interface TestIterationDetailsModel {
      */
     comment?: string;
     /**
-     * Time when execution completed.
+     * Time when execution completed(UTC).
      */
     completedDate?: Date;
     /**
@@ -3081,7 +3081,7 @@ export interface TestIterationDetailsModel {
      */
     parameters?: TestResultParameterModel[];
     /**
-     * Time when execution started.
+     * Time when execution started(UTC).
      */
     startedDate?: Date;
     /**
@@ -3947,7 +3947,7 @@ export interface TestResultModelBase {
      */
     comment?: string;
     /**
-     * Time when execution completed.
+     * Time when execution completed(UTC).
      */
     completedDate?: Date;
     /**
@@ -3963,7 +3963,7 @@ export interface TestResultModelBase {
      */
     outcome?: string;
     /**
-     * Time when execution started.
+     * Time when execution started(UTC).
      */
     startedDate?: Date;
 }
@@ -4823,7 +4823,7 @@ export interface TestSubResult {
      */
     comment?: string;
     /**
-     * Time when test execution completed.
+     * Time when test execution completed(UTC).
      */
     completedDate?: Date;
     /**
@@ -4855,7 +4855,7 @@ export interface TestSubResult {
      */
     id?: number;
     /**
-     * Time when result last updated.
+     * Time when result last updated(UTC).
      */
     lastUpdatedDate?: Date;
     /**
@@ -4879,7 +4879,7 @@ export interface TestSubResult {
      */
     stackTrace?: string;
     /**
-     * Time when test execution started.
+     * Time when test execution started(UTC).
      */
     startedDate?: Date;
     /**

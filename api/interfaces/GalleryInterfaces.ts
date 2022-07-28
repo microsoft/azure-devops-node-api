@@ -757,6 +757,14 @@ export enum ExtensionQueryFilterType {
      * Filter to get extensions shared with particular organization
      */
     OrganizationSharedWith = 21,
+    /**
+     * Filter to get VS IDE extensions by Product Architecture
+     */
+    ProductArchitecture = 22,
+    /**
+     * Filter to get VS Code extensions by target platform.
+     */
+    TargetPlatform = 23,
 }
 
 /**
@@ -827,6 +835,10 @@ export enum ExtensionQueryFlags {
      * Include the details about which organizations the extension has been shared with if the extension is a private extension.
      */
     IncludeSharedOrganizations = 16384,
+    /**
+     * Include the details if an extension is in conflict list or not Currently being used for VSCode extensions.
+     */
+    IncludeNameConflictInfo = 32768,
     /**
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
@@ -917,7 +929,10 @@ export interface FilterCriteria {
 }
 
 export interface InstallationTarget {
+    extensionVersion?: string;
+    productArchitecture?: string;
     target?: string;
+    targetPlatform?: string;
     targetVersion?: string;
 }
 
@@ -1026,6 +1041,10 @@ export interface PublishedExtension {
     lastUpdated?: Date;
     longDescription?: string;
     /**
+     * Check if Extension is in conflict list or not. Taking as String and not as boolean because we don't want end customer to see this flag and by making it Boolean it is coming as false for all the cases.
+     */
+    presentInConflictList?: string;
+    /**
      * Date on which the extension was first uploaded.
      */
     publishedDate?: Date;
@@ -1105,6 +1124,9 @@ export enum PublishedExtensionFlags {
 
 export interface Publisher extends PublisherBase {
     _links?: any;
+    domain?: string;
+    isDnsTokenVerified?: boolean;
+    isDomainVerified?: boolean;
     reCaptchaToken?: string;
 }
 
@@ -1129,7 +1151,9 @@ export interface PublisherBase {
  */
 export interface PublisherFacts {
     displayName?: string;
+    domain?: string;
     flags?: PublisherFlags;
+    isDomainVerified?: boolean;
     publisherId?: string;
     publisherName?: string;
 }
@@ -1937,6 +1961,12 @@ export interface UserReportedConcern {
     userId?: string;
 }
 
+export enum VSCodeWebExtensionStatisicsType {
+    Install = 1,
+    Update = 2,
+    Uninstall = 3,
+}
+
 export var TypeInfo = {
     AcquisitionAssignmentType: {
         enumValues: {
@@ -2069,7 +2099,9 @@ export var TypeInfo = {
             "publisherName": 18,
             "publisherDisplayName": 19,
             "includeWithPublisherFlags": 20,
-            "organizationSharedWith": 21
+            "organizationSharedWith": 21,
+            "productArchitecture": 22,
+            "targetPlatform": 23
         }
     },
     ExtensionQueryFlags: {
@@ -2090,6 +2122,7 @@ export var TypeInfo = {
             "includeMinimalPayloadForVsIde": 4096,
             "includeLcids": 8192,
             "includeSharedOrganizations": 16384,
+            "includeNameConflictInfo": 32768,
             "allAttributes": 16863
         }
     },
@@ -2312,6 +2345,13 @@ export var TypeInfo = {
     UserExtensionPolicy: <any>{
     },
     UserReportedConcern: <any>{
+    },
+    VSCodeWebExtensionStatisicsType: {
+        enumValues: {
+            "install": 1,
+            "update": 2,
+            "uninstall": 3
+        }
     },
 };
 
