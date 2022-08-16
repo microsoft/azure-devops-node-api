@@ -190,7 +190,7 @@ export class VsoClient {
         }
         let queryString: string = '';
 
-        if (typeof(queryParams) !== 'string') {
+        if (typeof(queryParams) !== 'string' && !Array.isArray(queryParams)) {
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)) {
                     const prop = queryParams[property];
