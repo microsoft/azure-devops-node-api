@@ -110,7 +110,7 @@ export async function run() {
 
         /********** Locations **********/
         printSectionStart("Locations");
-        const locationsApi = await vstsCollectionLevel.getLocationsApi();
+        const locationsApi = vstsCollectionLevel.getLocationsApi();
         const resourceAreas: ResourceAreaInfo[] = await locationsApi.getResourceAreas();
 
         if (resourceAreas) {
