@@ -105,7 +105,7 @@ More detailed information for the endpoints of each API can be found at https://
 
 ## Running Samples
 
-Pre-reqs: [Node >= 4.4.7 LTS](https://nodejs.org) and [typescript (tsc) >= 1.8](https://www.npmjs.com/package/typescript)  
+Pre-reqs: [Node >= 6.x LTS](https://nodejs.org).
 
 Run `npm install` first
 
