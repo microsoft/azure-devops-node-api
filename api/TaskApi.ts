@@ -42,6 +42,7 @@ export interface ITaskApi extends basem.ClientApiBase {
     deleteTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string): Promise<void>;
     getTimeline(scopeIdentifier: string, hubName: string, planId: string, timelineId: string, changeId?: number, includeRecords?: boolean): Promise<TaskAgentInterfaces.Timeline>;
     getTimelines(scopeIdentifier: string, hubName: string, planId: string): Promise<TaskAgentInterfaces.Timeline[]>;
+    updateEvents(records: TaskAgentInterfaces.TaskCompletedEvent, scopeIdentifier: string, hubName: string, planId: string, timelineId: string): Promise<void>;
 }
 
 export class TaskApi extends basem.ClientApiBase implements ITaskApi {
@@ -1316,6 +1317,56 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 reject(err);
             }
         });
+    }
+
+    /**
+     * @param {TaskAgentInterfaces.TaskCompletedEvent} event
+     * @param {string} scopeIdentifier - The project GUID to scope the request
+     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} planId
+     * @param {string} timelineId
+     */
+    public async updateEvents(
+        event: TaskAgentInterfaces.TaskCompletedEvent,
+        scopeIdentifier: string,
+        hubName: string,
+        planId: string,
+        timelineId: string
+        ): Promise<void> {
+
+            return new Promise<void>(async (resolve, reject) => {
+                let routeValues: any = {
+                    scopeIdentifier: scopeIdentifier,
+                    hubName: hubName,
+                    planId: planId,
+                    timelineId: timelineId
+                };
+    
+                try {
+                    let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                        "7.1-preview.1",
+                        "distributedtask",
+                        "557624af-b29e-4c20-8ab0-0399d2204f3f",
+                        routeValues);
+    
+                    let url: string = verData.requestUrl!;
+                    let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                    verData.apiVersion);
+    
+                    let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
+                    res = await this.rest.create<TaskAgentInterfaces.TaskAttachment[]>(url, event, options);
+    
+                    let ret = this.formatResponse(res.result,
+                                                  null,
+                                                  true);
+    
+                    resolve(ret);
+                    
+                }
+                catch (err) {
+                    reject(err);
+                }
+            });
     }
 
 }
