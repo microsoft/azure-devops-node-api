@@ -3910,7 +3910,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
     /**
      * Adds tags to a build.
      * 
-     * @param {string[]} tags - The tags to add.
+     * @param {string[]} tags - The tags to add. Request body is composed directly from listed tags.
      * @param {string} project - Project ID or project name
      * @param {number} buildId - The ID of the build.
      */

@@ -13,6 +13,22 @@
 import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
 
 
+export interface AadGraphMember extends GraphMember {
+    /**
+     * The short, generally unique name for the user in the backing directory. For AAD users, this corresponds to the mail nickname, which is often but not necessarily similar to the part of the user's mail address before the @ sign. For GitHub users, this corresponds to the GitHub user handle.
+     */
+    directoryAlias?: string;
+    /**
+     * When true, the group has been deleted in the identity provider
+     */
+    isDeletedInOrigin?: boolean;
+    metadataUpdateDate?: Date;
+    /**
+     * The meta type of the user in the origin, such as "member", "guest", etc. See UserMetaType for the set of possible values.
+     */
+    metaType?: string;
+}
+
 export interface GraphCachePolicies {
     /**
      * Size of the cache
@@ -277,6 +293,50 @@ export interface GraphScopeCreationContext {
     storageKey?: string;
 }
 
+export interface GraphServicePrincipal extends AadGraphMember {
+    applicationId?: string;
+}
+
+/**
+ * Do not attempt to use this type to create a new service principal. Use one of the subclasses instead. This type does not contain sufficient fields to create a new service principal.
+ */
+export interface GraphServicePrincipalCreationContext {
+    /**
+     * Optional: If provided, we will use this identifier for the storage key of the created service principal
+     */
+    storageKey?: string;
+}
+
+/**
+ * Use this type to create a new service principal using the OriginID as a reference to an existing service principal from an external AAD backed provider. This is the subset of GraphServicePrincipal fields required for creation of a GraphServicePrincipal for the AAD use case when looking up the service principal by its unique ID in the backing provider.
+ */
+export interface GraphServicePrincipalOriginIdCreationContext extends GraphServicePrincipalCreationContext {
+    /**
+     * This should be the object id of the service principal from the AAD provider. Example: d47d025a-ce2f-4a79-8618-e8862ade30dd Team Services will communicate with the source provider to fill all other fields on creation.
+     */
+    originId: string;
+}
+
+/**
+ * Use this type to update an existing service principal using the OriginID as a reference to an existing service principal from an external AAD backed provider. This is the subset of GraphServicePrincipal fields required for creation of a GraphServicePrincipal for AAD use case when looking up the service principal by its unique ID in the backing provider.
+ */
+export interface GraphServicePrincipalOriginIdUpdateContext extends GraphServicePrincipalUpdateContext {
+    /**
+     * This should be the object id or sid of the service principal from the source AAD provider. Example: d47d025a-ce2f-4a79-8618-e8862ade30dd Azure Devops will communicate with the source provider to fill all other fields on creation.
+     */
+    originId: string;
+}
+
+/**
+ * Do not attempt to use this type to update service principal. Use one of the subclasses instead. This type does not contain sufficient fields to create a new service principal.
+ */
+export interface GraphServicePrincipalUpdateContext {
+    /**
+     * Storage key should not be specified in case of updating service principal
+     */
+    storageKey?: string;
+}
+
 /**
  * Storage key of a Graph entity
  */
@@ -367,23 +427,7 @@ export enum GraphTraversalDirection {
     Up = 2,
 }
 
-/**
- * Graph user entity
- */
-export interface GraphUser extends GraphMember {
-    /**
-     * The short, generally unique name for the user in the backing directory. For AAD users, this corresponds to the mail nickname, which is often but not necessarily similar to the part of the user's mail address before the @ sign. For GitHub users, this corresponds to the GitHub user handle.
-     */
-    directoryAlias?: string;
-    /**
-     * When true, the group has been deleted in the identity provider
-     */
-    isDeletedInOrigin?: boolean;
-    metadataUpdateDate?: Date;
-    /**
-     * The meta type of the user in the origin, such as "member", "guest", etc. See UserMetaType for the set of possible values.
-     */
-    metaType?: string;
+export interface GraphUser extends AadGraphMember {
 }
 
 /**
@@ -400,6 +444,9 @@ export interface GraphUserCreationContext {
  * Use this type to create a new user using the mail address as a reference to an existing user from an external AD or AAD backed provider. This is the subset of GraphUser fields required for creation of a GraphUser for the AD and AAD use case when looking up the user by its mail address in the backing provider.
  */
 export interface GraphUserMailAddressCreationContext extends GraphUserCreationContext {
+    /**
+     * This should be the mail address of the user in the source AD or AAD provider. Example: Jamal.Hartnett@contoso.com Team Services will communicate with the source provider to fill all other fields on creation.
+     */
     mailAddress: string;
 }
 
@@ -438,6 +485,16 @@ export interface GraphUserPrincipalNameCreationContext extends GraphUserCreation
 }
 
 /**
+ * Use this type for transfering identity rights, for instance after performing a Tenant switch.
+ */
+export interface GraphUserPrincipalNameUpdateContext extends GraphUserUpdateContext {
+    /**
+     * This should be Principal Name (UPN) to which we want to transfer rights. Example: destination@email.com
+     */
+    principalName: string;
+}
+
+/**
  * Do not attempt to use this type to update user. Use one of the subclasses instead. This type does not contain sufficient fields to create a new user.
  */
 export interface GraphUserUpdateContext {
@@ -445,6 +502,20 @@ export interface GraphUserUpdateContext {
      * Storage key should not be specified in case of updating user
      */
     storageKey?: string;
+}
+
+export interface IdentityMapping {
+    source?: UserPrincipalName;
+    target?: UserPrincipalName;
+}
+
+export interface IdentityMappings {
+    mappings?: IdentityMapping[];
+}
+
+export interface MappingResult {
+    code?: string;
+    errorMessage?: string;
 }
 
 export interface PagedGraphGroups {
@@ -456,6 +527,17 @@ export interface PagedGraphGroups {
      * The enumerable list of groups found within a page.
      */
     graphGroups?: GraphGroup[];
+}
+
+export interface PagedGraphServicePrincipals {
+    /**
+     * This will be non-null if there is another page of data. There will never be more than one continuation token returned by a request.
+     */
+    continuationToken?: string[];
+    /**
+     * The enumerable list of service principals found within a page.
+     */
+    graphServicePrincipals?: GraphServicePrincipal[];
 }
 
 export interface PagedGraphUsers {
@@ -475,10 +557,24 @@ export interface RequestAccessPayLoad {
     urlRequested?: string;
 }
 
+export interface ResolveDisconnectedUsersResponse {
+    code?: string;
+    errorMessage?: string;
+    mappingResults?: MappingResult[];
+}
+
+export interface UserPrincipalName {
+    principalName?: string;
+}
+
 export var TypeInfo = {
+    AadGraphMember: <any>{
+    },
     GraphScope: <any>{
     },
     GraphScopeCreationContext: <any>{
+    },
+    GraphServicePrincipal: <any>{
     },
     GraphTraversalDirection: {
         enumValues: {
@@ -489,8 +585,16 @@ export var TypeInfo = {
     },
     GraphUser: <any>{
     },
+    PagedGraphServicePrincipals: <any>{
+    },
     PagedGraphUsers: <any>{
     },
+};
+
+TypeInfo.AadGraphMember.fields = {
+    metadataUpdateDate: {
+        isDate: true,
+    }
 };
 
 TypeInfo.GraphScope.fields = {
@@ -505,9 +609,22 @@ TypeInfo.GraphScopeCreationContext.fields = {
     }
 };
 
+TypeInfo.GraphServicePrincipal.fields = {
+    metadataUpdateDate: {
+        isDate: true,
+    }
+};
+
 TypeInfo.GraphUser.fields = {
     metadataUpdateDate: {
         isDate: true,
+    }
+};
+
+TypeInfo.PagedGraphServicePrincipals.fields = {
+    graphServicePrincipals: {
+        isArray: true,
+        typeInfo: TypeInfo.GraphServicePrincipal
     }
 };
 

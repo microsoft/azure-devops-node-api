@@ -2363,7 +2363,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
     }
 
     /**
-     * Removes a work itewm type in the process.
+     * Removes a work item type in the process.
      * 
      * @param {string} processId - The ID of the process.
      * @param {string} witRefName - The reference name of the work item type.

@@ -838,6 +838,10 @@ export interface GitCommitRef {
      */
     committer?: GitUserDate;
     /**
+     * Indicates that commit contains too many changes to be displayed
+     */
+    commitTooManyChanges?: boolean;
+    /**
      * An enumeration of the parent commit IDs for this commit.
      */
     parents?: string[];
@@ -2329,6 +2333,10 @@ export interface GitRepository {
      * True if the repository was created as a fork.
      */
     isFork?: boolean;
+    /**
+     * True if the repository is in maintenance. False otherwise.
+     */
+    isInMaintenance?: boolean;
     name?: string;
     parentRepository?: GitRepositoryRef;
     project?: TfsCoreInterfaces.TeamProjectReference;
@@ -2829,7 +2837,7 @@ export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
      */
     vote?: number;
     /**
-     * Groups or teams that that this reviewer contributed to. <br /> Groups and teams can be reviewers on pull requests but can not vote directly.  When a member of the group or team votes, that vote is rolled up into the group or team vote.  VotedFor is a list of such votes.
+     * Groups or teams that this reviewer contributed to. <br /> Groups and teams can be reviewers on pull requests but can not vote directly.  When a member of the group or team votes, that vote is rolled up into the group or team vote.  VotedFor is a list of such votes.
      */
     votedFor?: IdentityRefWithVote[];
 }
@@ -2898,6 +2906,7 @@ export enum IterationReason {
     Rebase = 4,
     Unknown = 8,
     Retarget = 16,
+    ResolveConflicts = 32,
 }
 
 /**
@@ -4297,7 +4306,8 @@ export var TypeInfo = {
             "create": 2,
             "rebase": 4,
             "unknown": 8,
-            "retarget": 16
+            "retarget": 16,
+            "resolveConflicts": 32
         }
     },
     LineDiffBlock: <any>{

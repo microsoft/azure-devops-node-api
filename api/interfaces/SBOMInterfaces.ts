@@ -211,6 +211,10 @@ export interface SBOMTelemetry {
      */
     taskErrorMessage?: string;
     /**
+     * The unique id for this telemetry
+     */
+    telemetryId?: string;
+    /**
      * The result of the tool as a numeric value.
      */
     toolExecutionResult?: number;

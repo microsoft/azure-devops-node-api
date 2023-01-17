@@ -677,6 +677,10 @@ export interface ServiceEndpointExecutionData {
      */
     owner?: ServiceEndpointExecutionOwner;
     /**
+     * Gets the additional details about the instance that used the service endpoint.
+     */
+    ownerDetails?: string;
+    /**
      * Gets the plan type of service endpoint execution data.
      */
     planType?: string;

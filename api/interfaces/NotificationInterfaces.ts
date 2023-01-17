@@ -799,7 +799,7 @@ export interface NotificationSubscription {
      */
     subscriber?: VSSInterfaces.IdentityRef;
     /**
-     * REST API URL of the subscriotion.
+     * REST API URL of the subscription.
      */
     url?: string;
     /**
@@ -1183,7 +1183,7 @@ export interface SubscriptionQueryCondition {
      */
     filter?: ISubscriptionFilter;
     /**
-     * Flags to specify the the type subscriptions to query for.
+     * Flags to specify the type subscriptions to query for.
      */
     flags?: SubscriptionFlags;
     /**

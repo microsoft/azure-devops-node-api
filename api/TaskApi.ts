@@ -33,6 +33,7 @@ export interface ITaskApi extends basem.ClientApiBase {
     getLog(scopeIdentifier: string, hubName: string, planId: string, logId: number, startLine?: number, endLine?: number): Promise<string[]>;
     getLogs(scopeIdentifier: string, hubName: string, planId: string): Promise<TaskAgentInterfaces.TaskLog[]>;
     getPlanGroupsQueueMetrics(scopeIdentifier: string, hubName: string): Promise<TaskAgentInterfaces.TaskOrchestrationPlanGroupsQueueMetrics[]>;
+    createOidcToken(claims: { [key: string] : string; }, scopeIdentifier: string, hubName: string, planId: string, jobId: string, serviceConnectionId: string): Promise<TaskAgentInterfaces.TaskHubOidcToken>;
     getQueuedPlanGroups(scopeIdentifier: string, hubName: string, statusFilter?: TaskAgentInterfaces.PlanGroupStatus, count?: number): Promise<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>;
     getQueuedPlanGroup(scopeIdentifier: string, hubName: string, planGroup: string): Promise<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup>;
     getPlan(scopeIdentifier: string, hubName: string, planId: string): Promise<TaskAgentInterfaces.TaskOrchestrationPlan>;
@@ -51,7 +52,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} type
      */
@@ -100,7 +101,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     /**
      * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -163,7 +164,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -236,7 +237,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -293,7 +294,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -342,7 +343,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -395,12 +396,14 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {TaskAgentInterfaces.TimelineRecordFeedLinesWrapper} lines
+     * Append content to timeline record feed.
+     * 
+     * @param {TaskAgentInterfaces.TimelineRecordFeedLinesWrapper} lines - Content to be appended to the timeline record feed.
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
-     * @param {string} recordId
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
+     * @param {string} planId - ID of the plan.
+     * @param {string} timelineId - ID of the task's timeline.
+     * @param {string} recordId - ID of the timeline record.
      */
     public async appendTimelineRecordFeed(
         lines: TaskAgentInterfaces.TimelineRecordFeedLinesWrapper,
@@ -449,7 +452,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {string} recordId
@@ -519,7 +522,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} orchestrationId
      */
     public async getJobInstance(
@@ -563,11 +566,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
+     * Append a log to a task's log. The log should be sent in the body of the request as a TaskLog object stream.
+     * 
      * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {number} logId
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
+     * @param {string} planId - The ID of the plan.
+     * @param {number} logId - The ID of the log.
      */
     public async appendLogContent(
         customHeaders: any,
@@ -619,7 +624,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {number} logId
      * @param {string} serializedBlobId
@@ -682,10 +687,12 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {TaskAgentInterfaces.TaskLog} log
+     * Create a log and connect it to a pipeline run's execution plan.
+     * 
+     * @param {TaskAgentInterfaces.TaskLog} log - An object that contains information about log's path.
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
+     * @param {string} planId - The ID of the plan.
      */
     public async createLog(
         log: TaskAgentInterfaces.TaskLog,
@@ -730,7 +737,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {number} logId
      * @param {number} startLine
@@ -788,7 +795,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      */
     public async getLogs(
@@ -833,7 +840,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      */
     public async getPlanGroupsQueueMetrics(
         scopeIdentifier: string,
@@ -874,8 +881,68 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
+     * @param {{ [key: string] : string; }} claims
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
+     * @param {string} planId
+     * @param {string} jobId
+     * @param {string} serviceConnectionId
+     */
+    public async createOidcToken(
+        claims: { [key: string] : string; },
+        scopeIdentifier: string,
+        hubName: string,
+        planId: string,
+        jobId: string,
+        serviceConnectionId: string
+        ): Promise<TaskAgentInterfaces.TaskHubOidcToken> {
+        if (serviceConnectionId == null) {
+            throw new TypeError('serviceConnectionId can not be null or undefined');
+        }
+
+        return new Promise<TaskAgentInterfaces.TaskHubOidcToken>(async (resolve, reject) => {
+            let routeValues: any = {
+                scopeIdentifier: scopeIdentifier,
+                hubName: hubName,
+                planId: planId,
+                jobId: jobId
+            };
+
+            let queryValues: any = {
+                serviceConnectionId: serviceConnectionId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.1-preview.1",
+                    "distributedtask",
+                    "69a319f4-28c1-4bfd-93e6-ea0ff5c6f1a2",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubOidcToken>;
+                res = await this.rest.create<TaskAgentInterfaces.TaskHubOidcToken>(url, claims, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} scopeIdentifier - The project GUID to scope the request
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {TaskAgentInterfaces.PlanGroupStatus} statusFilter
      * @param {number} count
      */
@@ -927,7 +994,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planGroup
      */
     public async getQueuedPlanGroup(
@@ -972,7 +1039,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      */
     public async getPlan(
@@ -1017,7 +1084,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {number} changeId
@@ -1071,11 +1138,13 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     }
 
     /**
-     * @param {VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>} records
+     * Update timeline records if they already exist, otherwise create new ones for the same timeline.
+     * 
+     * @param {VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>} records - The array of timeline records to be updated.
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
-     * @param {string} planId
-     * @param {string} timelineId
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
+     * @param {string} planId - The ID of the plan.
+     * @param {string} timelineId - The ID of the timeline.
      */
     public async updateRecords(
         records: VSSInterfaces.VssJsonCollectionWrapperV<TaskAgentInterfaces.TimelineRecord[]>,
@@ -1123,7 +1192,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
     /**
      * @param {TaskAgentInterfaces.Timeline} timeline
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      */
     public async createTimeline(
@@ -1169,7 +1238,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      */
@@ -1217,7 +1286,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      * @param {string} timelineId
      * @param {number} changeId
@@ -1275,7 +1344,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
     /**
      * @param {string} scopeIdentifier - The project GUID to scope the request
-     * @param {string} hubName - The name of the server hub: "build" for the Build server or "rm" for the Release Management server
+     * @param {string} hubName - The name of the server hub. Common examples: "build", "rm", "checks"
      * @param {string} planId
      */
     public async getTimelines(

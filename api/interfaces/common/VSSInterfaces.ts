@@ -373,13 +373,19 @@ export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {
 }
 
 /**
- * This class is used to serialized collections as a single JSON object on the wire, to avoid serializing JSON arrays directly to the client, which can be a security hole
+ * This class is used to serialize collections as a single JSON object on the wire.
  */
 export interface VssJsonCollectionWrapperV<T> extends VssJsonCollectionWrapperBase {
+    /**
+     * The serialized item.
+     */
     value?: T;
 }
 
 export interface VssJsonCollectionWrapperBase {
+    /**
+     * The number of serialized items.
+     */
     count?: number;
 }
 
@@ -416,7 +422,7 @@ export interface VssNotificationEvent {
      */
     processDelay?: any;
     /**
-     * Optional: A list of scopes which are are relevant to the event.
+     * Optional: A list of scopes which are relevant to the event.
      */
     scopes?: EventScope[];
     /**

@@ -75,6 +75,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getPublisher(publisherName: string, flags?: number): Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Promise<GalleryInterfaces.Publisher>;
     updatePublisherMembers(roleAssignments: GalleryInterfaces.PublisherUserRoleAssignmentRef[], publisherName: string, limitToCallerIdentityDomain?: boolean): Promise<GalleryInterfaces.PublisherRoleAssignment[]>;
+    getPublisherWithoutToken(publisherName: string): Promise<GalleryInterfaces.Publisher>;
     getQuestions(publisherName: string, extensionName: string, count?: number, page?: number, afterDate?: Date): Promise<GalleryInterfaces.QuestionsResult>;
     reportQuestion(concern: GalleryInterfaces.Concern, pubName: string, extName: string, questionId: number): Promise<GalleryInterfaces.Concern>;
     createQuestion(question: GalleryInterfaces.Question, publisherName: string, extensionName: string): Promise<GalleryInterfaces.Question>;
@@ -2815,6 +2816,45 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let ret = this.formatResponse(res.result,
                                               GalleryInterfaces.TypeInfo.PublisherRoleAssignment,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} publisherName
+     */
+    public async getPublisherWithoutToken(
+        publisherName: string
+        ): Promise<GalleryInterfaces.Publisher> {
+
+        return new Promise<GalleryInterfaces.Publisher>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.1-preview.1",
+                    "gallery",
+                    "215a2ed8-458a-4850-ad5a-45f1dabc3461",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
+                res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.Publisher,
+                                              false);
 
                 resolve(ret);
                 
