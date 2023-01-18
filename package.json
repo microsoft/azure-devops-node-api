@@ -34,7 +34,7 @@
         "@types/shelljs": "0.7.8",
         "mocha": "^3.5.3",
         "nock": "9.6.1",
-        "shelljs": "0.7.8",
+        "shelljs": "0.8.5",
         "typescript": "3.1.5",
         "@types/node": "8.9.2"
     }
