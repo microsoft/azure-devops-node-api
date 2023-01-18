@@ -31,7 +31,7 @@ export enum AcquisitionAssignmentType {
 
 export interface AcquisitionOperation {
     /**
-     * State of the the AcquisitionOperation for the current user
+     * State of the AcquisitionOperation for the current user
      */
     operationState?: AcquisitionOperationState;
     /**

@@ -572,6 +572,7 @@ export enum ElasticComputeState {
     Deleting = 3,
     Failed = 4,
     Stopped = 5,
+    Reimaging = 6,
 }
 
 /**
@@ -648,6 +649,12 @@ export enum ElasticNodeState {
     DeletingCompute = 10,
     Deleted = 11,
     Lost = 12,
+    ReimagingCompute = 13,
+    RestartingAgent = 14,
+    FailedToStartPendingDelete = 15,
+    FailedToRestartPendingDelete = 16,
+    FailedVMPendingDelete = 17,
+    AssignedPendingDelete = 18,
 }
 
 /**
@@ -1176,24 +1183,51 @@ export interface InputValidationRequest {
     inputs?: { [key: string] : ValidationItem; };
 }
 
+/**
+ * An issue (error, warning) associated with a pipeline run.
+ */
 export interface Issue {
+    /**
+     * The category of the issue. <br />Example: Code - refers to compilation errors <br />Example: General - refers to generic errors
+     */
     category?: string;
+    /**
+     * A dictionary containing details about the issue.
+     */
     data?: { [key: string] : string; };
+    /**
+     * A description of issue.
+     */
     message?: string;
+    /**
+     * The type (error, warning) of the issue.
+     */
     type?: IssueType;
 }
 
+/**
+ * The type of issue based on severity.
+ */
 export enum IssueType {
     Error = 1,
     Warning = 2,
 }
 
 export interface JobAssignedEvent extends JobEvent {
+    /**
+     * A pipeline job request for an agent.
+     */
     request?: TaskAgentJobRequest;
 }
 
 export interface JobCanceledEvent extends JobEvent {
+    /**
+     * The reason for job cancellation.
+     */
     reason?: string;
+    /**
+     * The job's timeout interval.
+     */
     timeout?: any;
 }
 
@@ -1203,8 +1237,17 @@ export interface JobCancelMessage {
 }
 
 export interface JobCompletedEvent extends JobEvent {
+    /**
+     * Indicates whether the agent is in the process of shutting down.
+     */
     agentShuttingDown?: boolean;
+    /**
+     * The ID of the request.
+     */
     requestId?: number;
+    /**
+     * The result of the request.
+     */
     result?: TaskResult;
 }
 
@@ -1223,8 +1266,17 @@ export interface JobEnvironment {
     variables?: { [key: string] : string; };
 }
 
+/**
+ * A pipeline job event to be processed by the execution plan.
+ */
 export interface JobEvent {
+    /**
+     * The ID of the pipeline job affected by the event.
+     */
     jobId?: string;
+    /**
+     * The name of the pipeline job event.
+     */
     name?: string;
 }
 
@@ -1239,11 +1291,23 @@ export interface JobEventsConfig extends EventsConfig {
 }
 
 export interface JobMetadataEvent extends JobEvent {
+    /**
+     * A message to be sent to an agent currently running the job.
+     */
     message?: JobMetadataMessage;
 }
 
+/**
+ * A message to be sent to an agent currently running the job.
+ */
 export interface JobMetadataMessage {
+    /**
+     * The id of the job.
+     */
     jobId?: string;
+    /**
+     * The agent's frequency of posting lines to the logs console expressed in milliseconds. There are 2 modes: Slow (10 seconds) and Fast (half a second).
+     */
     postLinesFrequencyMillis?: number;
 }
 
@@ -2216,7 +2280,7 @@ export interface TaskAgentPool extends TaskAgentPoolReference {
     owner?: VSSInterfaces.IdentityRef;
     properties?: any;
     /**
-     * Target parallelism.
+     * Target parallelism - Only applies to agent pools that are backed by pool providers. It will be null for regular pools.
      */
     targetSize?: number;
 }
@@ -2703,6 +2767,9 @@ export interface TaskCommandRestrictions {
 }
 
 export interface TaskCompletedEvent extends TaskEvent {
+    /**
+     * The result of the task.
+     */
     result?: TaskResult;
 }
 
@@ -2805,6 +2872,9 @@ export enum TaskDefinitionStatus {
 }
 
 export interface TaskEvent extends JobEvent {
+    /**
+     * The ID of the task definition.
+     */
     taskId?: string;
 }
 
@@ -3116,6 +3186,10 @@ export interface TaskHubLicenseDetails {
     totalPrivateLicenseCount?: number;
 }
 
+export interface TaskHubOidcToken {
+    oidcToken?: string;
+}
+
 export interface TaskInputDefinition extends DistributedTaskCommonInterfaces.TaskInputDefinitionBase {
 }
 
@@ -3132,16 +3206,43 @@ export interface TaskInstance extends TaskReference {
     timeoutInMinutes?: number;
 }
 
+/**
+ * A task log connected to a timeline record.
+ */
 export interface TaskLog extends TaskLogReference {
+    /**
+     * The time of the task log creation.
+     */
     createdOn?: Date;
+    /**
+     * The REST URL of the task log when indexed.
+     */
     indexLocation?: string;
+    /**
+     * The time of the last modification of the task log.
+     */
     lastChangedOn?: Date;
+    /**
+     * The number of the task log lines.
+     */
     lineCount?: number;
+    /**
+     * The path of the task log.
+     */
     path?: string;
 }
 
+/**
+ * A reference to a task log. This class contains information about the output printed to the timeline record's logs console during pipeline run.
+ */
 export interface TaskLogReference {
+    /**
+     * The ID of the task log.
+     */
     id?: number;
+    /**
+     * The REST URL of the task log.
+     */
     location?: string;
 }
 
@@ -3267,10 +3368,25 @@ export interface TaskPackageMetadata {
     version?: string;
 }
 
+/**
+ * A reference to a task.
+ */
 export interface TaskReference {
+    /**
+     * The ID of the task definition. Corresponds to the id value of task.json file. <br />Example: CmdLineV2 { "id": "D9BAFED4-0B18-4F58-968D-86655B4D2CE9" }
+     */
     id?: string;
+    /**
+     * A dictionary of inputs specific to a task definition. Corresponds to inputs value of task.json file.
+     */
     inputs?: { [key: string] : string; };
+    /**
+     * The name of the task definition. Corresponds to the name value of task.json file. <br />Example: CmdLineV2 { "name": "CmdLine" }
+     */
     name?: string;
+    /**
+     * The version of the task definition. Corresponds to the version value of task.json file. <br />Example: CmdLineV2 { "version": { "Major": 2, "Minor": 212, "Patch": 0 } }
+     */
     version?: string;
 }
 
@@ -3279,6 +3395,9 @@ export interface TaskRestrictions {
     settableVariables?: TaskVariableRestrictions;
 }
 
+/**
+ * The result of an operation tracked by a timeline record.
+ */
 export enum TaskResult {
     Succeeded = 0,
     SucceededWithIssues = 1,
@@ -3311,54 +3430,147 @@ export interface Timeline extends TimelineReference {
     records?: TimelineRecord[];
 }
 
+/**
+ * An attempt to update a TimelineRecord.
+ */
 export interface TimelineAttempt {
     /**
-     * Gets or sets the attempt of the record.
+     * The attempt of the record.
      */
     attempt?: number;
     /**
-     * Gets or sets the unique identifier for the record.
+     * The unique identifier for the record.
      */
     identifier?: string;
     /**
-     * Gets or sets the record identifier located within the specified timeline.
+     * The record identifier located within the specified timeline.
      */
     recordId?: string;
     /**
-     * Gets or sets the timeline identifier which owns the record representing this attempt.
+     * The timeline identifier which owns the record representing this attempt.
      */
     timelineId?: string;
 }
 
+/**
+ * Detailed information about the execution of different operations during pipeline run.
+ */
 export interface TimelineRecord {
+    /**
+     * The specification of an agent running a pipeline job, in binary format. Applicable when record is of type Job. <br />Example: { "VMImage" : "windows-2019" }
+     */
     agentSpecification?: any;
+    /**
+     * The number of record attempts.
+     */
     attempt?: number;
+    /**
+     * The ID connecting all records updated at the same time. This value is taken from timeline's ChangeId.
+     */
     changeId?: number;
+    /**
+     * A string that indicates the current operation.
+     */
     currentOperation?: string;
+    /**
+     * A reference to a sub-timeline.
+     */
     details?: TimelineReference;
+    /**
+     * The number of errors produced by this operation.
+     */
     errorCount?: number;
+    /**
+     * The finish time of the record.
+     */
     finishTime?: Date;
+    /**
+     * The ID of the record.
+     */
     id?: string;
+    /**
+     * String identifier that is consistent across attempts.
+     */
     identifier?: string;
+    /**
+     * The list of issues produced by this operation.
+     */
     issues?: Issue[];
+    /**
+     * The time the record was last modified.
+     */
     lastModified?: Date;
+    /**
+     * The REST URL of the record.
+     */
     location?: string;
+    /**
+     * A reference to the log produced by this operation.
+     */
     log?: TaskLogReference;
+    /**
+     * The name of the record.
+     */
     name?: string;
+    /**
+     * An ordinal value relative to other records within the timeline.
+     */
     order?: number;
+    /**
+     * The ID of the record's parent. <br />Example: Stage is a parent of a Phase, Phase is a parent of a Job, Job is a parent of a Task.
+     */
     parentId?: string;
+    /**
+     * The percentage of record completion.
+     */
     percentComplete?: number;
+    /**
+     * The previous record attempts.
+     */
     previousAttempts?: TimelineAttempt[];
+    /**
+     * The ID of the queue which connects projects to agent pools on which the operation ran on. Applicable when record is of type Job.
+     */
     queueId?: number;
+    /**
+     * Name of the referenced record.
+     */
     refName?: string;
+    /**
+     * The result of the record.
+     */
     result?: TaskResult;
+    /**
+     * Evaluation of predefined conditions upon completion of record's operation. <br />Example: Evaluating `succeeded()`, Result = True <br />Example: Evaluating `and(succeeded(), eq(variables['system.debug'], False))`, Result = False
+     */
     resultCode?: string;
+    /**
+     * The start time of the record.
+     */
     startTime?: Date;
+    /**
+     * The state of the record.
+     */
     state?: TimelineRecordState;
+    /**
+     * A reference to the task. Applicable when record is of type Task.
+     */
     task?: TaskReference;
+    /**
+     * The type of operation being tracked by the record. <br />Example: Stage, Phase, Job, Task...
+     */
     type?: string;
+    /**
+     * The variables of the record.
+     */
     variables?: { [key: string] : VariableValue; };
+    /**
+     * The number of warnings produced by this operation.
+     */
     warningCount?: number;
+    /**
+     * The name of the agent running the operation. Applicable when record is of type Job.
+     */
     workerName?: string;
 }
 
@@ -3370,15 +3582,30 @@ export interface TimelineRecordFeedLinesWrapper {
     value?: string[];
 }
 
+/**
+ * The state of the timeline record.
+ */
 export enum TimelineRecordState {
     Pending = 0,
     InProgress = 1,
     Completed = 2,
 }
 
+/**
+ * A reference to a timeline.
+ */
 export interface TimelineReference {
+    /**
+     * The change ID.
+     */
     changeId?: number;
+    /**
+     * The ID of the timeline.
+     */
     id?: string;
+    /**
+     * The REST URL of the timeline.
+     */
     location?: string;
 }
 
@@ -3523,9 +3750,21 @@ export enum VariableGroupQueryOrder {
     IdDescending = 1,
 }
 
+/**
+ * A wrapper class for a generic variable.
+ */
 export interface VariableValue {
+    /**
+     * Indicates whether the variable can be changed during script's execution runtime.
+     */
     isReadOnly?: boolean;
+    /**
+     * Indicates whether the variable should be encrypted at rest.
+     */
     isSecret?: boolean;
+    /**
+     * The value of the variable.
+     */
     value?: string;
 }
 
@@ -3662,7 +3901,8 @@ export var TypeInfo = {
             "creating": 2,
             "deleting": 3,
             "failed": 4,
-            "stopped": 5
+            "stopped": 5,
+            "reimaging": 6
         }
     },
     ElasticNode: <any>{
@@ -3683,7 +3923,13 @@ export var TypeInfo = {
             "saved": 9,
             "deletingCompute": 10,
             "deleted": 11,
-            "lost": 12
+            "lost": 12,
+            "reimagingCompute": 13,
+            "restartingAgent": 14,
+            "failedToStartPendingDelete": 15,
+            "failedToRestartPendingDelete": 16,
+            "failedVMPendingDelete": 17,
+            "assignedPendingDelete": 18
         }
     },
     ElasticPool: <any>{

@@ -30,7 +30,7 @@ export enum AcquisitionAssignmentType {
 
 export interface AcquisitionOperation {
     /**
-     * State of the the AcquisitionOperation for the current user
+     * State of the AcquisitionOperation for the current user
      */
     operationState?: AcquisitionOperationState;
     /**
@@ -765,6 +765,10 @@ export enum ExtensionQueryFilterType {
      * Filter to get VS Code extensions by target platform.
      */
     TargetPlatform = 23,
+    /**
+     * Retrieve an extension based on the extensionName.
+     */
+    ExtensionName = 24,
 }
 
 /**
@@ -2101,7 +2105,8 @@ export var TypeInfo = {
             "includeWithPublisherFlags": 20,
             "organizationSharedWith": 21,
             "productArchitecture": 22,
-            "targetPlatform": 23
+            "targetPlatform": 23,
+            "extensionName": 24
         }
     },
     ExtensionQueryFlags: {

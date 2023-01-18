@@ -55,7 +55,7 @@ export interface IGitApi extends basem.ClientApiBase {
     updateImportRequest(importRequestToUpdate: GitInterfaces.GitImportRequest, project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
     getItem(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveLfs?: boolean, sanitize?: boolean): Promise<GitInterfaces.GitItem>;
     getItemContent(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveLfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
-    getItems(repositoryId: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, includeLinks?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor): Promise<GitInterfaces.GitItem[]>;
+    getItems(repositoryId: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, includeLinks?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, zipForUnix?: boolean): Promise<GitInterfaces.GitItem[]>;
     getItemText(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveLfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
     getItemZip(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveLfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
     getItemsBatch(requestData: GitInterfaces.GitItemRequestData, repositoryId: string, project?: string): Promise<GitInterfaces.GitItem[][]>;
@@ -2058,6 +2058,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {boolean} download - Set to true to download the response as a file.  Default is false.
      * @param {boolean} includeLinks - Set to true to include links to items.  Default is false.
      * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} zipForUnix - Set to true to keep the file permissions for unix (and POSIX) systems like executables and symlinks
      */
     public async getItems(
         repositoryId: string,
@@ -2068,7 +2069,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         latestProcessedChange?: boolean,
         download?: boolean,
         includeLinks?: boolean,
-        versionDescriptor?: GitInterfaces.GitVersionDescriptor
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        zipForUnix?: boolean
         ): Promise<GitInterfaces.GitItem[]> {
 
         return new Promise<GitInterfaces.GitItem[]>(async (resolve, reject) => {
@@ -2085,6 +2087,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 download: download,
                 includeLinks: includeLinks,
                 versionDescriptor: versionDescriptor,
+                zipForUnix: zipForUnix,
             };
             
             try {
@@ -3286,7 +3289,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.1-preview.2",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues);
@@ -3339,7 +3342,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.1-preview.2",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues,

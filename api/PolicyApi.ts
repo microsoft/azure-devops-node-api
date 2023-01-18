@@ -17,7 +17,7 @@ import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import PolicyInterfaces = require("./interfaces/PolicyInterfaces");
 
 export interface IPolicyApi extends basem.ClientApiBase {
-    createPolicyConfiguration(configuration: PolicyInterfaces.PolicyConfiguration, project: string, configurationId?: number): Promise<PolicyInterfaces.PolicyConfiguration>;
+    createPolicyConfiguration(configuration: PolicyInterfaces.PolicyConfiguration, project: string): Promise<PolicyInterfaces.PolicyConfiguration>;
     deletePolicyConfiguration(project: string, configurationId: number): Promise<void>;
     getPolicyConfiguration(project: string, configurationId: number): Promise<PolicyInterfaces.PolicyConfiguration>;
     getPolicyConfigurations(project: string, scope?: string, policyType?: string): Promise<PolicyInterfaces.PolicyConfiguration[]>;
@@ -43,18 +43,15 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
      * 
      * @param {PolicyInterfaces.PolicyConfiguration} configuration - The policy configuration to create.
      * @param {string} project - Project ID or project name
-     * @param {number} configurationId
      */
     public async createPolicyConfiguration(
         configuration: PolicyInterfaces.PolicyConfiguration,
-        project: string,
-        configurationId?: number
+        project: string
         ): Promise<PolicyInterfaces.PolicyConfiguration> {
 
         return new Promise<PolicyInterfaces.PolicyConfiguration>(async (resolve, reject) => {
             let routeValues: any = {
-                project: project,
-                configurationId: configurationId
+                project: project
             };
 
             try {

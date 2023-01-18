@@ -169,7 +169,6 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     updateVirtualMachineGroup(resource: TaskAgentInterfaces.VirtualMachineGroup, project: string, environmentId: number): Promise<TaskAgentInterfaces.VirtualMachineGroup>;
     getVirtualMachines(project: string, environmentId: number, resourceId: number, continuationToken?: string, name?: string, partialNameMatch?: boolean, tags?: string[], top?: number): Promise<TaskAgentInterfaces.VirtualMachine[]>;
     updateVirtualMachines(machines: TaskAgentInterfaces.VirtualMachine[], project: string, environmentId: number, resourceId: number): Promise<TaskAgentInterfaces.VirtualMachine[]>;
-    acquireAccessToken(authenticationRequest: TaskAgentInterfaces.AadOauthTokenRequest): Promise<TaskAgentInterfaces.AadOauthTokenResult>;
     createAadOAuthRequest(tenantId: string, redirectUri: string, promptOption?: TaskAgentInterfaces.AadLoginPromptOption, completeCallbackPayload?: string, completeCallbackByAuthCode?: boolean): Promise<string>;
     getVstsAadTenantId(): Promise<string>;
     getYamlSchema(validateTaskNames?: boolean): Promise<any>;
@@ -7372,44 +7371,6 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachine,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {TaskAgentInterfaces.AadOauthTokenRequest} authenticationRequest
-     */
-    public async acquireAccessToken(
-        authenticationRequest: TaskAgentInterfaces.AadOauthTokenRequest
-        ): Promise<TaskAgentInterfaces.AadOauthTokenResult> {
-
-        return new Promise<TaskAgentInterfaces.AadOauthTokenResult>(async (resolve, reject) => {
-            let routeValues: any = {
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
-                    "distributedtask",
-                    "9c63205e-3a0f-42a0-ad88-095200f13607",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<TaskAgentInterfaces.AadOauthTokenResult>;
-                res = await this.rest.create<TaskAgentInterfaces.AadOauthTokenResult>(url, authenticationRequest, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
 
                 resolve(ret);
                 

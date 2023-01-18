@@ -1592,7 +1592,7 @@ export interface FavoriteItem {
      */
     data?: string;
     /**
-     * Unique Id of the the entry.
+     * Unique Id of the entry.
      */
     id?: string;
     /**

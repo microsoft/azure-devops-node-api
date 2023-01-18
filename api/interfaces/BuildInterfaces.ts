@@ -159,6 +159,10 @@ export interface Build {
      */
     agentSpecification?: AgentSpecification;
     /**
+     * Append Commit Message To BuildNumber in UI.
+     */
+    appendCommitMessageToRunName?: boolean;
+    /**
      * The build number/name of the build.
      */
     buildNumber?: string;
@@ -2117,6 +2121,10 @@ export interface PhaseTarget {
  * Contains pipeline general settings.
  */
 export interface PipelineGeneralSettings {
+    /**
+     * Disable classic pipelines creation.
+     */
+    disableClassicPipelineCreation?: boolean;
     /**
      * If enabled, scope of access for all non-release pipelines reduces to the current project.
      */

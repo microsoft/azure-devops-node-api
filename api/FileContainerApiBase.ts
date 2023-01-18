@@ -30,7 +30,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
     }
 
     /**
-     * Creates the specified items in in the referenced container.
+     * Creates the specified items in the referenced container.
      * 
      * @param {VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>} items
      * @param {number} containerId

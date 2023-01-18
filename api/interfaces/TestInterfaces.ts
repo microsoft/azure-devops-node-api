@@ -2884,7 +2884,7 @@ export interface TestConfiguration {
      */
     project?: ShallowReference;
     /**
-     * Revision of the the configuration
+     * Revision of the configuration
      */
     revision?: number;
     /**
@@ -3262,6 +3262,46 @@ export enum TestLogStatusCode {
      * Storage capacity exceeded
      */
     StorageCapacityExceeded = 16,
+}
+
+/**
+ * Attachment metadata for test attachments from LogStore.
+ */
+export interface TestLogStoreAttachment {
+    /**
+     * Attachment type.
+     */
+    attachmentType?: AttachmentType;
+    /**
+     * Comment associated with attachment.
+     */
+    comment?: string;
+    /**
+     * Attachment created date.
+     */
+    createdDate?: Date;
+    /**
+     * Attachment file name.
+     */
+    fileName?: string;
+    /**
+     * Attachment size.
+     */
+    size?: number;
+    /**
+     * Attachment Url.
+     */
+    url?: string;
+}
+
+/**
+ * Reference to test attachment.
+ */
+export interface TestLogStoreAttachmentReference {
+    /**
+     * Url to download the attachment.
+     */
+    url: string;
 }
 
 /**
@@ -5468,6 +5508,8 @@ export var TypeInfo = {
             "storageCapacityExceeded": 16
         }
     },
+    TestLogStoreAttachment: <any>{
+    },
     TestLogStoreEndpointDetails: <any>{
     },
     TestLogStoreEndpointType: {
@@ -6393,6 +6435,15 @@ TypeInfo.TestLogReference.fields = {
 TypeInfo.TestLogStatus.fields = {
     status: {
         enumType: TypeInfo.TestLogStatusCode
+    }
+};
+
+TypeInfo.TestLogStoreAttachment.fields = {
+    attachmentType: {
+        enumType: TypeInfo.AttachmentType
+    },
+    createdDate: {
+        isDate: true,
     }
 };
 

@@ -80,6 +80,10 @@ export interface GitRepository {
      * True if the repository was created as a fork.
      */
     isFork?: boolean;
+    /**
+     * True if the repository is in maintenance. False otherwise.
+     */
+    isInMaintenance?: boolean;
     name?: string;
     parentRepository?: GitRepositoryRef;
     project?: TfsCoreInterfaces.TeamProjectReference;
