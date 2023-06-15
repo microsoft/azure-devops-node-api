@@ -19,6 +19,7 @@
         "release.ts",
         "task.ts",
         "test.ts",
+        "testResults.ts",
         "wiki.ts",
         "work.ts",
         "workItemTracking.ts"

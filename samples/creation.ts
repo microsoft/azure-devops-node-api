@@ -202,6 +202,15 @@ export async function run() {
             console.log(`found ${runs.length} test runs`);
         }
 
+        /********** TestResults **********/
+        printSectionStart('TestResults');
+        const testResultsApi = await vstsCollectionLevel.getTestResultsApi();
+        const testRuns: TestRun[] = await testResultsApi.getTestRuns(common.getProject());
+
+        if (testRuns) {
+            console.log(`found ${testRuns.length} test runs`);
+        }
+
         /********** Tfvc **********/
         printSectionStart("Tfvc");
         const tfvcApi = await vstsCollectionLevel.getTfvcApi();
