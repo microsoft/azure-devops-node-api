@@ -1,7 +1,7 @@
 {
     "name": "azure-devops-node-api",
     "description": "Node client for Azure DevOps and TFS REST APIs",
-    "version": "12.0.0",
+    "version": "12.1.0",
     "main": "./WebApi.js",
     "types": "./WebApi.d.ts",
     "scripts": {

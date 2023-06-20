@@ -21,6 +21,7 @@ import securityrolesm = require('./SecurityRolesApi');
 import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
+import testresultsm = require('./TestResultsApi');
 import tfvcm = require('./TfvcApi');
 import wikim = require('./WikiApi');
 import workm = require('./WorkApi');
@@ -315,6 +316,13 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c2aa639c-3ccc-4740-b3b6-ce2a1e1d984e");
         handlers = handlers || [this.authHandler];
         return new testm.TestApi(serverUrl, handlers, this.options);
+    }
+
+	public async getTestResultsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testresultsm.ITestResultsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c83eaf52-edf3-4034-ae11-17d38f25404c");
+        handlers = handlers || [this.authHandler];
+        return new testresultsm.TestResultsApi(serverUrl, handlers, this.options);
     }
 
     public async getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tfvcm.ITfvcApi> {

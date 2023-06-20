@@ -3892,6 +3892,30 @@ export interface TestResultFailuresAnalysis {
 }
 
 /**
+ * The test failure type resource
+ */
+export interface TestResultFailureType {
+    /**
+     * ID of the test failure type
+     */
+    id: number;
+    /**
+     * Name of the test failure type
+     */
+    name: string;
+}
+
+/**
+ * The test failure type request model
+ */
+export interface TestResultFailureTypeRequestModel {
+    /**
+     * Name of the test failure type
+     */
+    name: string;
+}
+
+/**
  * Group by for results
  */
 export enum TestResultGroupBy {
