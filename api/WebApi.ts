@@ -76,7 +76,7 @@ export function getHandlerFromToken(token: string, allowCrossOriginAuthenticatio
 export interface IWebApiRequestSettings {
     productName: string,
     productVersion: string
-};
+}
 
 // ---------------------------------------------------------------------------
 // Factory to return client apis

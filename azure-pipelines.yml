@@ -33,6 +33,11 @@ steps:
 - script: npm run units
   displayName: Run unit tests
 
+- script: npm run lint
+  displayName: Run lint (ESlint)
+  # Only perform linting for Higher than Node 12
+  condition: and(succeeded(), eq(variables['versionSpec'], '12.x', '14.x', '16.x'))
+
 # For CI runs on master, automatically publish packages
 - bash: |
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
