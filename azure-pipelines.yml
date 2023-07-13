@@ -33,6 +33,9 @@ steps:
 - script: npm run units
   displayName: Run unit tests
 
+- script: npm run lint
+  displayName: Run lint (ESlint)
+
 # For CI runs on master, automatically publish packages
 - bash: |
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
