@@ -149,7 +149,7 @@ export class VsoClient {
      * @param area resource area name
      * @param locationId Guid of the location to get
      */
-    public beginGetLocation(area: string, locationId: string): Promise<ifm.ApiResourceLocation> {
+    public beginGetLocation(area: string, locationId: string): Promise<ifm.ApiResourceLocation | undefined> {
         return this._initializationPromise.then(() => {
             return this.beginGetAreaLocations(area);
         }).then((areaLocations: VssApiResourceLocationLookup) => {
@@ -162,7 +162,11 @@ export class VsoClient {
         if (!areaLocationsPromise) {
             let requestUrl = this.resolveUrl(VsoClient.APIS_RELATIVE_PATH + "/" + area);
             areaLocationsPromise = this.restClient.options<any>(requestUrl)
-                .then((res:restm.IRestResponse<any>) => {
+                .then((res: restm.IRestResponse<any>) => {
+                    if (!res.result) {
+                        return {};
+                    }
+
                     let locationsLookup: VssApiResourceLocationLookup = {};
                     let resourceLocations: ifm.ApiResourceLocation[] = res.result.value;
                     let i;
@@ -190,7 +194,7 @@ export class VsoClient {
         }
         let queryString: string = '';
 
-        if (typeof(queryParams) !== 'string') {
+        if (typeof (queryParams) !== 'string') {
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)) {
                     const prop = queryParams[property];
@@ -200,14 +204,14 @@ export class VsoClient {
             }
         }
 
-        if (queryString === '' && prefix.length > 0){
+        if (queryString === '' && prefix.length > 0) {
             // Date.prototype.toString() returns a string that is not valid for the REST API.
             // Need to specially call `toUTCString()` instead for such cases
             const queryValue = typeof queryParams === 'object' && 'toUTCString' in queryParams ? (queryParams as Date).toUTCString() : queryParams.toString();
 
 
             // Will always need to chop period off of end of prefix
-            queryString = prefix.slice(0,-1) + '=' + encodeURIComponent(queryValue) + '&';
+            queryString = prefix.slice(0, -1) + '=' + encodeURIComponent(queryValue) + '&';
         }
         return queryString;
     }
@@ -216,7 +220,7 @@ export class VsoClient {
         const queryString: string = '?' + this.queryParamsToStringHelper(queryParams, '');
 
         // Will always need to slice either a ? or & off of the end
-        return queryString.slice(0,-1);
+        return queryString.slice(0, -1);
     }
 
     protected getRequestUrl(routeTemplate: string, area: string, resource: string, routeValues: any, queryParams?: any): string {
