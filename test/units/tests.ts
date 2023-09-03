@@ -228,6 +228,23 @@ describe('VSOClient Units', function () {
         //Assert
         assert(res.id === "testLocation");
     });
+
+    it('Returns \'undefined\' when the location is not found', async () => {
+        nock('https://dev.azure.com/_apis/testArea8', {
+            //Arrange
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': 'testAgent'
+            }})
+            .options('')
+            .reply(404, 'Not Found"');
+
+        //Act
+        const res = await vsoClient.beginGetLocation('testArea8', 'testLocation');
+
+        //Assert
+        assert(res === undefined);
+    })
 });
 
 describe('WebApi Units', function () {
