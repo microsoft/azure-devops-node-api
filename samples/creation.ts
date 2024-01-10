@@ -32,10 +32,9 @@ import { WikiV2 } from "azure-devops-node-api/interfaces/WikiInterfaces";
 // For more information, see:
 // https://github.com/Microsoft/vsts-node-api
 export async function run() {
-    try
-    {
+    try {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
-        
+
         /********** Build **********/
         printSectionStart("Build");
         const buildApi = await vstsCollectionLevel.getBuildApi();
@@ -66,7 +65,7 @@ export async function run() {
         /********** Extension Management **********/
         printSectionStart("Extension Management");
         const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
-        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
+        const requests: RequestedExtension[] = await extensionManagementApi.getRequests();
 
         if (requests) {
             console.log(`found ${requests.length} requests`);
@@ -202,6 +201,15 @@ export async function run() {
             console.log(`found ${runs.length} test runs`);
         }
 
+        /********** TestPlan **********/
+        printSectionStart('TestPlan');
+        const testPlanApi = await vstsCollectionLevel.getTestPlanApi();
+        const testPlans: TestRun[] = await testPlanApi.getTestPlans(common.getProject());
+
+        if (testPlans) {
+            console.log(`found ${testPlans.length} test plans`);
+        }
+
         /********** TestResults **********/
         printSectionStart('TestResults');
         const testResultsApi = await vstsCollectionLevel.getTestResultsApi();
@@ -248,7 +256,7 @@ export async function run() {
         if (workItemFields) {
             console.log(`found ${workItemFields.length} work item fields`);
         }
-        
+
         /********** Work Item Tracking Process **********/
         printSectionStart("Work Item Tracking Process");
         const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
