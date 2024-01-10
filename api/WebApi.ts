@@ -140,8 +140,8 @@ export class WebApi {
 
         let userAgent: string;
         const nodeApiName: string = 'azure-devops-node-api';
-        if (isBrowser) {
-            if (requestSettings) {
+        if(isBrowser) {
+            if(requestSettings) {
                 userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${window.navigator.userAgent})`
             } else {
                 userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
@@ -378,13 +378,13 @@ export class WebApi {
      * Determines if the domain is exluded for proxy via the no_proxy env var
      * @param url: the server url
      */
-    public isNoProxyHost = function (_url: string) {
+    public isNoProxyHost = function(_url: string) {
         if (!process.env.no_proxy) {
             return false;
         }
         const noProxyDomains = (process.env.no_proxy || '')
-            .split(',')
-            .map(v => v.toLowerCase());
+        .split(',')
+        .map(v => v.toLowerCase());
         const serverUrl = url.parse(_url).host.toLowerCase();
         // return true if the no_proxy includes the host
         return noProxyDomains.indexOf(serverUrl) !== -1;

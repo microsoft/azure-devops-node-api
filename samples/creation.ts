@@ -32,7 +32,8 @@ import { WikiV2 } from "azure-devops-node-api/interfaces/WikiInterfaces";
 // For more information, see:
 // https://github.com/Microsoft/vsts-node-api
 export async function run() {
-    try {
+    try
+    {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
 
         /********** Build **********/
@@ -65,7 +66,7 @@ export async function run() {
         /********** Extension Management **********/
         printSectionStart("Extension Management");
         const extensionManagementApi = await vstsCollectionLevel.getExtensionManagementApi();
-        const requests: RequestedExtension[] = await extensionManagementApi.getRequests();
+        const requests:RequestedExtension[] = await extensionManagementApi.getRequests();
 
         if (requests) {
             console.log(`found ${requests.length} requests`);
