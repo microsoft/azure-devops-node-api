@@ -257,7 +257,7 @@ export async function run() {
         if (workItemFields) {
             console.log(`found ${workItemFields.length} work item fields`);
         }
-
+        
         /********** Work Item Tracking Process **********/
         printSectionStart("Work Item Tracking Process");
         const workItemTrackingProcessApi = await vstsCollectionLevel.getWorkItemTrackingProcessApi();
