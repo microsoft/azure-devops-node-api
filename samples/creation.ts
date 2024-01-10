@@ -35,7 +35,7 @@ export async function run() {
     try
     {
         const vstsCollectionLevel: vsoNodeApi.WebApi = await common.getWebApi();
-
+        
         /********** Build **********/
         printSectionStart("Build");
         const buildApi = await vstsCollectionLevel.getBuildApi();
