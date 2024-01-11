@@ -13,6 +13,7 @@ import filecontainerm = require('./FileContainerApi');
 import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
 import locationsm = require('./LocationsApi');
+import managementm = require('./ManagementApi');
 import notificationm = require('./NotificationApi');
 import policym = require('./PolicyApi');
 import profilem = require('./ProfileApi');
@@ -261,6 +262,12 @@ export class WebApi {
         serverUrl = await serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new locationsm.LocationsApi(serverUrl, handlers, optionsClone);
+    }
+
+    public async getManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<managementm.IManagementApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "f101720c-9790-45a6-9fb3-494a09fddeeb");
+        handlers = handlers || [this.authHandler];
+        return new managementm.ManagementApi(serverUrl, handlers, this.options);
     }
 
     public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
