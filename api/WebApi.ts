@@ -21,6 +21,7 @@ import securityrolesm = require('./SecurityRolesApi');
 import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
+import testplanm = require('./TestPlanApi')
 import testresultsm = require('./TestResultsApi');
 import tfvcm = require('./TfvcApi');
 import wikim = require('./WikiApi');
@@ -318,7 +319,14 @@ export class WebApi {
         return new testm.TestApi(serverUrl, handlers, this.options);
     }
 
-	public async getTestResultsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testresultsm.ITestResultsApi> {
+    public async getTestPlanApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testplanm.ITestPlanApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "e4c27205-9d23-4c98-b958-d798bc3f9cd4");
+        handlers = handlers || [this.authHandler];
+        return new testplanm.TestPlanApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTestResultsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testresultsm.ITestResultsApi> {
         // TODO: Load RESOURCE_AREA_ID correctly.
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c83eaf52-edf3-4034-ae11-17d38f25404c");
         handlers = handlers || [this.authHandler];
@@ -422,7 +430,7 @@ export class WebApi {
     }
 
     private _readTaskLibSecrets(lookupKey: string): string {
-        if(isBrowser) {
+        if (isBrowser) {
             throw new Error("Browsers can't securely keep secrets");
         }
         // the lookupKey should has following format

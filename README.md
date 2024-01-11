@@ -71,6 +71,7 @@ These clients are available:
 * TaskAgent
 * Task
 * Test
+* TestPlan
 * TestResults
 * Tfvc
 * Wiki
