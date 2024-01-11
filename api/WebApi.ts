@@ -319,7 +319,7 @@ export class WebApi {
         return new testm.TestApi(serverUrl, handlers, this.options);
     }
 
-    public async getTestPlanApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testresultsm.ITestPlanApi> {
+    public async getTestPlanApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testplanm.ITestPlanApi> {
         // TODO: Load RESOURCE_AREA_ID correctly.
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "e4c27205-9d23-4c98-b958-d798bc3f9cd4");
         handlers = handlers || [this.authHandler];
