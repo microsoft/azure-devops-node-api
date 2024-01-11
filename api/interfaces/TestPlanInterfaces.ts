@@ -1,1855 +1,454 @@
-﻿/*
- * ---------------------------------------------------------
- * Copyright(C) Microsoft Corporation. All rights reserved.
- * ---------------------------------------------------------
- *
- * ---------------------------------------------------------
- * Generated file, DO NOT EDIT
- * ---------------------------------------------------------
- */
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-"use strict";
+import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
+import basem = require('./ClientApiBases');
+import buildm = require('./BuildApi');
+import corem = require('./CoreApi');
+import dashboardm = require('./DashboardApi');
+import extmgmtm = require("./ExtensionManagementApi");
+import featuremgmtm = require("./FeatureManagementApi");
+import filecontainerm = require('./FileContainerApi');
+import gallerym = require('./GalleryApi');
+import gitm = require('./GitApi');
+import locationsm = require('./LocationsApi');
+import notificationm = require('./NotificationApi');
+import policym = require('./PolicyApi');
+import profilem = require('./ProfileApi');
+import projectm = require('./ProjectAnalysisApi');
+import releasem = require('./ReleaseApi');
+import securityrolesm = require('./SecurityRolesApi');
+import taskagentm = require('./TaskAgentApi');
+import taskm = require('./TaskApi');
+import testm = require('./TestApi');
+import testplanm = require('./TestPlanApi')
+import testresultsm = require('./TestResultsApi');
+import tfvcm = require('./TfvcApi');
+import wikim = require('./WikiApi');
+import workm = require('./WorkApi');
+import workitemtrackingm = require('./WorkItemTrackingApi');
+import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
+import workitemtrackingprocessdefinitionm = require('./WorkItemTrackingProcessDefinitionsApi');
+import basicm = require('./handlers/basiccreds');
+import bearm = require('./handlers/bearertoken');
+import ntlmm = require('./handlers/ntlm');
+import patm = require('./handlers/personalaccesstoken');
 
-import TFS_TestManagement_Contracts = require("../TFS/TestManagement/Contracts");
-import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
-import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
+import * as rm from 'typed-rest-client/RestClient';
+import vsom = require('./VsoClient');
+import lim = require("./interfaces/LocationsInterfaces");
 
+import crypto = require('crypto');
+import fs = require('fs');
+import os = require('os');
+import url = require('url');
+import path = require('path');
 
+const isBrowser: boolean = typeof window !== 'undefined';
 /**
- * The build definition reference resource
+ * Methods to return handler objects (see handlers folder)
  */
-export interface BuildDefinitionReference {
-    /**
-     * ID of the build definition
-     */
-    id?: number;
-    /**
-     * Name of the build definition
-     */
-    name?: string;
-}
-
-/**
- * Common Response for clone operation
- */
-export interface CloneOperationCommonResponse {
-    /**
-     * Various statistics related to the clone operation
-     */
-    cloneStatistics?: TFS_TestManagement_Contracts.CloneStatistics;
-    /**
-     * Completion data of the operation
-     */
-    completionDate?: Date;
-    /**
-     * Creation data of the operation
-     */
-    creationDate?: Date;
-    /**
-     * Reference links
-     */
-    links?: any;
-    /**
-     * Message related to the job
-     */
-    message?: string;
-    /**
-     * Clone operation Id
-     */
-    opId: number;
-    /**
-     * Clone operation state
-     */
-    state?: TFS_TestManagement_Contracts.CloneOperationState;
-}
-
-export interface CloneTestCaseOperationInformation {
-    /**
-     * Various information related to the clone
-     */
-    cloneOperationResponse: CloneOperationCommonResponse;
-    /**
-     * Test Plan Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneTestCaseOptions;
-    /**
-     * Information of destination Test Suite
-     */
-    destinationTestSuite: TestSuiteReferenceWithProject;
-    /**
-     * Information of source Test Suite
-     */
-    sourceTestSuite: SourceTestSuiteResponse;
-}
-
-/**
- * Parameters for Test Suite clone operation
- */
-export interface CloneTestCaseParams {
-    /**
-     * Test Case Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneTestCaseOptions;
-    /**
-     * Information about destination Test Plan
-     */
-    destinationTestPlan: TestPlanReference;
-    /**
-     * Information about destination Test Suite
-     */
-    destinationTestSuite: DestinationTestSuiteInfo;
-    /**
-     * Information about source Test Plan
-     */
-    sourceTestPlan: TestPlanReference;
-    /**
-     * Information about source Test Suite
-     */
-    sourceTestSuite: SourceTestSuiteInfo;
-    /**
-     * Test Case IDs
-     */
-    testCaseIds?: number[];
-}
-
-/**
- * Response for Test Plan clone operation
- */
-export interface CloneTestPlanOperationInformation {
-    /**
-     * Various information related to the clone
-     */
-    cloneOperationResponse: CloneOperationCommonResponse;
-    /**
-     * Test Plan Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneOptions;
-    /**
-     * Information of destination Test Plan
-     */
-    destinationTestPlan: TestPlan;
-    /**
-     * Information of source Test Plan
-     */
-    sourceTestPlan: SourceTestplanResponse;
-}
-
-/**
- * Parameters for Test Plan clone operation
- */
-export interface CloneTestPlanParams {
-    /**
-     * Test Plan Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneOptions;
-    /**
-     * Information about destination Test Plan
-     */
-    destinationTestPlan: DestinationTestPlanCloneParams;
-    /**
-     * Information about source Test Plan
-     */
-    sourceTestPlan: SourceTestPlanInfo;
-}
-
-/**
- * Response for Test Suite clone operation
- */
-export interface CloneTestSuiteOperationInformation {
-    /**
-     * Information of newly cloned Test Suite
-     */
-    clonedTestSuite?: TestSuiteReferenceWithProject;
-    /**
-     * Various information related to the clone
-     */
-    cloneOperationResponse: CloneOperationCommonResponse;
-    /**
-     * Test Plan Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneOptions;
-    /**
-     * Information of destination Test Suite
-     */
-    destinationTestSuite: TestSuiteReferenceWithProject;
-    /**
-     * Information of source Test Suite
-     */
-    sourceTestSuite: TestSuiteReferenceWithProject;
-}
-
-/**
- * Parameters for Test Suite clone operation
- */
-export interface CloneTestSuiteParams {
-    /**
-     * Test Plan Clone create parameters
-     */
-    cloneOptions?: TFS_TestManagement_Contracts.CloneOptions;
-    /**
-     * Information about destination Test Suite
-     */
-    destinationTestSuite: DestinationTestSuiteInfo;
-    /**
-     * Information about source Test Suite
-     */
-    sourceTestSuite: SourceTestSuiteInfo;
-}
-
-/**
- * Configuration of the Test Point
- */
-export interface Configuration {
-    /**
-     * Id of the Configuration Assigned to the Test Point
-     */
-    configurationId?: number;
-}
-
-/**
- * Destination Test Plan create parameters
- */
-export interface DestinationTestPlanCloneParams extends TestPlanCreateParams {
-    /**
-     * Destination Project Name
-     */
-    project?: string;
-}
-
-/**
- * Destination Test Suite information for Test Suite clone operation
- */
-export interface DestinationTestSuiteInfo {
-    /**
-     * Destination Suite Id
-     */
-    id: number;
-    /**
-     * Destination Project Name
-     */
-    project?: string;
-}
-
-/**
- * Exclude Flags for suite test case object. Exclude Flags exclude various objects from payload depending on the value passed
- */
-export enum ExcludeFlags {
-    /**
-     * To exclude nothing
-     */
-    None = 0,
-    /**
-     * To exclude point assignments, pass exclude = 1
-     */
-    PointAssignments = 1,
-    /**
-     * To exclude extra information (links, test plan, test suite), pass exclude = 2
-     */
-    ExtraInformation = 2,
-}
-
-export enum FailureType {
-    None = 0,
-    Regression = 1,
-    New_Issue = 2,
-    Known_Issue = 3,
-    Unknown = 4,
-    Null_Value = 5,
-    MaxValue = 5,
-}
-
-export enum LastResolutionState {
-    None = 0,
-    NeedsInvestigation = 1,
-    TestIssue = 2,
-    ProductIssue = 3,
-    ConfigurationIssue = 4,
-    NullValue = 5,
-    MaxValue = 5,
-}
-
-/**
- * Enum representing the return code of data provider.
- */
-export enum LibraryTestCasesDataReturnCode {
-    Success = 0,
-    Error = 1,
-}
-
-/**
- * This data model is used in Work item-based tabs of Test Plans Library.
- */
-export interface LibraryWorkItemsData {
-    /**
-     * Specifies the column option field names
-     */
-    columnOptions?: string[];
-    /**
-     * Continuation token to fetch next set of elements. Present only when HasMoreElements is true.
-     */
-    continuationToken?: string;
-    /**
-     * Boolean indicating if the WIQL query has exceeded the limit of items returned.
-     */
-    exceededWorkItemQueryLimit: boolean;
-    /**
-     * Boolean indicating if there are more elements present than what are being sent.
-     */
-    hasMoreElements: boolean;
-    /**
-     * Specifies if there was an error while execution of data provider.
-     */
-    returnCode: LibraryTestCasesDataReturnCode;
-    /**
-     * List of work items returned when OrderByField is sent something other than Id.
-     */
-    workItemIds?: number[];
-    /**
-     * List of work items to be returned.
-     */
-    workItems: WorkItemDetails[];
-}
-
-/**
- * This is the request data contract for LibraryTestCaseDataProvider.
- */
-export interface LibraryWorkItemsDataProviderRequest {
-    /**
-     * Specifies the list of column options to show in test cases table.
-     */
-    columnOptions?: string[];
-    /**
-     * The continuation token required for paging of work items. This is required when getting subsequent sets of work items when OrderByField is Id.
-     */
-    continuationToken?: string;
-    /**
-     * List of filter values to be supplied. Currently supported filters are Title, State, AssignedTo, Priority, AreaPath.
-     */
-    filterValues?: TestPlansLibraryWorkItemFilter[];
-    /**
-     * Whether the data is to be sorted in ascending or descending order. When not supplied, defaults to descending.
-     */
-    isAscending?: boolean;
-    /**
-     * The type of query to run.
-     */
-    libraryQueryType?: TestPlansLibraryQuery;
-    /**
-     * Work item field on which to order the results. When not supplied, defaults to work item IDs.
-     */
-    orderByField?: string;
-    /**
-     * List of work items to query for field details. This is required when getting subsequent sets of work item fields when OrderByField is other than Id.
-     */
-    workItemIds?: number[];
-}
-
-export enum Outcome {
-    /**
-     * Only used during an update to preserve the existing value.
-     */
-    Unspecified = 0,
-    /**
-     * Test has not been completed, or the test type does not report pass/failure.
-     */
-    None = 1,
-    /**
-     * Test was executed w/o any issues.
-     */
-    Passed = 2,
-    /**
-     * Test was executed, but there were issues. Issues may involve exceptions or failed assertions.
-     */
-    Failed = 3,
-    /**
-     * Test has completed, but we can't say if it passed or failed. May be used for aborted tests...
-     */
-    Inconclusive = 4,
-    /**
-     * The test timed out
-     */
-    Timeout = 5,
-    /**
-     * Test was aborted. This was not caused by a user gesture, but rather by a framework decision.
-     */
-    Aborted = 6,
-    /**
-     * Test had it chance for been executed but was not, as ITestElement.IsRunnable == false.
-     */
-    Blocked = 7,
-    /**
-     * Test was not executed. This was caused by a user gesture - e.g. user hit stop button.
-     */
-    NotExecuted = 8,
-    /**
-     * To be used by Run level results. This is not a failure.
-     */
-    Warning = 9,
-    /**
-     * There was a system error while we were trying to execute a test.
-     */
-    Error = 10,
-    /**
-     * Test is Not Applicable for execution.
-     */
-    NotApplicable = 11,
-    /**
-     * Test is paused.
-     */
-    Paused = 12,
-    /**
-     * Test is currently executing. Added this for TCM charts
-     */
-    InProgress = 13,
-    /**
-     * Test is not impacted. Added fot TIA.
-     */
-    NotImpacted = 14,
-    MaxValue = 14,
-}
-
-/**
- * Assignments for the Test Point
- */
-export interface PointAssignment extends Configuration {
-    /**
-     * Name of the Configuration Assigned to the Test Point
-     */
-    configurationName?: string;
-    /**
-     * Id of the Test Point
-     */
-    id?: number;
-    /**
-     * Tester Assigned to the Test Point
-     */
-    tester?: VSSInterfaces.IdentityRef;
-}
-
-export enum PointState {
-    /**
-     * Default
-     */
-    None = 0,
-    /**
-     * The test point needs to be executed in order for the test pass to be considered complete.  Either the test has not been run before or the previous run failed.
-     */
-    Ready = 1,
-    /**
-     * The test has passed successfully and does not need to be re-run for the test pass to be considered complete.
-     */
-    Completed = 2,
-    /**
-     * The test point needs to be executed but is not able to.
-     */
-    NotReady = 3,
-    /**
-     * The test is being executed.
-     */
-    InProgress = 4,
-    MaxValue = 4,
-}
-
-/**
- * Results class for Test Point
- */
-export interface Results {
-    /**
-     * Outcome of the Test Point
-     */
-    outcome?: Outcome;
-}
-
-export enum ResultState {
-    /**
-     * Only used during an update to preserve the existing value.
-     */
-    Unspecified = 0,
-    /**
-     * Test is in the execution queue, was not started yet.
-     */
-    Pending = 1,
-    /**
-     * Test has been queued. This is applicable when a test case is queued for execution
-     */
-    Queued = 2,
-    /**
-     * Test is currently executing.
-     */
-    InProgress = 3,
-    /**
-     * Test has been paused. This is applicable when a test case is paused by the user (For e.g. Manual Tester can pause the execution of the manual test case)
-     */
-    Paused = 4,
-    /**
-     * Test has completed, but there is no quantitative measure of completeness. This may apply to load tests.
-     */
-    Completed = 5,
-    MaxValue = 5,
-}
-
-/**
- * Source Test Plan information for Test Plan clone operation
- */
-export interface SourceTestPlanInfo {
-    /**
-     * ID of the source Test Plan
-     */
-    id: number;
-    /**
-     * Id of suites to be cloned inside source Test Plan
-     */
-    suiteIds?: number[];
-}
-
-/**
- * Source Test Plan Response for Test Plan clone operation
- */
-export interface SourceTestplanResponse extends TestPlanReference {
-    /**
-     * project reference
-     */
-    project: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Id of suites to be cloned inside source Test Plan
-     */
-    suiteIds?: number[];
-}
-
-/**
- * Source Test Suite information for Test Suite clone operation
- */
-export interface SourceTestSuiteInfo {
-    /**
-     * Id of the Source Test Suite
-     */
-    id: number;
-}
-
-/**
- * Source Test Suite Response for Test Case clone operation
- */
-export interface SourceTestSuiteResponse extends TestSuiteReference {
-    /**
-     * project reference
-     */
-    project: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Id of suites to be cloned inside source Test Plan
-     */
-    testCaseIds?: number[];
-}
-
-/**
- * A suite entry defines properties for a test suite.
- */
-export interface SuiteEntry extends SuiteEntryUpdateParams {
-    /**
-     * Id for the test suite.
-     */
-    suiteId?: number;
-}
-
-export enum SuiteEntryTypes {
-    /**
-     * Test Case
-     */
-    TestCase = 0,
-    /**
-     * Child Suite
-     */
-    Suite = 1,
-}
-
-/**
- * A suite entry defines properties for a test suite.
- */
-export interface SuiteEntryUpdateParams {
-    /**
-     * Id of the suite entry in the test suite: either a test case id or child suite id.
-     */
-    id?: number;
-    /**
-     * Sequence number for the suite entry object in the test suite.
-     */
-    sequenceNumber?: number;
-    /**
-     * Defines whether the entry is of type test case or suite.
-     */
-    suiteEntryType?: SuiteEntryTypes;
-}
-
-/**
- * Option to get details in response
- */
-export enum SuiteExpand {
-    /**
-     * Dont include any of the expansions in output.
-     */
-    None = 0,
-    /**
-     * Include children in response.
-     */
-    Children = 1,
-    /**
-     * Include default testers in response.
-     */
-    DefaultTesters = 2,
-}
-
-/**
- * Create and Update Suite Test Case Parameters
- */
-export interface SuiteTestCaseCreateUpdateParameters {
-    /**
-     * Configurations Ids
-     */
-    pointAssignments?: Configuration[];
-    /**
-     * Id of Test Case to be updated or created
-     */
-    workItem?: WorkItem;
-}
-
-/**
- * Test Case Class
- */
-export interface TestCase {
-    /**
-     * Reference links
-     */
-    links: any;
-    /**
-     * Order of the TestCase in the Suite
-     */
-    order?: number;
-    /**
-     * List of Points associated with the Test Case
-     */
-    pointAssignments?: PointAssignment[];
-    /**
-     * Project under which the Test Case is
-     */
-    project?: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Test Plan under which the Test Case is
-     */
-    testPlan?: TestPlanReference;
-    /**
-     * Test Suite under which the Test Case is
-     */
-    testSuite?: TestSuiteReference;
-    /**
-     * Work Item details of the TestCase
-     */
-    workItem?: WorkItemDetails;
-}
-
-export interface TestCaseAssociatedResult {
-    completedDate: Date;
-    configuration: TestConfigurationReference;
-    outcome: UserFriendlyTestOutcome;
-    plan: TestPlanReference;
-    pointId?: number;
-    resultId: number;
-    runBy: VSSInterfaces.IdentityRef;
-    runId: number;
-    suite: TestSuiteReference;
-    tester: VSSInterfaces.IdentityRef;
-}
-
-/**
- * Test Case Reference
- */
-export interface TestCaseReference {
-    /**
-     * Identity to whom the test case is assigned
-     */
-    assignedTo?: VSSInterfaces.IdentityRef;
-    /**
-     * Test Case Id
-     */
-    id: number;
-    /**
-     * Test Case Name
-     */
-    name: string;
-    /**
-     * State of the test case work item
-     */
-    state?: string;
-}
-
-/**
- * This data model is used in TestCaseResultsDataProvider and populates the data required for initial page load
- */
-export interface TestCaseResultsData {
-    /**
-     * Point information from where the execution history was viewed. Used to set initial filters.
-     */
-    contextPoint?: TestPointDetailedReference;
-    /**
-     * Use to store the results displayed in the table
-     */
-    results: TestCaseAssociatedResult[];
-    /**
-     * Test Case Name to be displayed in the table header
-     */
-    testCaseName: string;
-}
-
-/**
- * Test configuration
- */
-export interface TestConfiguration extends TestConfigurationCreateUpdateParameters {
-    /**
-     * Id of the configuration
-     */
-    id: number;
-    /**
-     * Id of the test configuration variable
-     */
-    project?: TfsCoreInterfaces.TeamProjectReference;
-}
-
-/**
- * Test Configuration Create or Update Parameters
- */
-export interface TestConfigurationCreateUpdateParameters {
-    /**
-     * Description of the configuration
-     */
-    description?: string;
-    /**
-     * Is the configuration a default for the test plans
-     */
-    isDefault?: boolean;
-    /**
-     * Name of the configuration
-     */
-    name: string;
-    /**
-     * State of the configuration
-     */
-    state?: TFS_TestManagement_Contracts.TestConfigurationState;
-    /**
-     * Dictionary of Test Variable, Selected Value
-     */
-    values?: TFS_TestManagement_Contracts.NameValuePair[];
-}
-
-/**
- * Test Configuration Reference
- */
-export interface TestConfigurationReference {
-    /**
-     * Id of the configuration
-     */
-    id: number;
-    /**
-     * Name of the configuration
-     */
-    name: string;
-}
-
-/**
- * Test Entity Count Used to store test cases count (define tab) and test point count (execute tab) Used to store test cases count (define tab) and test point count (execute tab)
- */
-export interface TestEntityCount {
-    /**
-     * Test Entity Count
-     */
-    count?: number;
-    /**
-     * Test Plan under which the Test Entities are
-     */
-    testPlanId?: number;
-    /**
-     * Test Suite under which the Test Entities are
-     */
-    testSuiteId?: number;
-    /**
-     * Total test entities in the suite without the applied filters
-     */
-    totalCount?: number;
-}
-
-export enum TestEntityTypes {
-    TestCase = 0,
-    TestPoint = 1,
-}
-
-/**
- * The test plan resource.
- */
-export interface TestPlan extends TestPlanUpdateParams {
-    /**
-     * Relevant links
-     */
-    _links: any;
-    /**
-     * ID of the test plan.
-     */
-    id: number;
-    /**
-     * Previous build Id associated with the test plan
-     */
-    previousBuildId?: number;
-    /**
-     * Project which contains the test plan.
-     */
-    project?: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Root test suite of the test plan.
-     */
-    rootSuite: TestSuiteReference;
-    /**
-     * Identity Reference for the last update of the test plan
-     */
-    updatedBy?: VSSInterfaces.IdentityRef;
-    /**
-     * Updated date of the test plan
-     */
-    updatedDate?: Date;
-}
-
-/**
- * The test plan create parameters.
- */
-export interface TestPlanCreateParams {
-    /**
-     * Area of the test plan.
-     */
-    areaPath?: string;
-    automatedTestEnvironment?: TFS_TestManagement_Contracts.TestEnvironment;
-    automatedTestSettings?: TFS_TestManagement_Contracts.TestSettings;
-    /**
-     * The Build Definition that generates a build associated with this test plan.
-     */
-    buildDefinition?: BuildDefinitionReference;
-    /**
-     * Build to be tested.
-     */
-    buildId?: number;
-    /**
-     * Description of the test plan.
-     */
-    description?: string;
-    /**
-     * End date for the test plan.
-     */
-    endDate?: Date;
-    /**
-     * Iteration path of the test plan.
-     */
-    iteration: string;
-    manualTestEnvironment?: TFS_TestManagement_Contracts.TestEnvironment;
-    manualTestSettings?: TFS_TestManagement_Contracts.TestSettings;
-    /**
-     * Name of the test plan.
-     */
-    name: string;
-    /**
-     * Owner of the test plan.
-     */
-    owner?: VSSInterfaces.IdentityRef;
-    /**
-     * Release Environment to be used to deploy the build and run automated tests from this test plan.
-     */
-    releaseEnvironmentDefinition?: TFS_TestManagement_Contracts.ReleaseEnvironmentDefinitionReference;
-    /**
-     * Start date for the test plan.
-     */
-    startDate?: Date;
-    /**
-     * State of the test plan.
-     */
-    state?: string;
-    /**
-     * Value to configure how same tests across test suites under a test plan need to behave
-     */
-    testOutcomeSettings?: TFS_TestManagement_Contracts.TestOutcomeSettings;
-}
-
-/**
- * The test plan detailed reference resource. Contains additional workitem realted information
- */
-export interface TestPlanDetailedReference extends TestPlanReference {
-    /**
-     * Area of the test plan.
-     */
-    areaPath?: string;
-    /**
-     * End date for the test plan.
-     */
-    endDate?: Date;
-    /**
-     * Iteration path of the test plan.
-     */
-    iteration?: string;
-    /**
-     * Root Suite Id
-     */
-    rootSuiteId: number;
-    /**
-     * Start date for the test plan.
-     */
-    startDate?: Date;
-}
-
-/**
- * The test plan reference resource.
- */
-export interface TestPlanReference {
-    /**
-     * ID of the test plan.
-     */
-    id: number;
-    /**
-     * Name of the test plan.
-     */
-    name: string;
-}
-
-/**
- * This data model is used in TestPlansHubRefreshDataProvider and populates the data required for initial page load
- */
-export interface TestPlansHubRefreshData {
-    defineColumnOptionFields?: string[];
-    defineTabCustomColumnFieldMap?: { [key: string] : string; };
-    errorMessage?: string;
-    executeColumnOptionFields?: string[];
-    executeTabCustomColumnFieldMap?: { [key: string] : string; };
-    isAdvancedExtensionEnabled?: boolean;
-    selectedPivotId?: string;
-    selectedSuiteId?: number;
-    testCasePageSize: number;
-    testCases?: TestCase[];
-    testCasesContinuationToken?: string;
-    testPlan: TestPlanDetailedReference;
-    testPointPageSize: number;
-    testPoints?: TestPoint[];
-    testPointsContinuationToken?: string;
-    testSuites: TestSuite[];
-    testSuitesContinuationToken?: string;
-}
-
-/**
- * Enum used to define the queries used in Test Plans Library.
- */
-export enum TestPlansLibraryQuery {
-    None = 0,
-    AllTestCases = 1,
-    TestCasesWithActiveBugs = 2,
-    TestCasesNotLinkedToRequirements = 3,
-    TestCasesLinkedToRequirements = 4,
-    AllSharedSteps = 11,
-    SharedStepsNotLinkedToRequirement = 12,
-}
-
-/**
- * Container to hold information about a filter being applied in Test Plans Library.
- */
-export interface TestPlansLibraryWorkItemFilter {
-    /**
-     * Work item field name on which the items are to be filtered.
-     */
-    fieldName: string;
-    /**
-     * Work item field values corresponding to the field name.
-     */
-    fieldValues: string[];
-    /**
-     * Mode of the filter.
-     */
-    filterMode?: TestPlansLibraryWorkItemFilterMode;
-}
-
-export enum TestPlansLibraryWorkItemFilterMode {
-    /**
-     * Default. Have the field values separated by an OR clause.
-     */
-    Or = 0,
-    /**
-     * Have the field values separated by an AND clause.
-     */
-    And = 1,
-}
-
-/**
- * The test plan update parameters.
- */
-export interface TestPlanUpdateParams extends TestPlanCreateParams {
-    /**
-     * Revision of the test plan.
-     */
-    revision?: number;
-}
-
-/**
- * Test Point Class
- */
-export interface TestPoint {
-    /**
-     * Comment associated to the Test Point
-     */
-    comment?: string;
-    /**
-     * Configuration associated with the Test Point
-     */
-    configuration: TestConfigurationReference;
-    /**
-     * Id of the Test Point
-     */
-    id: number;
-    /**
-     * Variable to decide whether the test case is Active or not
-     */
-    isActive: boolean;
-    /**
-     * Is the Test Point for Automated Test Case or Manual
-     */
-    isAutomated?: boolean;
-    /**
-     * Last Reset to Active Time Stamp for the Test Point
-     */
-    lastResetToActive?: Date;
-    /**
-     * Last Updated details for the Test Point
-     */
-    lastUpdatedBy: VSSInterfaces.IdentityRef;
-    /**
-     * Last Update Time Stamp for the Test Point
-     */
-    lastUpdatedDate: Date;
-    /**
-     * Reference links
-     */
-    links: any;
-    /**
-     * Project under which the Test Point is
-     */
-    project: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Results associated to the Test Point
-     */
-    results: TestPointResults;
-    /**
-     * Test Case Reference
-     */
-    testCaseReference: TestCaseReference;
-    /**
-     * Tester associated with the Test Point
-     */
-    tester?: VSSInterfaces.IdentityRef;
-    /**
-     * Test Plan under which the Test Point is
-     */
-    testPlan: TestPlanReference;
-    /**
-     * Test Suite under which the Test Point is
-     */
-    testSuite: TestSuiteReference;
-}
-
-export interface TestPointDetailedReference {
-    configuration: TestConfigurationReference;
-    plan: TestPlanReference;
-    pointId?: number;
-    suite: TestSuiteReference;
-    tester: VSSInterfaces.IdentityRef;
-}
-
-/**
- * Test Point Results
- */
-export interface TestPointResults {
-    /**
-     * Failure Type for the Test Point
-     */
-    failureType?: FailureType;
-    /**
-     * Last Resolution State Id for the Test Point
-     */
-    lastResolutionState?: LastResolutionState;
-    /**
-     * Last Result Details for the Test Point
-     */
-    lastResultDetails?: TFS_TestManagement_Contracts.LastResultDetails;
-    /**
-     * Last Result Id
-     */
-    lastResultId?: number;
-    /**
-     * Last Result State of the Test Point
-     */
-    lastResultState?: ResultState;
-    /**
-     * Last RUn Build Number for the Test Point
-     */
-    lastRunBuildNumber?: string;
-    /**
-     * Last Test Run Id for the Test Point
-     */
-    lastTestRunId?: number;
-    /**
-     * Outcome of the Test Point
-     */
-    outcome: Outcome;
-    /**
-     * State of the Test Point
-     */
-    state?: PointState;
-}
-
-/**
- * Test Point Update Parameters
- */
-export interface TestPointUpdateParams {
-    /**
-     * Id of Test Point to be updated
-     */
-    id?: number;
-    /**
-     * Reset the Test Point to Active
-     */
-    isActive?: boolean;
-    /**
-     * Results of the test point
-     */
-    results?: Results;
-    /**
-     * Tester of the Test Point
-     */
-    tester?: VSSInterfaces.IdentityRef;
-}
 
-/**
- * Test suite
- */
-export interface TestSuite extends TestSuiteCreateParams {
-    /**
-     * Links: self, testPoints, testCases, parent
-     */
-    _links: any;
-    /**
-     * Child test suites of current test suite.
-     */
-    children?: TestSuite[];
-    /**
-     * Boolean value dictating if Child test suites are present
-     */
-    hasChildren?: boolean;
-    /**
-     * Id of test suite.
-     */
-    id: number;
-    /**
-     * Last error for test suite.
-     */
-    lastError?: string;
-    /**
-     * Last populated date.
-     */
-    lastPopulatedDate?: Date;
-    /**
-     * IdentityRef of user who has updated test suite recently.
-     */
-    lastUpdatedBy?: VSSInterfaces.IdentityRef;
-    /**
-     * Last update date.
-     */
-    lastUpdatedDate?: Date;
-    /**
-     * Test plan to which the test suite belongs.
-     */
-    plan: TestPlanReference;
-    /**
-     * Test suite project shallow reference.
-     */
-    project?: TfsCoreInterfaces.TeamProjectReference;
-    /**
-     * Test suite revision.
-     */
-    revision?: number;
-}
-
-/**
- * Test suite Create Parameters
- */
-export interface TestSuiteCreateParams extends TestSuiteCreateUpdateCommonParams {
-    /**
-     * Test suite requirement id.
-     */
-    requirementId?: number;
-    /**
-     * Test suite type.
-     */
-    suiteType?: TestSuiteType;
+export function getBasicHandler(username: string, password: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new basicm.BasicCredentialHandler(username, password, allowCrossOriginAuthentication);
 }
 
-/**
- * Test Suite Create/Update Common Parameters
- */
-export interface TestSuiteCreateUpdateCommonParams {
-    /**
-     * Test suite default configurations.
-     */
-    defaultConfigurations?: TestConfigurationReference[];
-    /**
-     * Test suite default testers.
-     */
-    defaultTesters?: VSSInterfaces.IdentityRef[];
-    /**
-     * Default configuration was inherited or not.
-     */
-    inheritDefaultConfigurations?: boolean;
-    /**
-     * Name of test suite.
-     */
-    name: string;
-    /**
-     * Test suite parent shallow reference.
-     */
-    parentSuite?: TestSuiteReference;
-    /**
-     * Test suite query string, for dynamic suites.
-     */
-    queryString?: string;
+export function getNtlmHandler(username: string, password: string, workstation?: string, domain?: string): VsoBaseInterfaces.IRequestHandler {
+    return new ntlmm.NtlmCredentialHandler(username, password, workstation, domain);
 }
 
-/**
- * The test suite reference resource.
- */
-export interface TestSuiteReference {
-    /**
-     * ID of the test suite.
-     */
-    id: number;
-    /**
-     * Name of the test suite.
-     */
-    name: string;
+export function getBearerHandler(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new bearm.BearerCredentialHandler(token, allowCrossOriginAuthentication);
 }
 
-/**
- * Test Suite Reference with Project
- */
-export interface TestSuiteReferenceWithProject extends TestSuiteReference {
-    /**
-     * Reference of destination Project
-     */
-    project: TfsCoreInterfaces.TeamProjectReference;
+export function getPersonalAccessTokenHandler(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    return new patm.PersonalAccessTokenCredentialHandler(token, allowCrossOriginAuthentication);
 }
 
-/**
- * Type of TestSuite
- */
-export enum TestSuiteType {
-    /**
-     * Default suite type
-     */
-    None = 0,
-    /**
-     * Query Based test Suite
-     */
-    DynamicTestSuite = 1,
-    /**
-     * Static Test Suite
-     */
-    StaticTestSuite = 2,
-    /**
-     * Requirement based Test Suite
-     */
-    RequirementTestSuite = 3,
+export function getHandlerFromToken(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
+    if (token.length === 52) {
+        return getPersonalAccessTokenHandler(token, allowCrossOriginAuthentication);
+    }
+    else {
+        return getBearerHandler(token, allowCrossOriginAuthentication);
+    }
 }
 
-/**
- * Test Suite Update Parameters
- */
-export interface TestSuiteUpdateParams extends TestSuiteCreateUpdateCommonParams {
-    /**
-     * Test suite revision.
-     */
-    revision?: number;
-}
+export interface IWebApiRequestSettings {
+    productName: string,
+    productVersion: string
+};
 
-/**
- * Test Variable
- */
-export interface TestVariable extends TestVariableCreateUpdateParameters {
-    /**
-     * Id of the test variable
-     */
-    id: number;
-    /**
-     * Id of the test variable
-     */
-    project?: TfsCoreInterfaces.TeamProjectReference;
-}
+// ---------------------------------------------------------------------------
+// Factory to return client apis
+// When new APIs are added, a method must be added here to instantiate the API
+//----------------------------------------------------------------------------
+export class WebApi {
 
-/**
- * Test Variable Create or Update Parameters
- */
-export interface TestVariableCreateUpdateParameters {
-    /**
-     * Description of the test variable
-     */
-    description?: string;
-    /**
-     * Name of the test variable
-     */
-    name: string;
-    /**
-     * List of allowed values
-     */
-    values?: string[];
-}
+    public serverUrl: string;
+    public authHandler: VsoBaseInterfaces.IRequestHandler;
+    public rest: rm.RestClient;
+    public vsoClient: vsom.VsoClient;
+    public options: VsoBaseInterfaces.IRequestOptions;
 
-export enum UserFriendlyTestOutcome {
-    InProgress = 0,
-    Blocked = 1,
-    Failed = 2,
-    Passed = 3,
-    Ready = 4,
-    NotApplicable = 5,
-    Paused = 6,
-    Timeout = 7,
-    Warning = 8,
-    Error = 9,
-    NotExecuted = 10,
-    Inconclusive = 11,
-    Aborted = 12,
-    None = 13,
-    NotImpacted = 14,
-    Unspecified = 15,
-    MaxValue = 15,
-}
+    private _resourceAreas: lim.ResourceAreaInfo[];
 
-/**
- * Work Item
- */
-export interface WorkItem {
-    /**
-     * Id of the Work Item
+    /*
+     * Factory to return client apis and handlers
+     * @param defaultUrl default server url to use when creating new apis from factory methods
+     * @param authHandler default authentication credentials to use when creating new apis from factory methods
      */
-    id?: number;
-}
+    constructor(defaultUrl: string, authHandler: VsoBaseInterfaces.IRequestHandler, options?: VsoBaseInterfaces.IRequestOptions, requestSettings?: IWebApiRequestSettings) {
+        this.serverUrl = defaultUrl;
+        this.authHandler = authHandler;
+        this.options = options || {};
 
-/**
- * Work Item Class
- */
-export interface WorkItemDetails {
-    /**
-     * Work Item Id
-     */
-    id: number;
-    /**
-     * Work Item Name
-     */
-    name: string;
-    /**
-     * Work Item Fields
-     */
-    workItemFields?: any[];
-}
+        if (!this.isNoProxyHost(this.serverUrl)) {
+            // try to get proxy setting from environment variable set by VSTS-Task-Lib if there is no proxy setting in the options
+            if (!this.options.proxy || !this.options.proxy.proxyUrl) {
+                if (global['_vsts_task_lib_proxy']) {
+                    let proxyFromEnv: VsoBaseInterfaces.IProxyConfiguration = {
+                        proxyUrl: global['_vsts_task_lib_proxy_url'],
+                        proxyUsername: global['_vsts_task_lib_proxy_username'],
+                        proxyPassword: this._readTaskLibSecrets(global['_vsts_task_lib_proxy_password']),
+                        proxyBypassHosts: JSON.parse(global['_vsts_task_lib_proxy_bypass'] || "[]"),
+                    };
 
-export var TypeInfo = {
-    CloneOperationCommonResponse: <any>{
-    },
-    CloneTestCaseOperationInformation: <any>{
-    },
-    CloneTestPlanOperationInformation: <any>{
-    },
-    CloneTestPlanParams: <any>{
-    },
-    CloneTestSuiteOperationInformation: <any>{
-    },
-    DestinationTestPlanCloneParams: <any>{
-    },
-    ExcludeFlags: {
-        enumValues: {
-            "none": 0,
-            "pointAssignments": 1,
-            "extraInformation": 2
+                    this.options.proxy = proxyFromEnv;
+                }
+            }
         }
-    },
-    FailureType: {
-        enumValues: {
-            "none": 0,
-            "regression": 1,
-            "new_Issue": 2,
-            "known_Issue": 3,
-            "unknown": 4,
-            "null_Value": 5,
-            "maxValue": 5
+
+        // try get cert setting from environment variable set by VSTS-Task-Lib if there is no cert setting in the options
+        if (!this.options.cert) {
+            if (global['_vsts_task_lib_cert']) {
+                let certFromEnv: VsoBaseInterfaces.ICertConfiguration = {
+                    caFile: global['_vsts_task_lib_cert_ca'],
+                    certFile: global['_vsts_task_lib_cert_clientcert'],
+                    keyFile: global['_vsts_task_lib_cert_key'],
+                    passphrase: this._readTaskLibSecrets(global['_vsts_task_lib_cert_passphrase']),
+                };
+
+                this.options.cert = certFromEnv;
+            }
         }
-    },
-    LastResolutionState: {
-        enumValues: {
-            "none": 0,
-            "needsInvestigation": 1,
-            "testIssue": 2,
-            "productIssue": 3,
-            "configurationIssue": 4,
-            "nullValue": 5,
-            "maxValue": 5
+
+        // try get ignore SSL error setting from environment variable set by VSTS-Task-Lib if there is no ignore SSL error setting in the options
+        if (!this.options.ignoreSslError) {
+            this.options.ignoreSslError = !!global['_vsts_task_lib_skip_cert_validation'];
         }
-    },
-    LibraryTestCasesDataReturnCode: {
-        enumValues: {
-            "success": 0,
-            "error": 1
+
+        let userAgent: string;
+        const nodeApiName: string = 'azure-devops-node-api';
+        if(isBrowser) {
+            if(requestSettings) {
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${window.navigator.userAgent})`
+            } else {
+                userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
+            }
+        } else {
+            let nodeApiVersion: string = 'unknown';
+            const packageJsonPath: string = path.resolve(__dirname, 'package.json');
+            if (fs.existsSync(packageJsonPath)) {
+                nodeApiVersion = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')).version;
+            }
+            const osName: string = os.platform();
+            const osVersion: string = os.release();
+
+            if (requestSettings) {
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
+            }
+            else {
+                userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+            }
         }
-    },
-    LibraryWorkItemsData: <any>{
-    },
-    LibraryWorkItemsDataProviderRequest: <any>{
-    },
-    Outcome: {
-        enumValues: {
-            "unspecified": 0,
-            "none": 1,
-            "passed": 2,
-            "failed": 3,
-            "inconclusive": 4,
-            "timeout": 5,
-            "aborted": 6,
-            "blocked": 7,
-            "notExecuted": 8,
-            "warning": 9,
-            "error": 10,
-            "notApplicable": 11,
-            "paused": 12,
-            "inProgress": 13,
-            "notImpacted": 14,
-            "maxValue": 14
+        this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
+        this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
+    }
+
+    /**
+     *  Convenience factory to create with a bearer token.
+     * @param defaultServerUrl default server url to use when creating new apis from factory methods
+     * @param defaultAuthHandler default authentication credentials to use when creating new apis from factory methods
+     */
+    public static createWithBearerToken(defaultUrl: string, token: string, options?: VsoBaseInterfaces.IRequestOptions) {
+        let bearerHandler = getBearerHandler(token);
+        return new this(defaultUrl, bearerHandler, options);
+    }
+
+    public async connect(): Promise<lim.ConnectionData> {
+        return new Promise<lim.ConnectionData>(async (resolve, reject) => {
+            try {
+                let res: rm.IRestResponse<lim.ConnectionData>;
+                res = await this.rest.get<lim.ConnectionData>(this.vsoClient.resolveUrl('/_apis/connectionData'));
+                resolve(res.result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Each factory method can take a serverUrl and a list of handlers
+     * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
+     */
+    public async getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<buildm.IBuildApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, buildm.BuildApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new buildm.BuildApi(serverUrl, handlers, this.options);
+    }
+
+    public async getCoreApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<corem.ICoreApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "79134c72-4a58-4b42-976c-04e7115f32bf");
+        handlers = handlers || [this.authHandler];
+        return new corem.CoreApi(serverUrl, handlers, this.options);
+    }
+
+    public async getDashboardApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<dashboardm.IDashboardApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "31c84e0a-3ece-48fd-a29d-100849af99ba");
+        handlers = handlers || [this.authHandler];
+        return new dashboardm.DashboardApi(serverUrl, handlers, this.options);
+    }
+
+    public async getExtensionManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<extmgmtm.IExtensionManagementApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "6c2b0933-3600-42ae-bf8b-93d4f7e83594");
+        handlers = handlers || [this.authHandler];
+        return new extmgmtm.ExtensionManagementApi(serverUrl, handlers, this.options);
+    }
+
+    public async getFeatureManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<featuremgmtm.IFeatureManagementApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new featuremgmtm.FeatureManagementApi(serverUrl, handlers, this.options);
+    }
+
+    public async getFileContainerApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<filecontainerm.IFileContainerApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new filecontainerm.FileContainerApi(serverUrl, handlers, this.options);
+    }
+
+    public async getGalleryApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gallerym.IGalleryApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gallerym.GalleryApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new gallerym.GalleryApi(serverUrl, handlers, this.options);
+    }
+
+    public async getGitApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<gitm.IGitApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, gitm.GitApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new gitm.GitApi(serverUrl, handlers, this.options);
+    }
+
+    // TODO: Don't call resource area here? Will cause infinite loop?
+    public async getLocationsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<locationsm.ILocationsApi> {
+        let optionsClone: VsoBaseInterfaces.IRequestOptions = Object.assign({}, this.options);
+        optionsClone.allowRetries = true;
+        optionsClone.maxRetries = 5;
+        serverUrl = await serverUrl || this.serverUrl;
+        handlers = handlers || [this.authHandler];
+        return new locationsm.LocationsApi(serverUrl, handlers, optionsClone);
+    }
+
+    public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new notificationm.NotificationApi(serverUrl, handlers, this.options);
+    }
+
+    public async getPolicyApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<policym.IPolicyApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "fb13a388-40dd-4a04-b530-013a739c72ef");
+        handlers = handlers || [this.authHandler];
+        return new policym.PolicyApi(serverUrl, handlers, this.options);
+    }
+
+    public async getProfileApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<profilem.IProfileApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8ccfef3d-2b87-4e99-8ccb-66e343d2daa8");
+        handlers = handlers || [this.authHandler];
+        return new profilem.ProfileApi(serverUrl, handlers, this.options);
+    }
+
+    public async getProjectAnalysisApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<projectm.IProjectAnalysisApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "7658fa33-b1bf-4580-990f-fac5896773d3");
+        handlers = handlers || [this.authHandler];
+        return new projectm.ProjectAnalysisApi(serverUrl, handlers, this.options);
+    }
+
+    public async getSecurityRolesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<securityrolesm.ISecurityRolesApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new securityrolesm.SecurityRolesApi(serverUrl, handlers, this.options);
+    }
+
+    public async getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<releasem.IReleaseApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "efc2f575-36ef-48e9-b672-0c6fb4a48ac5");
+        handlers = handlers || [this.authHandler];
+        return new releasem.ReleaseApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTaskApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskm.ITaskApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "");
+        handlers = handlers || [this.authHandler];
+        return new taskm.TaskApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTaskAgentApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<taskagentm.ITaskAgentApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "a85b8835-c1a1-4aac-ae97-1c3d0ba72dbd");
+        handlers = handlers || [this.authHandler];
+        return new taskagentm.TaskAgentApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTestApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testm.ITestApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c2aa639c-3ccc-4740-b3b6-ce2a1e1d984e");
+        handlers = handlers || [this.authHandler];
+        return new testm.TestApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTestPlanApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testplanm.ITestPlanApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "e4c27205-9d23-4c98-b958-d798bc3f9cd4");
+        handlers = handlers || [this.authHandler];
+        return new testplanm.TestPlanApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTestResultsApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<testresultsm.ITestResultsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "c83eaf52-edf3-4034-ae11-17d38f25404c");
+        handlers = handlers || [this.authHandler];
+        return new testresultsm.TestResultsApi(serverUrl, handlers, this.options);
+    }
+
+    public async getTfvcApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<tfvcm.ITfvcApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "8aa40520-446d-40e6-89f6-9c9f9ce44c48");
+        handlers = handlers || [this.authHandler];
+        return new tfvcm.TfvcApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWikiApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<wikim.IWikiApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "bf7d82a0-8aa5-4613-94ef-6172a5ea01f3");
+        handlers = handlers || [this.authHandler];
+        return new wikim.WikiApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workm.IWorkApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1d4f49f9-02b9-4e26-b826-2cdb6195f2a9");
+        handlers = handlers || [this.authHandler];
+        return new workm.WorkApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkItemTrackingApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingm.IWorkItemTrackingApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, workitemtrackingm.WorkItemTrackingApi.RESOURCE_AREA_ID);
+        handlers = handlers || [this.authHandler];
+        return new workitemtrackingm.WorkItemTrackingApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkItemTrackingProcessApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessm.IWorkItemTrackingProcessApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new workitemtrackingprocessm.WorkItemTrackingProcessApi(serverUrl, handlers, this.options);
+    }
+
+    public async getWorkItemTrackingProcessDefinitionApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<workitemtrackingprocessdefinitionm.IWorkItemTrackingProcessDefinitionsApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new workitemtrackingprocessdefinitionm.WorkItemTrackingProcessDefinitionsApi(serverUrl, handlers, this.options);
+    }
+
+    /**
+     * Determines if the domain is exluded for proxy via the no_proxy env var
+     * @param url: the server url
+     */
+    public isNoProxyHost = function(_url: string) {
+        if (!process.env.no_proxy) {
+            return false;
         }
-    },
-    PointState: {
-        enumValues: {
-            "none": 0,
-            "ready": 1,
-            "completed": 2,
-            "notReady": 3,
-            "inProgress": 4,
-            "maxValue": 4
+        const noProxyDomains = (process.env.no_proxy || '')
+        .split(',')
+        .map(v => v.toLowerCase());
+        const serverUrl = url.parse(_url).host.toLowerCase();
+        // return true if the no_proxy includes the host
+        return noProxyDomains.indexOf(serverUrl) !== -1;
+    }
+
+    private async _getResourceAreaUrl(serverUrl: string, resourceId: string): Promise<string> {
+        if (!resourceId) {
+            return serverUrl;
         }
-    },
-    Results: <any>{
-    },
-    ResultState: {
-        enumValues: {
-            "unspecified": 0,
-            "pending": 1,
-            "queued": 2,
-            "inProgress": 3,
-            "paused": 4,
-            "completed": 5,
-            "maxValue": 5
+
+        // This must be of type any, see comment just below.
+        const resourceAreas: any = await this._getResourceAreas();
+
+        if (resourceAreas === undefined) {
+            throw new Error((`Failed to retrieve resource areas ' + 'from server: ${serverUrl}`));
         }
-    },
-    SourceTestplanResponse: <any>{
-    },
-    SourceTestSuiteResponse: <any>{
-    },
-    SuiteEntry: <any>{
-    },
-    SuiteEntryTypes: {
-        enumValues: {
-            "testCase": 0,
-            "suite": 1
+
+        // The response type differs based on whether or not there are resource areas. When we are on prem we get:
+        // {"count":0,"value":null} and when we are on VSTS we get an array of resource areas.
+        // Due to this strangeness the type of resourceAreas needs to be any and we need to check .count
+        // When going against vsts count will be undefined. On prem it will be 0
+        if (!resourceAreas || resourceAreas.length === 0 || resourceAreas.count === 0) {
+            // For on prem environments we get an empty list
+            return serverUrl;
         }
-    },
-    SuiteEntryUpdateParams: <any>{
-    },
-    SuiteExpand: {
-        enumValues: {
-            "none": 0,
-            "children": 1,
-            "defaultTesters": 2
+
+        for (var resourceArea of resourceAreas) {
+            if (resourceArea.id.toLowerCase() === resourceId.toLowerCase()) {
+                return resourceArea.locationUrl;
+            }
         }
-    },
-    TestCase: <any>{
-    },
-    TestCaseAssociatedResult: <any>{
-    },
-    TestCaseResultsData: <any>{
-    },
-    TestConfiguration: <any>{
-    },
-    TestConfigurationCreateUpdateParameters: <any>{
-    },
-    TestEntityTypes: {
-        enumValues: {
-            "testCase": 0,
-            "testPoint": 1
+
+        throw new Error((`Could not find information for resource area ${resourceId} ' + 'from server: ${serverUrl}`));
+    }
+
+    private async _getResourceAreas(): Promise<lim.ResourceAreaInfo[]> {
+        if (!this._resourceAreas) {
+            const locationClient: locationsm.ILocationsApi = await this.getLocationsApi();
+            this._resourceAreas = await locationClient.getResourceAreas();
         }
-    },
-    TestPlan: <any>{
-    },
-    TestPlanCreateParams: <any>{
-    },
-    TestPlanDetailedReference: <any>{
-    },
-    TestPlansHubRefreshData: <any>{
-    },
-    TestPlansLibraryQuery: {
-        enumValues: {
-            "none": 0,
-            "allTestCases": 1,
-            "testCasesWithActiveBugs": 2,
-            "testCasesNotLinkedToRequirements": 3,
-            "testCasesLinkedToRequirements": 4,
-            "allSharedSteps": 11,
-            "sharedStepsNotLinkedToRequirement": 12
+
+        return this._resourceAreas;
+    }
+
+    private _readTaskLibSecrets(lookupKey: string): string {
+        if (isBrowser) {
+            throw new Error("Browsers can't securely keep secrets");
         }
-    },
-    TestPlansLibraryWorkItemFilter: <any>{
-    },
-    TestPlansLibraryWorkItemFilterMode: {
-        enumValues: {
-            "or": 0,
-            "and": 1
+        // the lookupKey should has following format
+        // base64encoded<keyFilePath>:base64encoded<encryptedContent>
+        if (lookupKey && lookupKey.indexOf(':') > 0) {
+            let lookupInfo: string[] = lookupKey.split(':', 2);
+
+            // file contains encryption key
+            let keyFile = new Buffer(lookupInfo[0], 'base64').toString('utf8');
+            let encryptKey = new Buffer(fs.readFileSync(keyFile, 'utf8'), 'base64');
+
+            let encryptedContent: string = new Buffer(lookupInfo[1], 'base64').toString('utf8');
+
+            let decipher = crypto.createDecipher("aes-256-ctr", encryptKey)
+            let decryptedContent = decipher.update(encryptedContent, 'hex', 'utf8')
+            decryptedContent += decipher.final('utf8');
+
+            return decryptedContent;
         }
-    },
-    TestPlanUpdateParams: <any>{
-    },
-    TestPoint: <any>{
-    },
-    TestPointResults: <any>{
-    },
-    TestPointUpdateParams: <any>{
-    },
-    TestSuite: <any>{
-    },
-    TestSuiteCreateParams: <any>{
-    },
-    TestSuiteReferenceWithProject: <any>{
-    },
-    TestSuiteType: {
-        enumValues: {
-            "none": 0,
-            "dynamicTestSuite": 1,
-            "staticTestSuite": 2,
-            "requirementTestSuite": 3
-        }
-    },
-    TestVariable: <any>{
-    },
-    UserFriendlyTestOutcome: {
-        enumValues: {
-            "inProgress": 0,
-            "blocked": 1,
-            "failed": 2,
-            "passed": 3,
-            "ready": 4,
-            "notApplicable": 5,
-            "paused": 6,
-            "timeout": 7,
-            "warning": 8,
-            "error": 9,
-            "notExecuted": 10,
-            "inconclusive": 11,
-            "aborted": 12,
-            "none": 13,
-            "notImpacted": 14,
-            "unspecified": 15,
-            "maxValue": 15
-        }
-    },
-};
-
-TypeInfo.CloneOperationCommonResponse.fields = {
-    completionDate: {
-        isDate: true,
-    },
-    creationDate: {
-        isDate: true,
-    },
-    state: {
-        enumType: TFS_TestManagement_Contracts.TypeInfo.CloneOperationState
     }
-};
-
-TypeInfo.CloneTestCaseOperationInformation.fields = {
-    cloneOperationResponse: {
-        typeInfo: TypeInfo.CloneOperationCommonResponse
-    },
-    destinationTestSuite: {
-        typeInfo: TypeInfo.TestSuiteReferenceWithProject
-    },
-    sourceTestSuite: {
-        typeInfo: TypeInfo.SourceTestSuiteResponse
-    }
-};
-
-TypeInfo.CloneTestPlanOperationInformation.fields = {
-    cloneOperationResponse: {
-        typeInfo: TypeInfo.CloneOperationCommonResponse
-    },
-    destinationTestPlan: {
-        typeInfo: TypeInfo.TestPlan
-    },
-    sourceTestPlan: {
-        typeInfo: TypeInfo.SourceTestplanResponse
-    }
-};
-
-TypeInfo.CloneTestPlanParams.fields = {
-    destinationTestPlan: {
-        typeInfo: TypeInfo.DestinationTestPlanCloneParams
-    }
-};
-
-TypeInfo.CloneTestSuiteOperationInformation.fields = {
-    clonedTestSuite: {
-        typeInfo: TypeInfo.TestSuiteReferenceWithProject
-    },
-    cloneOperationResponse: {
-        typeInfo: TypeInfo.CloneOperationCommonResponse
-    },
-    destinationTestSuite: {
-        typeInfo: TypeInfo.TestSuiteReferenceWithProject
-    },
-    sourceTestSuite: {
-        typeInfo: TypeInfo.TestSuiteReferenceWithProject
-    }
-};
-
-TypeInfo.DestinationTestPlanCloneParams.fields = {
-    endDate: {
-        isDate: true,
-    },
-    startDate: {
-        isDate: true,
-    }
-};
-
-TypeInfo.LibraryWorkItemsData.fields = {
-    returnCode: {
-        enumType: TypeInfo.LibraryTestCasesDataReturnCode
-    }
-};
-
-TypeInfo.LibraryWorkItemsDataProviderRequest.fields = {
-    filterValues: {
-        isArray: true,
-        typeInfo: TypeInfo.TestPlansLibraryWorkItemFilter
-    },
-    libraryQueryType: {
-        enumType: TypeInfo.TestPlansLibraryQuery
-    }
-};
-
-TypeInfo.Results.fields = {
-    outcome: {
-        enumType: TypeInfo.Outcome
-    }
-};
-
-TypeInfo.SourceTestplanResponse.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    }
-};
-
-TypeInfo.SourceTestSuiteResponse.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    }
-};
-
-TypeInfo.SuiteEntry.fields = {
-    suiteEntryType: {
-        enumType: TypeInfo.SuiteEntryTypes
-    }
-};
-
-TypeInfo.SuiteEntryUpdateParams.fields = {
-    suiteEntryType: {
-        enumType: TypeInfo.SuiteEntryTypes
-    }
-};
-
-TypeInfo.TestCase.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    }
-};
-
-TypeInfo.TestCaseAssociatedResult.fields = {
-    completedDate: {
-        isDate: true,
-    },
-    outcome: {
-        enumType: TypeInfo.UserFriendlyTestOutcome
-    }
-};
-
-TypeInfo.TestCaseResultsData.fields = {
-    results: {
-        isArray: true,
-        typeInfo: TypeInfo.TestCaseAssociatedResult
-    }
-};
-
-TypeInfo.TestConfiguration.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    state: {
-        enumType: TFS_TestManagement_Contracts.TypeInfo.TestConfigurationState
-    }
-};
-
-TypeInfo.TestConfigurationCreateUpdateParameters.fields = {
-    state: {
-        enumType: TFS_TestManagement_Contracts.TypeInfo.TestConfigurationState
-    }
-};
-
-TypeInfo.TestPlan.fields = {
-    endDate: {
-        isDate: true,
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    startDate: {
-        isDate: true,
-    },
-    updatedDate: {
-        isDate: true,
-    }
-};
-
-TypeInfo.TestPlanCreateParams.fields = {
-    endDate: {
-        isDate: true,
-    },
-    startDate: {
-        isDate: true,
-    }
-};
-
-TypeInfo.TestPlanDetailedReference.fields = {
-    endDate: {
-        isDate: true,
-    },
-    startDate: {
-        isDate: true,
-    }
-};
-
-TypeInfo.TestPlansHubRefreshData.fields = {
-    testCases: {
-        isArray: true,
-        typeInfo: TypeInfo.TestCase
-    },
-    testPlan: {
-        typeInfo: TypeInfo.TestPlanDetailedReference
-    },
-    testPoints: {
-        isArray: true,
-        typeInfo: TypeInfo.TestPoint
-    },
-    testSuites: {
-        isArray: true,
-        typeInfo: TypeInfo.TestSuite
-    }
-};
-
-TypeInfo.TestPlansLibraryWorkItemFilter.fields = {
-    filterMode: {
-        enumType: TypeInfo.TestPlansLibraryWorkItemFilterMode
-    }
-};
-
-TypeInfo.TestPlanUpdateParams.fields = {
-    endDate: {
-        isDate: true,
-    },
-    startDate: {
-        isDate: true,
-    }
-};
-
-TypeInfo.TestPoint.fields = {
-    lastResetToActive: {
-        isDate: true,
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    results: {
-        typeInfo: TypeInfo.TestPointResults
-    }
-};
-
-TypeInfo.TestPointResults.fields = {
-    failureType: {
-        enumType: TypeInfo.FailureType
-    },
-    lastResolutionState: {
-        enumType: TypeInfo.LastResolutionState
-    },
-    lastResultDetails: {
-        typeInfo: TFS_TestManagement_Contracts.TypeInfo.LastResultDetails
-    },
-    lastResultState: {
-        enumType: TypeInfo.ResultState
-    },
-    outcome: {
-        enumType: TypeInfo.Outcome
-    },
-    state: {
-        enumType: TypeInfo.PointState
-    }
-};
-
-TypeInfo.TestPointUpdateParams.fields = {
-    results: {
-        typeInfo: TypeInfo.Results
-    }
-};
-
-TypeInfo.TestSuite.fields = {
-    children: {
-        isArray: true,
-        typeInfo: TypeInfo.TestSuite
-    },
-    lastPopulatedDate: {
-        isDate: true,
-    },
-    lastUpdatedDate: {
-        isDate: true,
-    },
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    },
-    suiteType: {
-        enumType: TypeInfo.TestSuiteType
-    }
-};
-
-TypeInfo.TestSuiteCreateParams.fields = {
-    suiteType: {
-        enumType: TypeInfo.TestSuiteType
-    }
-};
-
-TypeInfo.TestSuiteReferenceWithProject.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    }
-};
-
-TypeInfo.TestVariable.fields = {
-    project: {
-        typeInfo: TfsCoreInterfaces.TypeInfo.TeamProjectReference
-    }
-};
+}
