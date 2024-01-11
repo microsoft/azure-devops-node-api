@@ -15,6 +15,7 @@ import { RequestedExtension } from "azure-devops-node-api/interfaces/ExtensionMa
 import { SecurityRole } from "azure-devops-node-api/interfaces/SecurityRolesInterfaces";
 import { TaskAgentPool } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 import { TestRun } from "azure-devops-node-api/interfaces/TestInterfaces";
+import { TestPlan } from "azure-devops-node-api/interfaces/TestPlanInterfaces";
 import { Timeline as TaskAgentTimeline } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 import { WebApiTeam } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { WidgetScope, WidgetTypesResponse } from "azure-devops-node-api/interfaces/DashboardInterfaces";
@@ -205,7 +206,7 @@ export async function run() {
         /********** TestPlan **********/
         printSectionStart('TestPlan');
         const testPlanApi = await vstsCollectionLevel.getTestPlanApi();
-        const testPlans: TestRun[] = await testPlanApi.getTestPlans(common.getProject());
+        const testPlans: TestPlan[] = await testPlanApi.getTestPlans(common.getProject());
 
         if (testPlans) {
             console.log(`found ${testPlans.length} test plans`);
