@@ -3,6 +3,7 @@
 
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import basem = require('./ClientApiBases');
+import alertm = require('./AlertApi');
 import buildm = require('./BuildApi');
 import corem = require('./CoreApi');
 import dashboardm = require('./DashboardApi');
@@ -192,6 +193,13 @@ export class WebApi {
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
      */
+
+    public async getAlertApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<alertm.IAlertApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "0f2ca920-f269-4545-b1f4-5b4173aa784e");
+        handlers = handlers || [this.authHandler];
+        return new alertm.AlertApi(serverUrl, handlers, this.options);
+    }
+
     public async getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<buildm.IBuildApi> {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, buildm.BuildApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
