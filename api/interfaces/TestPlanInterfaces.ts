@@ -1,4 +1,4 @@
-﻿/*
+/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -10,7 +10,7 @@
 
 "use strict";
 
-import TFS_TestManagement_Contracts = require("../TFS/TestManagement/Contracts");
+import TFS_TestManagement_Contracts = require("../interfaces/TestInterfaces");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
@@ -246,6 +246,24 @@ export enum ExcludeFlags {
      * To exclude extra information (links, test plan, test suite), pass exclude = 2
      */
     ExtraInformation = 2,
+}
+
+/**
+ * Parameters for test case export operation
+ */
+export interface ExportTestCaseParams {
+    /**
+     * Test Case IDs to exported
+     */
+    testCaseIds: number[];
+    /**
+     * ID of test plan containing test cases
+     */
+    testPlanId: number;
+    /**
+     * ID of test suite containing test cases
+     */
+    testSuiteId: number;
 }
 
 export enum FailureType {
@@ -916,10 +934,10 @@ export interface TestPlanReference {
  */
 export interface TestPlansHubRefreshData {
     defineColumnOptionFields?: string[];
-    defineTabCustomColumnFieldMap?: { [key: string] : string; };
+    defineTabCustomColumnFieldMap?: { [key: string]: string; };
     errorMessage?: string;
     executeColumnOptionFields?: string[];
-    executeTabCustomColumnFieldMap?: { [key: string] : string; };
+    executeTabCustomColumnFieldMap?: { [key: string]: string; };
     isAdvancedExtensionEnabled?: boolean;
     selectedPivotId?: string;
     selectedSuiteId?: number;
