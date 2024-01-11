@@ -3,6 +3,7 @@
 
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import basem = require('./ClientApiBases');
+import alertm = require('./AlertApi');
 import buildm = require('./BuildApi');
 import corem = require('./CoreApi');
 import dashboardm = require('./DashboardApi');
@@ -12,6 +13,7 @@ import filecontainerm = require('./FileContainerApi');
 import gallerym = require('./GalleryApi');
 import gitm = require('./GitApi');
 import locationsm = require('./LocationsApi');
+import managementm = require('./ManagementApi');
 import notificationm = require('./NotificationApi');
 import policym = require('./PolicyApi');
 import profilem = require('./ProfileApi');
@@ -193,6 +195,13 @@ export class WebApi {
      * Each factory method can take a serverUrl and a list of handlers
      * if these aren't provided, the default url and auth handler given to the constructor for this class will be used
      */
+
+    public async getAlertApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<alertm.IAlertApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "0f2ca920-f269-4545-b1f4-5b4173aa784e");
+        handlers = handlers || [this.authHandler];
+        return new alertm.AlertApi(serverUrl, handlers, this.options);
+    }
+
     public async getBuildApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<buildm.IBuildApi> {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, buildm.BuildApi.RESOURCE_AREA_ID);
         handlers = handlers || [this.authHandler];
@@ -254,6 +263,12 @@ export class WebApi {
         serverUrl = await serverUrl || this.serverUrl;
         handlers = handlers || [this.authHandler];
         return new locationsm.LocationsApi(serverUrl, handlers, optionsClone);
+    }
+
+    public async getManagementApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<managementm.IManagementApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "f101720c-9790-45a6-9fb3-494a09fddeeb");
+        handlers = handlers || [this.authHandler];
+        return new managementm.ManagementApi(serverUrl, handlers, this.options);
     }
 
     public async getNotificationApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<notificationm.INotificationApi> {
