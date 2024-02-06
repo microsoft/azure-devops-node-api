@@ -1,53 +1,64 @@
-pool:
-  vmImage: ubuntu-20.04
-
+# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
+# Please make sure to check all the converted content, it is your team's responsibility to make sure that the pipeline is still valid and functions as expected.
+# This pipeline will be extended to the OneESPT template
+# If you are not using the E+D shared hosted pool with windows-2022, replace the pool section with your hosted pool, os, and image name. If you are using a Linux image, you must specify an additional windows image for SDL: https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/1es-pipeline-templates/features/sdlanalysis/overview#how-to-specify-a-windows-pool-for-the-sdl-source-analysis-stage
 strategy:
   matrix:
     'Node 6':
       versionSpec: '6.x'
       npmVersion: '5'
-    'Node 8': 
+    'Node 8':
       versionSpec: '8.x'
       npmVersion: '6'
-    'Node 10': 
+    'Node 10':
       versionSpec: '10.x'
       npmVersion: '6'
-    'Node 12': 
+    'Node 12':
       versionSpec: '12.x'
       npmVersion: '6'
-    'Node 14': 
+    'Node 14':
       versionSpec: '14.x'
       npmVersion: '6'
     'Node 16':
       versionSpec: '16.x'
       npmVersion: '8'
-
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: $(versionSpec)
-  displayName: Install node
-
-- script: npm install -g npm@$(npmVersion)
-  displayName: Upgrade npm
-
-# install dependencies
-- script: npm install
-  displayName: npm install
-
-# build
-- script: npm run build
-  displayName: npm run build
-
-- script: npm run units
-  displayName: Run unit tests
-
-# For CI runs on master, automatically publish packages
-- bash: |
-      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      cd _build
-      npm publish || true # Ignore publish failures, usually will happen because package already exists
-  displayName: npm publish
-  condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
-  env:
-    NPM_TOKEN: $(npmPublishToken)
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-2022
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: stage
+      jobs:
+      - job: job
+        steps:
+        - task: NodeTool@0
+          inputs:
+            versionSpec: $(versionSpec)
+          displayName: Install node
+        - script: npm install -g npm@$(npmVersion)
+          displayName: Upgrade npm
+        - script: npm install
+          displayName: npm install
+        - script: npm run build
+          displayName: npm run build
+        - script: npm run units
+          displayName: Run unit tests
+        - bash: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+            cd _build
+            npm publish || true # Ignore publish failures, usually will happen because package already exists
+          displayName: npm publish
+          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          env:
+            NPM_TOKEN: $(npmPublishToken)
