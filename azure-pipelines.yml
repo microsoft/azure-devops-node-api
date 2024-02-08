@@ -11,8 +11,8 @@ extends:
   parameters:
     pool:
       name: Azure-Pipelines-1ESPT-ExDShared
-      image: windows-2022
-      os: windows
+      image: ubuntu-latest
+      os: linux
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
