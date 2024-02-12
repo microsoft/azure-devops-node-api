@@ -1,53 +1,67 @@
-pool:
-  vmImage: ubuntu-20.04
-
-strategy:
-  matrix:
-    'Node 6':
-      versionSpec: '6.x'
-      npmVersion: '5'
-    'Node 8': 
-      versionSpec: '8.x'
-      npmVersion: '6'
-    'Node 10': 
-      versionSpec: '10.x'
-      npmVersion: '6'
-    'Node 12': 
-      versionSpec: '12.x'
-      npmVersion: '6'
-    'Node 14': 
-      versionSpec: '14.x'
-      npmVersion: '6'
-    'Node 16':
-      versionSpec: '16.x'
-      npmVersion: '8'
-
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: $(versionSpec)
-  displayName: Install node
-
-- script: npm install -g npm@$(npmVersion)
-  displayName: Upgrade npm
-
-# install dependencies
-- script: npm install
-  displayName: npm install
-
-# build
-- script: npm run build
-  displayName: npm run build
-
-- script: npm run units
-  displayName: Run unit tests
-
-# For CI runs on master, automatically publish packages
-- bash: |
-      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      cd _build
-      npm publish || true # Ignore publish failures, usually will happen because package already exists
-  displayName: npm publish
-  condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
-  env:
-    NPM_TOKEN: $(npmPublishToken)
+# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
+# This pipeline will be extended to the OneESPT template
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    sdl:
+      sourceAnalysisPool:
+        name: Azure-Pipelines-1ESPT-ExDShared
+        image: windows-2022
+        os: windows
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: ubuntu-latest
+      os: linux
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: stage
+      jobs:
+      - job: job
+        strategy:
+          matrix:
+            'Node 6':
+              versionSpec: '6.x'
+              npmVersion: '5'
+            'Node 8':
+              versionSpec: '8.x'
+              npmVersion: '6'
+            'Node 10':
+              versionSpec: '10.x'
+              npmVersion: '6'
+            'Node 12':
+              versionSpec: '12.x'
+              npmVersion: '6'
+            'Node 14':
+              versionSpec: '14.x'
+              npmVersion: '6'
+            'Node 16':
+              versionSpec: '16.x'
+              npmVersion: '8'
+        steps:
+        - task: NodeTool@0
+          inputs:
+            versionSpec: $(versionSpec)
+          displayName: Install node
+        - script: npm install -g npm@$(npmVersion)
+          displayName: Upgrade npm
+        - script: npm install
+          displayName: npm install
+        - script: npm run build
+          displayName: npm run build
+        - script: npm run units
+          displayName: Run unit tests
+        - bash: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+            cd _build
+            npm publish || true # Ignore publish failures, usually will happen because package already exists
+          displayName: npm publish
+          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          env:
+            NPM_TOKEN: $(npmPublishToken)
