@@ -87,6 +87,18 @@ export interface Dashboard {
      */
     id?: string;
     /**
+     * Dashboard Last Accessed Date.
+     */
+    lastAccessedDate?: Date;
+    /**
+     * Id of the person who modified Dashboard.
+     */
+    modifiedBy?: string;
+    /**
+     * Dashboard's last modified date.
+     */
+    modifiedDate?: Date;
+    /**
      * Name of the Dashboard.
      */
     name?: string;
@@ -483,6 +495,12 @@ TypeInfo.Dashboard.fields = {
     dashboardScope: {
         enumType: TypeInfo.DashboardScope
     },
+    lastAccessedDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
+    },
     widgets: {
         isArray: true,
         typeInfo: TypeInfo.Widget
@@ -506,6 +524,12 @@ TypeInfo.DashboardGroupEntry.fields = {
     dashboardScope: {
         enumType: TypeInfo.DashboardScope
     },
+    lastAccessedDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
+    },
     widgets: {
         isArray: true,
         typeInfo: TypeInfo.Widget
@@ -516,6 +540,12 @@ TypeInfo.DashboardGroupEntryResponse.fields = {
     dashboardScope: {
         enumType: TypeInfo.DashboardScope
     },
+    lastAccessedDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
+    },
     widgets: {
         isArray: true,
         typeInfo: TypeInfo.Widget
@@ -525,6 +555,12 @@ TypeInfo.DashboardGroupEntryResponse.fields = {
 TypeInfo.DashboardResponse.fields = {
     dashboardScope: {
         enumType: TypeInfo.DashboardScope
+    },
+    lastAccessedDate: {
+        isDate: true,
+    },
+    modifiedDate: {
+        isDate: true,
     },
     widgets: {
         isArray: true,

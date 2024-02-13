@@ -15,6 +15,7 @@ import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
+import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITaskAgentApiBase extends basem.ClientApiBase {
     addAgentCloud(agentCloud: TaskAgentInterfaces.TaskAgentCloud): Promise<TaskAgentInterfaces.TaskAgentCloud>;
@@ -23,7 +24,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getAgentClouds(): Promise<TaskAgentInterfaces.TaskAgentCloud[]>;
     updateAgentCloud(updatedCloud: TaskAgentInterfaces.TaskAgentCloud, agentCloudId: number): Promise<TaskAgentInterfaces.TaskAgentCloud>;
     getAgentCloudTypes(): Promise<TaskAgentInterfaces.TaskAgentCloudType[]>;
-    getAgentRequestsForQueue(project: string, queueId: number, top: number, continuationToken?: string): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+    getAgentRequestsForQueue(project: string, queueId: number, top: number, continuationToken?: string): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
     queueAgentRequest(request: TaskAgentInterfaces.TaskAgentJobRequest, project: string, queueId: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
     addAgent(agent: TaskAgentInterfaces.TaskAgent, poolId: number): Promise<TaskAgentInterfaces.TaskAgent>;
     deleteAgent(poolId: number, agentId: number): Promise<void>;
@@ -37,9 +38,9 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     addDeploymentGroup(deploymentGroup: TaskAgentInterfaces.DeploymentGroupCreateParameter, project: string): Promise<TaskAgentInterfaces.DeploymentGroup>;
     deleteDeploymentGroup(project: string, deploymentGroupId: number): Promise<void>;
     getDeploymentGroup(project: string, deploymentGroupId: number, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands): Promise<TaskAgentInterfaces.DeploymentGroup>;
-    getDeploymentGroups(project: string, name?: string, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands, continuationToken?: string, top?: number, ids?: number[]): Promise<TaskAgentInterfaces.DeploymentGroup[]>;
+    getDeploymentGroups(project: string, name?: string, actionFilter?: TaskAgentInterfaces.DeploymentGroupActionFilter, expand?: TaskAgentInterfaces.DeploymentGroupExpands, continuationToken?: string, top?: number, ids?: number[]): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>;
     updateDeploymentGroup(deploymentGroup: TaskAgentInterfaces.DeploymentGroupUpdateParameter, project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentGroup>;
-    getDeploymentGroupsMetrics(project: string, deploymentGroupName?: string, continuationToken?: string, top?: number): Promise<TaskAgentInterfaces.DeploymentGroupMetrics[]>;
+    getDeploymentGroupsMetrics(project: string, deploymentGroupName?: string, continuationToken?: string, top?: number): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>;
     getAgentRequestsForDeploymentMachine(project: string, deploymentGroupId: number, machineId: number, completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     getAgentRequestsForDeploymentMachines(project: string, deploymentGroupId: number, machineIds?: number[], completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     refreshDeploymentMachines(project: string, deploymentGroupId: number): Promise<void>;
@@ -49,18 +50,18 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getAgentRequestsForDeploymentTargets(project: string, deploymentGroupId: number, targetIds?: number[], ownerId?: number, completedOn?: Date, completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     refreshDeploymentTargets(project: string, deploymentGroupId: number): Promise<void>;
     queryEndpoint(endpoint: TaskAgentInterfaces.TaskDefinitionEndpoint): Promise<string[]>;
-    getEnvironmentDeploymentExecutionRecords(project: string, environmentId: number, continuationToken?: string, top?: number): Promise<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord[]>;
+    getEnvironmentDeploymentExecutionRecords(project: string, environmentId: number, continuationToken?: string, top?: number): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>;
     addEnvironment(environmentCreateParameter: TaskAgentInterfaces.EnvironmentCreateParameter, project: string): Promise<TaskAgentInterfaces.EnvironmentInstance>;
     deleteEnvironment(project: string, environmentId: number): Promise<void>;
     getEnvironmentById(project: string, environmentId: number, expands?: TaskAgentInterfaces.EnvironmentExpands): Promise<TaskAgentInterfaces.EnvironmentInstance>;
-    getEnvironments(project: string, name?: string, continuationToken?: string, top?: number): Promise<TaskAgentInterfaces.EnvironmentInstance[]>;
+    getEnvironments(project: string, name?: string, continuationToken?: string, top?: number): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>;
     updateEnvironment(environmentUpdateParameter: TaskAgentInterfaces.EnvironmentUpdateParameter, project: string, environmentId: number): Promise<TaskAgentInterfaces.EnvironmentInstance>;
     getTaskHubLicenseDetails(hubName: string, includeEnterpriseUsersCount?: boolean, includeHostedAgentMinutesCount?: boolean): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     updateTaskHubLicenseDetails(taskHubLicenseDetails: TaskAgentInterfaces.TaskHubLicenseDetails, hubName: string): Promise<TaskAgentInterfaces.TaskHubLicenseDetails>;
     validateInputs(inputValidationRequest: TaskAgentInterfaces.InputValidationRequest): Promise<TaskAgentInterfaces.InputValidationRequest>;
     deleteAgentRequest(poolId: number, requestId: number, lockToken: string, result?: TaskAgentInterfaces.TaskResult, agentShuttingDown?: boolean): Promise<void>;
     getAgentRequest(poolId: number, requestId: number, includeStatus?: boolean): Promise<TaskAgentInterfaces.TaskAgentJobRequest>;
-    getAgentRequests(poolId: number, top: number, continuationToken?: string): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
+    getAgentRequests(poolId: number, top: number, continuationToken?: string): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
     getAgentRequestsForAgent(poolId: number, agentId: number, completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     getAgentRequestsForAgents(poolId: number, agentIds?: number[], completedRequestCount?: number): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
     getAgentRequestsForPlan(poolId: number, planId: string, jobId?: string): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>;
@@ -104,6 +105,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     getPackages(packageType: string, platform?: string, top?: number): Promise<TaskAgentInterfaces.PackageMetadata[]>;
     getAgentPoolMetadata(poolId: number): Promise<NodeJS.ReadableStream>;
     setAgentPoolMetadata(customHeaders: any, agentPoolMetadata: any, poolId: number): Promise<void>;
+    hasPoolPermissions(poolId: number, permissions: number): Promise<boolean>;
     addAgentPool(pool: TaskAgentInterfaces.TaskAgentPool): Promise<TaskAgentInterfaces.TaskAgentPool>;
     deleteAgentPool(poolId: number): Promise<void>;
     getAgentPool(poolId: number, properties?: string[], actionFilter?: TaskAgentInterfaces.TaskAgentPoolActionFilter): Promise<TaskAgentInterfaces.TaskAgentPool>;
@@ -137,7 +139,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     addDeploymentTarget(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
     deleteDeploymentTarget(project: string, deploymentGroupId: number, targetId: number): Promise<void>;
     getDeploymentTarget(project: string, deploymentGroupId: number, targetId: number, expand?: TaskAgentInterfaces.DeploymentTargetExpands): Promise<TaskAgentInterfaces.DeploymentMachine>;
-    getDeploymentTargets(project: string, deploymentGroupId: number, tags?: string[], name?: string, partialNameMatch?: boolean, expand?: TaskAgentInterfaces.DeploymentTargetExpands, agentStatus?: TaskAgentInterfaces.TaskAgentStatusFilter, agentJobResult?: TaskAgentInterfaces.TaskAgentJobResultFilter, continuationToken?: string, top?: number, enabled?: boolean, propertyFilters?: string[]): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
+    getDeploymentTargets(project: string, deploymentGroupId: number, tags?: string[], name?: string, partialNameMatch?: boolean, expand?: TaskAgentInterfaces.DeploymentTargetExpands, agentStatus?: TaskAgentInterfaces.TaskAgentStatusFilter, agentJobResult?: TaskAgentInterfaces.TaskAgentJobResultFilter, continuationToken?: string, top?: number, enabled?: boolean, propertyFilters?: string[]): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>;
     replaceDeploymentTarget(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number, targetId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
     updateDeploymentTarget(machine: TaskAgentInterfaces.DeploymentMachine, project: string, deploymentGroupId: number, targetId: number): Promise<TaskAgentInterfaces.DeploymentMachine>;
     updateDeploymentTargets(machines: TaskAgentInterfaces.DeploymentTargetUpdateParameter[], project: string, deploymentGroupId: number): Promise<TaskAgentInterfaces.DeploymentMachine[]>;
@@ -167,7 +169,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     deleteVirtualMachineGroup(project: string, environmentId: number, resourceId: number): Promise<void>;
     getVirtualMachineGroup(project: string, environmentId: number, resourceId: number): Promise<TaskAgentInterfaces.VirtualMachineGroup>;
     updateVirtualMachineGroup(resource: TaskAgentInterfaces.VirtualMachineGroup, project: string, environmentId: number): Promise<TaskAgentInterfaces.VirtualMachineGroup>;
-    getVirtualMachines(project: string, environmentId: number, resourceId: number, continuationToken?: string, name?: string, partialNameMatch?: boolean, tags?: string[], top?: number): Promise<TaskAgentInterfaces.VirtualMachine[]>;
+    getVirtualMachines(project: string, environmentId: number, resourceId: number, continuationToken?: string, name?: string, partialNameMatch?: boolean, tags?: string[], top?: number): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>;
     updateVirtualMachines(machines: TaskAgentInterfaces.VirtualMachine[], project: string, environmentId: number, resourceId: number): Promise<TaskAgentInterfaces.VirtualMachine[]>;
     createAadOAuthRequest(tenantId: string, redirectUri: string, promptOption?: TaskAgentInterfaces.AadLoginPromptOption, completeCallbackPayload?: string, completeCallbackByAuthCode?: boolean): Promise<string>;
     getVstsAadTenantId(): Promise<string>;
@@ -194,7 +196,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
@@ -233,7 +235,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
@@ -272,7 +274,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
@@ -308,7 +310,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
@@ -349,7 +351,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bfa72b3d-0fc6-43fb-932b-a7f6559f93b9",
                     routeValues);
@@ -387,7 +389,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "5932e193-f376-469d-9c3e-e5588ce12cb5",
                     routeValues);
@@ -423,12 +425,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         queueId: number,
         top: number,
         continuationToken?: string
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>> {
         if (top == null) {
             throw new TypeError('top can not be null or undefined');
         }
 
-        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 queueId: queueId
@@ -441,7 +443,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "f5f81ffb-f396-498d-85b1-5ada145e648a",
                     routeValues,
@@ -451,8 +453,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
-                res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
@@ -486,7 +488,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "f5f81ffb-f396-498d-85b1-5ada145e648a",
                     routeValues);
@@ -529,7 +531,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
@@ -573,7 +575,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
@@ -632,7 +634,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues,
@@ -695,7 +697,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues,
@@ -742,7 +744,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
@@ -788,7 +790,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e298ef32-5878-4cab-993c-043836571f42",
                     routeValues);
@@ -826,7 +828,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "39fe3bf2-7ee0-4198-a469-4a29929afa9c",
                     routeValues);
@@ -864,7 +866,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "bcd6189c-0303-471f-a8e1-acb22b74d700",
                     routeValues);
@@ -908,7 +910,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "3d197ba2-c3e9-4253-882f-0ee2440f8174",
                     routeValues);
@@ -951,7 +953,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
@@ -995,7 +997,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
@@ -1048,7 +1050,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues,
@@ -1093,9 +1095,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         continuationToken?: string,
         top?: number,
         ids?: number[]
-        ): Promise<TaskAgentInterfaces.DeploymentGroup[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>> {
 
-        return new Promise<TaskAgentInterfaces.DeploymentGroup[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
@@ -1111,7 +1113,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues,
@@ -1121,8 +1123,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup[]>;
-                res = await this.rest.get<TaskAgentInterfaces.DeploymentGroup[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
@@ -1158,7 +1160,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "083c4d89-ab35-45af-aa11-7cf66895c53e",
                     routeValues);
@@ -1196,9 +1198,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         deploymentGroupName?: string,
         continuationToken?: string,
         top?: number
-        ): Promise<TaskAgentInterfaces.DeploymentGroupMetrics[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>> {
 
-        return new Promise<TaskAgentInterfaces.DeploymentGroupMetrics[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
@@ -1211,7 +1213,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "281c6308-427a-49e1-b83a-dac0f4862189",
                     routeValues,
@@ -1221,8 +1223,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroupMetrics[]>;
-                res = await this.rest.get<TaskAgentInterfaces.DeploymentGroupMetrics[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroupMetrics,
@@ -1266,7 +1268,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a3540e5b-f0dc-4668-963b-b752459be545",
                     routeValues,
@@ -1318,7 +1320,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a3540e5b-f0dc-4668-963b-b752459be545",
                     routeValues,
@@ -1361,7 +1363,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "91006ac4-0f68-4d82-a2bc-540676bd73ce",
                     routeValues);
@@ -1402,7 +1404,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "e077ee4a-399b-420b-841f-c43fbc058e0b",
                     routeValues);
@@ -1452,7 +1454,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6525d6c6-258f-40e0-a1a9-8a24a3957625",
                     routeValues,
@@ -1509,7 +1511,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2fac0be3-8c8f-4473-ab93-c1389b08a2c9",
                     routeValues,
@@ -1569,7 +1571,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2fac0be3-8c8f-4473-ab93-c1389b08a2c9",
                     routeValues,
@@ -1614,7 +1616,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "1c1a817f-f23d-41c6-bf8d-14b638f64152",
                     routeValues);
@@ -1654,7 +1656,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "f223b809-8c33-4b7d-b53f-07232569b5d6",
                     routeValues);
@@ -1692,9 +1694,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         environmentId: number,
         continuationToken?: string,
         top?: number
-        ): Promise<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>> {
 
-        return new Promise<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 environmentId: environmentId
@@ -1707,7 +1709,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "51bb5d21-4305-4ea6-9dbb-b7488af73334",
                     routeValues,
@@ -1717,8 +1719,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord[]>;
-                res = await this.rest.get<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentDeploymentExecutionRecord,
@@ -1751,7 +1753,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
@@ -1795,7 +1797,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
@@ -1845,7 +1847,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues,
@@ -1884,9 +1886,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         name?: string,
         continuationToken?: string,
         top?: number
-        ): Promise<TaskAgentInterfaces.EnvironmentInstance[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>> {
 
-        return new Promise<TaskAgentInterfaces.EnvironmentInstance[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
@@ -1899,7 +1901,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues,
@@ -1909,8 +1911,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.EnvironmentInstance[]>;
-                res = await this.rest.get<TaskAgentInterfaces.EnvironmentInstance[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentInstance,
@@ -1946,7 +1948,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8572b1fc-2482-47fa-8f74-7e3ed53ee54b",
                     routeValues);
@@ -1994,7 +1996,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.3",
+                    "7.2-preview.3",
                     "distributedtask",
                     "f9f0f436-b8a1-4475-9041-1ccdbf8f0128",
                     routeValues,
@@ -2036,7 +2038,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.3",
+                    "7.2-preview.3",
                     "distributedtask",
                     "f9f0f436-b8a1-4475-9041-1ccdbf8f0128",
                     routeValues);
@@ -2074,7 +2076,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "58475b1e-adaf-4155-9bc1-e04bf1fff4c2",
                     routeValues);
@@ -2131,7 +2133,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2180,7 +2182,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2215,12 +2217,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         poolId: number,
         top: number,
         continuationToken?: string
-        ): Promise<TaskAgentInterfaces.TaskAgentJobRequest[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>> {
         if (top == null) {
             throw new TypeError('top can not be null or undefined');
         }
 
-        return new Promise<TaskAgentInterfaces.TaskAgentJobRequest[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(async (resolve, reject) => {
             let routeValues: any = {
                 poolId: poolId
             };
@@ -2232,7 +2234,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2242,8 +2244,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
-                res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
@@ -2284,7 +2286,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2333,7 +2335,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2385,7 +2387,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2427,7 +2429,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues);
@@ -2483,7 +2485,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "fc825784-c92a-4299-9221-998a02d1b54f",
                     routeValues,
@@ -2528,7 +2530,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
@@ -2573,7 +2575,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
@@ -2618,7 +2620,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "73fba52f-15ab-42b3-a538-ce67a9223a04",
                     routeValues);
@@ -2660,7 +2662,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "f8c7c0de-ac0d-469b-9cb1-c21f72d67693",
                     routeValues);
@@ -2701,7 +2703,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
@@ -2743,7 +2745,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
@@ -2791,7 +2793,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues,
@@ -2840,7 +2842,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues,
@@ -2885,7 +2887,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "d4adf50f-80c6-4ac8-9ca1-6e4e544286e9",
                     routeValues);
@@ -2933,7 +2935,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "966c3874-c347-4b18-a90c-d509116717fd",
                     routeValues,
@@ -2978,7 +2980,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "966c3874-c347-4b18-a90c-d509116717fd",
                     routeValues);
@@ -3022,7 +3024,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
@@ -3067,7 +3069,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
@@ -3118,7 +3120,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues,
@@ -3173,7 +3175,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues,
@@ -3221,7 +3223,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
@@ -3268,7 +3270,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
@@ -3312,7 +3314,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6f6d406f-cfe6-409c-9327-7009928077e7",
                     routeValues);
@@ -3353,7 +3355,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
@@ -3395,7 +3397,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
@@ -3437,7 +3439,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
@@ -3476,7 +3478,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
@@ -3520,7 +3522,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "80572e16-58f0-4419-ac07-d19fde32195c",
                     routeValues);
@@ -3562,7 +3564,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
@@ -3604,7 +3606,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
@@ -3646,7 +3648,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
@@ -3683,7 +3685,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues,
@@ -3725,7 +3727,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
@@ -3769,7 +3771,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "15e7ab6e-abce-4601-a6d8-e111fe148f46",
                     routeValues);
@@ -3820,7 +3822,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues,
@@ -3872,7 +3874,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues,
@@ -3921,7 +3923,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues,
@@ -3961,7 +3963,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues);
@@ -4011,7 +4013,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "c3a054f6-7a8a-49c0-944e-3a8e5d7adfd7",
                     routeValues,
@@ -4057,7 +4059,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "8ffcd551-079c-493a-9c02-54346299d144",
                     routeValues);
@@ -4105,7 +4107,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "8ffcd551-079c-493a-9c02-54346299d144",
                     routeValues,
@@ -4145,7 +4147,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "0d62f887-9f53-48b9-9161-4c35d5735b0f",
                     routeValues);
@@ -4182,7 +4184,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "0d62f887-9f53-48b9-9161-4c35d5735b0f",
                     routeValues);
@@ -4194,6 +4196,50 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, agentPoolMetadata, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Checks if current identity has passed permissions on a pool.
+     * 
+     * @param {number} poolId - Id of the pool to check
+     * @param {number} permissions - Permissions to check. Multiple permissions might be merged into single value using bitwise OR operator (e.g. AgentPoolPermissions.Manage | AgentPoolPermissions.View)
+     */
+    public async hasPoolPermissions(
+        poolId: number,
+        permissions: number
+        ): Promise<boolean> {
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            let routeValues: any = {
+                poolId: poolId,
+                permissions: permissions
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "distributedtask",
+                    "162778f3-4b48-48f3-9d58-436fb9c407bc",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<boolean>;
+                res = await this.rest.get<boolean>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -4223,7 +4269,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
@@ -4264,7 +4310,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
@@ -4314,7 +4360,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues,
@@ -4368,7 +4414,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues,
@@ -4419,7 +4465,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues,
@@ -4463,7 +4509,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "a8c47e17-4d56-4a56-92bb-de7ea7dc65be",
                     routeValues);
@@ -4512,7 +4558,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4554,7 +4600,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues);
@@ -4598,7 +4644,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues);
@@ -4648,7 +4694,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4699,7 +4745,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4753,7 +4799,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4807,7 +4853,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4861,7 +4907,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "900fa995-c559-4923-aae7-f8424fe4fbea",
                     routeValues,
@@ -4901,7 +4947,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "20189bd7-5134-49c2-b8e9-f9e856eea2b2",
                     routeValues);
@@ -4937,7 +4983,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "1f1f0557-c445-42a6-b4a0-0df605a3a0f8",
                     routeValues);
@@ -4985,7 +5031,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "eae1d376-a8b1-4475-9041-1dfdbe8f0143",
                     routeValues,
@@ -5028,7 +5074,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "100cc92a-b255-47fa-9ab3-e44a2985a3ac",
                     routeValues);
@@ -5072,7 +5118,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
@@ -5128,7 +5174,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5174,7 +5220,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5228,7 +5274,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5285,7 +5331,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5342,7 +5388,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5392,7 +5438,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5439,7 +5485,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
@@ -5482,7 +5528,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues);
@@ -5541,7 +5587,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "adcfd8bc-b184-43ba-bd84-7c8c6a2ff421",
                     routeValues,
@@ -5584,7 +5630,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
                     routeValues);
@@ -5626,7 +5672,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "134e239e-2df3-4794-a6f6-24f1f19ec8dc",
                     routeValues);
@@ -5672,7 +5718,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
@@ -5719,7 +5765,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
@@ -5772,7 +5818,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues,
@@ -5827,9 +5873,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         top?: number,
         enabled?: boolean,
         propertyFilters?: string[]
-        ): Promise<TaskAgentInterfaces.DeploymentMachine[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>> {
 
-        return new Promise<TaskAgentInterfaces.DeploymentMachine[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 deploymentGroupId: deploymentGroupId
@@ -5850,7 +5896,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues,
@@ -5860,8 +5906,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
-                res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
@@ -5900,7 +5946,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
@@ -5949,7 +5995,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
@@ -5995,7 +6041,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "2f0aa599-c121-4256-a5fd-ba370e0ae7b6",
                     routeValues);
@@ -6038,7 +6084,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
@@ -6088,7 +6134,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6145,7 +6191,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6197,7 +6243,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6255,7 +6301,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6306,7 +6352,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6348,7 +6394,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
@@ -6394,7 +6440,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues);
@@ -6444,7 +6490,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "6c08ffbf-dbf1-4f9a-94e5-a1cbd47005e7",
                     routeValues,
@@ -6484,7 +6530,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
                     routeValues);
@@ -6535,7 +6581,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
                     routeValues,
@@ -6579,7 +6625,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
                     routeValues,
@@ -6631,7 +6677,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "60aac929-f0cd-4bc8-9ce4-6b30e8f1b1bd",
                     routeValues,
@@ -6683,7 +6729,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "8cc1b02b-ae49-4516-b5ad-4f9b29967c30",
                     routeValues,
@@ -6728,7 +6774,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "30ba3ada-fedf-4da8-bbb5-dacf2f82e176",
                     routeValues);
@@ -6768,7 +6814,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "ef5b7057-ffc3-4c77-bbad-c10b4a4abcc7",
                     routeValues);
@@ -6818,7 +6864,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "ef5b7057-ffc3-4c77-bbad-c10b4a4abcc7",
                     routeValues,
@@ -6868,7 +6914,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "ef5b7057-ffc3-4c77-bbad-c10b4a4abcc7",
                     routeValues,
@@ -6912,7 +6958,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "ef5b7057-ffc3-4c77-bbad-c10b4a4abcc7",
                     routeValues);
@@ -6956,7 +7002,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues);
@@ -7015,7 +7061,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues,
@@ -7066,7 +7112,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "distributedtask",
                     "f5b09dd5-9d54-45a1-8b5a-1c8287d634cc",
                     routeValues,
@@ -7111,7 +7157,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
@@ -7156,7 +7202,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
@@ -7201,7 +7247,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
@@ -7245,7 +7291,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9e597901-4af7-4cc3-8d92-47d54db8ebfb",
                     routeValues);
@@ -7289,9 +7335,9 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         partialNameMatch?: boolean,
         tags?: string[],
         top?: number
-        ): Promise<TaskAgentInterfaces.VirtualMachine[]> {
+        ): Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>> {
 
-        return new Promise<TaskAgentInterfaces.VirtualMachine[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 environmentId: environmentId,
@@ -7308,7 +7354,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "48700676-2ba5-4282-8ec8-083280d169c7",
                     routeValues,
@@ -7318,8 +7364,8 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<TaskAgentInterfaces.VirtualMachine[]>;
-                res = await this.rest.get<TaskAgentInterfaces.VirtualMachine[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachine,
@@ -7356,7 +7402,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "48700676-2ba5-4282-8ec8-083280d169c7",
                     routeValues);
@@ -7416,7 +7462,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9c63205e-3a0f-42a0-ad88-095200f13607",
                     routeValues,
@@ -7453,7 +7499,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "9c63205e-3a0f-42a0-ad88-095200f13607",
                     routeValues);
@@ -7497,7 +7543,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "distributedtask",
                     "1f9990b9-1dba-441f-9c2e-6485888c42b6",
                     routeValues,

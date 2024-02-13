@@ -79,7 +79,7 @@ export interface Alert {
      */
     truncatedSecret?: string;
     /**
-     * ValidationFingerprints for the secret liveness check. Only returned on demand in Get API with Expand parameter set to be ValidationFingerprint (not returned in List API)
+     * ValidationFingerprints for the secret liveness check. Only return on demanded
      */
     validationFingerprints?: ValidationFingerprint[];
 }
@@ -287,9 +287,6 @@ export enum ComponentType {
      * Indicates the component is a loose file. Not a package as understood by different package managers.
      */
     File = 9,
-    /**
-     * Indicates the component is a Go package.
-     */
     Go = 10,
     /**
      * Indicates the component is a Docker Image
@@ -579,35 +576,6 @@ export interface Rule {
      * Classification tags for this rule
      */
     tags?: string[];
-}
-
-export enum SarifJobStatus {
-    /**
-     * The job type when it is new
-     */
-    New = 0,
-    /**
-     * The job type when it is queued
-     */
-    Queued = 1,
-    /**
-     * The job type when it is completed
-     */
-    Completed = 2,
-    /**
-     * The job type when it fails
-     */
-    Failed = 3,
-}
-
-export interface SarifUploadStatus {
-    errors?: SarifValidationError[];
-    processingStatus?: SarifJobStatus;
-}
-
-export interface SarifValidationError {
-    nodePointer?: string;
-    validationError?: string;
 }
 
 export interface SearchCriteria {
@@ -909,16 +877,6 @@ export var TypeInfo = {
             "versionControl": 2
         }
     },
-    SarifJobStatus: {
-        enumValues: {
-            "new": 0,
-            "queued": 1,
-            "completed": 2,
-            "failed": 3
-        }
-    },
-    SarifUploadStatus: <any>{
-    },
     SearchCriteria: <any>{
     },
     Severity: {
@@ -1066,12 +1024,6 @@ TypeInfo.Result.fields = {
     },
     severity: {
         enumType: TypeInfo.Severity
-    }
-};
-
-TypeInfo.SarifUploadStatus.fields = {
-    processingStatus: {
-        enumType: TypeInfo.SarifJobStatus
     }
 };
 

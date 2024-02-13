@@ -14,6 +14,17 @@ import IdentitiesInterfaces = require("../interfaces/IdentitiesInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface CategorizedWebApiTeams {
+    /**
+     * Teams that the user is a member of.
+     */
+    myTeams?: WebApiTeam[];
+    /**
+     * Teams that the user can read but is not member of.
+     */
+    otherReadableTeams?: WebApiTeam[];
+}
+
 export enum ConnectedServiceKind {
     /**
      * Custom or unknown service
@@ -300,6 +311,10 @@ export interface TeamProjectCollection extends TeamProjectCollectionReference {
  * Reference object for a TeamProjectCollection.
  */
 export interface TeamProjectCollectionReference {
+    /**
+     * Collection avatar Url.
+     */
+    avatarUrl?: string;
     /**
      * Collection Id.
      */

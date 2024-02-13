@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -76,7 +76,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async createTestConfiguration(
         testConfigurationCreateUpdateParameters: TestPlanInterfaces.TestConfigurationCreateUpdateParameters,
         project: string
-    ): Promise<TestPlanInterfaces.TestConfiguration> {
+        ): Promise<TestPlanInterfaces.TestConfiguration> {
 
         return new Promise<TestPlanInterfaces.TestConfiguration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -91,18 +91,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.create<TestPlanInterfaces.TestConfiguration>(url, testConfigurationCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestConfiguration,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestConfiguration,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -119,7 +119,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async deleteTestConfguration(
         project: string,
         testConfiguartionId: number
-    ): Promise<void> {
+        ): Promise<void> {
         if (testConfiguartionId == null) {
             throw new TypeError('testConfiguartionId can not be null or undefined');
         }
@@ -132,7 +132,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 testConfiguartionId: testConfiguartionId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -142,18 +142,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -170,7 +170,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestConfigurationById(
         project: string,
         testConfigurationId: number
-    ): Promise<TestPlanInterfaces.TestConfiguration> {
+        ): Promise<TestPlanInterfaces.TestConfiguration> {
 
         return new Promise<TestPlanInterfaces.TestConfiguration>(async (resolve, reject) => {
             let routeValues: any = {
@@ -186,18 +186,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.get<TestPlanInterfaces.TestConfiguration>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestConfiguration,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestConfiguration,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -214,7 +214,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestConfigurations(
         project: string,
         continuationToken?: string
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -224,7 +224,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 continuationToken: continuationToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -234,18 +234,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestConfiguration,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestConfiguration,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -264,7 +264,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testConfigurationCreateUpdateParameters: TestPlanInterfaces.TestConfigurationCreateUpdateParameters,
         project: string,
         testConfiguartionId: number
-    ): Promise<TestPlanInterfaces.TestConfiguration> {
+        ): Promise<TestPlanInterfaces.TestConfiguration> {
         if (testConfiguartionId == null) {
             throw new TypeError('testConfiguartionId can not be null or undefined');
         }
@@ -277,7 +277,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 testConfiguartionId: testConfiguartionId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -287,18 +287,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.update<TestPlanInterfaces.TestConfiguration>(url, testConfigurationCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestConfiguration,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestConfiguration,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -325,7 +325,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testers?: string,
         assignedTo?: string,
         entity?: TestPlanInterfaces.TestEntityTypes
-    ): Promise<TestPlanInterfaces.TestEntityCount[]> {
+        ): Promise<TestPlanInterfaces.TestEntityCount[]> {
 
         return new Promise<TestPlanInterfaces.TestEntityCount[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -341,7 +341,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 assignedTo: assignedTo,
                 entity: entity,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -351,18 +351,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestEntityCount[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestEntityCount[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    true);
+                                              null,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -379,7 +379,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async createTestPlan(
         testPlanCreateParams: TestPlanInterfaces.TestPlanCreateParams,
         project: string
-    ): Promise<TestPlanInterfaces.TestPlan> {
+        ): Promise<TestPlanInterfaces.TestPlan> {
 
         return new Promise<TestPlanInterfaces.TestPlan>(async (resolve, reject) => {
             let routeValues: any = {
@@ -394,18 +394,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.create<TestPlanInterfaces.TestPlan>(url, testPlanCreateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPlan,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestPlan,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -422,7 +422,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async deleteTestPlan(
         project: string,
         planId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -438,18 +438,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -466,7 +466,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestPlanById(
         project: string,
         planId: number
-    ): Promise<TestPlanInterfaces.TestPlan> {
+        ): Promise<TestPlanInterfaces.TestPlan> {
 
         return new Promise<TestPlanInterfaces.TestPlan>(async (resolve, reject) => {
             let routeValues: any = {
@@ -482,18 +482,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.get<TestPlanInterfaces.TestPlan>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPlan,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestPlan,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -516,7 +516,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         continuationToken?: string,
         includePlanDetails?: boolean,
         filterActivePlans?: boolean
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -529,7 +529,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 includePlanDetails: includePlanDetails,
                 filterActivePlans: filterActivePlans,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -539,18 +539,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPlan,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestPlan,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -569,7 +569,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testPlanUpdateParams: TestPlanInterfaces.TestPlanUpdateParams,
         project: string,
         planId: number
-    ): Promise<TestPlanInterfaces.TestPlan> {
+        ): Promise<TestPlanInterfaces.TestPlan> {
 
         return new Promise<TestPlanInterfaces.TestPlan>(async (resolve, reject) => {
             let routeValues: any = {
@@ -585,18 +585,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.update<TestPlanInterfaces.TestPlan>(url, testPlanUpdateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPlan,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestPlan,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -615,7 +615,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         suiteId: number,
         suiteEntryType?: TestPlanInterfaces.SuiteEntryTypes
-    ): Promise<TestPlanInterfaces.SuiteEntry[]> {
+        ): Promise<TestPlanInterfaces.SuiteEntry[]> {
 
         return new Promise<TestPlanInterfaces.SuiteEntry[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -626,7 +626,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 suiteEntryType: suiteEntryType,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -636,18 +636,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.SuiteEntry[]>;
                 res = await this.rest.get<TestPlanInterfaces.SuiteEntry[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.SuiteEntry,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.SuiteEntry,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -666,7 +666,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         suiteEntries: TestPlanInterfaces.SuiteEntryUpdateParams[],
         project: string,
         suiteId: number
-    ): Promise<TestPlanInterfaces.SuiteEntry[]> {
+        ): Promise<TestPlanInterfaces.SuiteEntry[]> {
 
         return new Promise<TestPlanInterfaces.SuiteEntry[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -682,18 +682,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.SuiteEntry[]>;
                 res = await this.rest.update<TestPlanInterfaces.SuiteEntry[]>(url, suiteEntries, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.SuiteEntry,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.SuiteEntry,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -714,7 +714,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         planId: number,
         parentSuiteId: number
-    ): Promise<TestPlanInterfaces.TestSuite[]> {
+        ): Promise<TestPlanInterfaces.TestSuite[]> {
 
         return new Promise<TestPlanInterfaces.TestSuite[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -731,18 +731,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite[]>;
                 res = await this.rest.create<TestPlanInterfaces.TestSuite[]>(url, testSuiteCreateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -761,7 +761,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testSuiteCreateParams: TestPlanInterfaces.TestSuiteCreateParams,
         project: string,
         planId: number
-    ): Promise<TestPlanInterfaces.TestSuite> {
+        ): Promise<TestPlanInterfaces.TestSuite> {
 
         return new Promise<TestPlanInterfaces.TestSuite>(async (resolve, reject) => {
             let routeValues: any = {
@@ -777,18 +777,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.create<TestPlanInterfaces.TestSuite>(url, testSuiteCreateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -807,7 +807,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         planId: number,
         suiteId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -824,18 +824,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -856,7 +856,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         planId: number,
         suiteId: number,
         expand?: TestPlanInterfaces.SuiteExpand
-    ): Promise<TestPlanInterfaces.TestSuite> {
+        ): Promise<TestPlanInterfaces.TestSuite> {
 
         return new Promise<TestPlanInterfaces.TestSuite>(async (resolve, reject) => {
             let routeValues: any = {
@@ -868,7 +868,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 expand: expand,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -878,18 +878,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.get<TestPlanInterfaces.TestSuite>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -912,7 +912,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         expand?: TestPlanInterfaces.SuiteExpand,
         continuationToken?: string,
         asTreeView?: boolean
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -925,7 +925,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 continuationToken: continuationToken,
                 asTreeView: asTreeView,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -935,18 +935,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -967,7 +967,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         planId: number,
         suiteId: number
-    ): Promise<TestPlanInterfaces.TestSuite> {
+        ): Promise<TestPlanInterfaces.TestSuite> {
 
         return new Promise<TestPlanInterfaces.TestSuite>(async (resolve, reject) => {
             let routeValues: any = {
@@ -984,18 +984,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.update<TestPlanInterfaces.TestSuite>(url, testSuiteUpdateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1010,7 +1010,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
      */
     public async getSuitesByTestCaseId(
         testCaseId: number
-    ): Promise<TestPlanInterfaces.TestSuite[]> {
+        ): Promise<TestPlanInterfaces.TestSuite[]> {
         if (testCaseId == null) {
             throw new TypeError('testCaseId can not be null or undefined');
         }
@@ -1022,7 +1022,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 testCaseId: testCaseId,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -1032,18 +1032,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestSuite[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestSuite,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1064,7 +1064,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         planId: number,
         suiteId: number
-    ): Promise<TestPlanInterfaces.TestCase[]> {
+        ): Promise<TestPlanInterfaces.TestCase[]> {
 
         return new Promise<TestPlanInterfaces.TestCase[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1081,18 +1081,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.create<TestPlanInterfaces.TestCase[]>(url, suiteTestCaseCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestCase,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestCase,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1117,7 +1117,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testCaseId: string,
         witFields?: string,
         returnIdentityRef?: boolean
-    ): Promise<TestPlanInterfaces.TestCase[]> {
+        ): Promise<TestPlanInterfaces.TestCase[]> {
 
         return new Promise<TestPlanInterfaces.TestCase[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1131,7 +1131,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 witFields: witFields,
                 returnIdentityRef: returnIdentityRef,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.3",
@@ -1141,18 +1141,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestCase[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestCase,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestCase,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1187,7 +1187,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         expand?: boolean,
         excludeFlags?: TestPlanInterfaces.ExcludeFlags,
         isRecursive?: boolean
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1206,7 +1206,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 excludeFlags: excludeFlags,
                 isRecursive: isRecursive,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.3",
@@ -1216,18 +1216,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestCase,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestCase,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1248,7 +1248,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         planId: number,
         suiteId: number,
         testCaseIds: string
-    ): Promise<void> {
+        ): Promise<void> {
         if (testCaseIds == null) {
             throw new TypeError('testCaseIds can not be null or undefined');
         }
@@ -1263,7 +1263,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 testCaseIds: testCaseIds,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.3",
@@ -1273,18 +1273,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1305,7 +1305,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         planId: number,
         suiteId: number,
         testIds: string
-    ): Promise<void> {
+        ): Promise<void> {
         if (testIds == null) {
             throw new TypeError('testIds can not be null or undefined');
         }
@@ -1320,7 +1320,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 testIds: testIds,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.3",
@@ -1330,18 +1330,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1362,7 +1362,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         project: string,
         planId: number,
         suiteId: number
-    ): Promise<TestPlanInterfaces.TestCase[]> {
+        ): Promise<TestPlanInterfaces.TestCase[]> {
 
         return new Promise<TestPlanInterfaces.TestCase[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1379,18 +1379,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.update<TestPlanInterfaces.TestCase[]>(url, suiteTestCaseCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestCase,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestCase,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1405,7 +1405,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async cloneTestCase(
         cloneRequestBody: TestPlanInterfaces.CloneTestCaseParams,
         project: string
-    ): Promise<TestPlanInterfaces.CloneTestCaseOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestCaseOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestCaseOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1420,18 +1420,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestCaseOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestCaseOperationInformation>(url, cloneRequestBody, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1448,7 +1448,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestCaseCloneInformation(
         project: string,
         cloneOperationId: number
-    ): Promise<TestPlanInterfaces.CloneTestCaseOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestCaseOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestCaseOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1464,18 +1464,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestCaseOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestCaseOperationInformation>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1492,7 +1492,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async exportTestCases(
         exportTestCaseRequestBody: TestPlanInterfaces.ExportTestCaseParams,
         project: string
-    ): Promise<NodeJS.ReadableStream> {
+        ): Promise<NodeJS.ReadableStream> {
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1507,7 +1507,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-
+                
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
@@ -1527,7 +1527,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async deleteTestCase(
         project: string,
         testCaseId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1543,18 +1543,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1573,7 +1573,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         cloneRequestBody: TestPlanInterfaces.CloneTestPlanParams,
         project: string,
         deepClone?: boolean
-    ): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestPlanOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1583,7 +1583,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 deepClone: deepClone,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.2",
@@ -1593,18 +1593,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestPlanOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestPlanOperationInformation>(url, cloneRequestBody, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1621,7 +1621,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getCloneInformation(
         project: string,
         cloneOperationId: number
-    ): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestPlanOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1637,18 +1637,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestPlanOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestPlanOperationInformation>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1673,7 +1673,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         pointId: string,
         returnIdentityRef?: boolean,
         includePointDetails?: boolean
-    ): Promise<TestPlanInterfaces.TestPoint[]> {
+        ): Promise<TestPlanInterfaces.TestPoint[]> {
         if (pointId == null) {
             throw new TypeError('pointId can not be null or undefined');
         }
@@ -1690,7 +1690,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 returnIdentityRef: returnIdentityRef,
                 includePointDetails: includePointDetails,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.2",
@@ -1700,18 +1700,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPoint[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestPoint[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPoint,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestPoint,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1742,7 +1742,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         returnIdentityRef?: boolean,
         includePointDetails?: boolean,
         isRecursive?: boolean
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1759,7 +1759,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 includePointDetails: includePointDetails,
                 isRecursive: isRecursive,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.2",
@@ -1769,18 +1769,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPoint,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestPoint,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1805,7 +1805,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         suiteId: number,
         includePointDetails?: boolean,
         returnIdentityRef?: boolean
-    ): Promise<TestPlanInterfaces.TestPoint[]> {
+        ): Promise<TestPlanInterfaces.TestPoint[]> {
 
         return new Promise<TestPlanInterfaces.TestPoint[]>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1818,7 +1818,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 includePointDetails: includePointDetails,
                 returnIdentityRef: returnIdentityRef,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.2",
@@ -1828,18 +1828,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPoint[]>;
                 res = await this.rest.update<TestPlanInterfaces.TestPoint[]>(url, testPointUpdateParams, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestPoint,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestPoint,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1858,7 +1858,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         cloneRequestBody: TestPlanInterfaces.CloneTestSuiteParams,
         project: string,
         deepClone?: boolean
-    ): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1868,7 +1868,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 deepClone: deepClone,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.2",
@@ -1878,18 +1878,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestSuiteOperationInformation>(url, cloneRequestBody, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1906,7 +1906,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getSuiteCloneInformation(
         project: string,
         cloneOperationId: number
-    ): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation> {
+        ): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation> {
 
         return new Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1922,18 +1922,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestSuiteOperationInformation>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1950,7 +1950,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async createTestVariable(
         testVariableCreateUpdateParameters: TestPlanInterfaces.TestVariableCreateUpdateParameters,
         project: string
-    ): Promise<TestPlanInterfaces.TestVariable> {
+        ): Promise<TestPlanInterfaces.TestVariable> {
 
         return new Promise<TestPlanInterfaces.TestVariable>(async (resolve, reject) => {
             let routeValues: any = {
@@ -1965,18 +1965,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.create<TestPlanInterfaces.TestVariable>(url, testVariableCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestVariable,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestVariable,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -1993,7 +1993,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async deleteTestVariable(
         project: string,
         testVariableId: number
-    ): Promise<void> {
+        ): Promise<void> {
 
         return new Promise<void>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2009,18 +2009,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    null,
-                    false);
+                                              null,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2037,7 +2037,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestVariableById(
         project: string,
         testVariableId: number
-    ): Promise<TestPlanInterfaces.TestVariable> {
+        ): Promise<TestPlanInterfaces.TestVariable> {
 
         return new Promise<TestPlanInterfaces.TestVariable>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2053,18 +2053,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.get<TestPlanInterfaces.TestVariable>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestVariable,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestVariable,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2081,7 +2081,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
     public async getTestVariables(
         project: string,
         continuationToken?: string
-    ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>> {
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>> {
 
         return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2091,7 +2091,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
             let queryValues: any = {
                 continuationToken: continuationToken,
             };
-
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
@@ -2101,18 +2101,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     queryValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestVariable,
-                    true);
+                                              TestPlanInterfaces.TypeInfo.TestVariable,
+                                              true);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);
@@ -2131,7 +2131,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
         testVariableCreateUpdateParameters: TestPlanInterfaces.TestVariableCreateUpdateParameters,
         project: string,
         testVariableId: number
-    ): Promise<TestPlanInterfaces.TestVariable> {
+        ): Promise<TestPlanInterfaces.TestVariable> {
 
         return new Promise<TestPlanInterfaces.TestVariable>(async (resolve, reject) => {
             let routeValues: any = {
@@ -2147,18 +2147,18 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                     routeValues);
 
                 let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
-                    verData.apiVersion);
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
 
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.update<TestPlanInterfaces.TestVariable>(url, testVariableCreateUpdateParameters, options);
 
                 let ret = this.formatResponse(res.result,
-                    TestPlanInterfaces.TypeInfo.TestVariable,
-                    false);
+                                              TestPlanInterfaces.TypeInfo.TestVariable,
+                                              false);
 
                 resolve(ret);
-
+                
             }
             catch (err) {
                 reject(err);

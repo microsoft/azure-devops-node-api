@@ -20,8 +20,21 @@ import TfsCoreInterfaces = require("./interfaces/CoreInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IGitApi extends basem.ClientApiBase {
+    deleteEnablementStatus(allProjects: boolean, includeBillableCommitters?: boolean, projectIds?: string[]): Promise<void>;
+    getEnablementStatus(projectIds?: string[], billingDate?: Date, skip?: number, take?: number): Promise<GitInterfaces.AdvSecEnablementStatus[]>;
+    getEnableOnCreateHost(enableOnCreateHost: boolean): Promise<boolean>;
+    getEnableOnCreateProject(enableOnCreateProjectId: string): Promise<boolean>;
+    setEnableOnCreateHost(enableOnCreateHost: boolean): Promise<void>;
+    setEnableOnCreateProject(enableOnCreateProjectId: string, enableOnStatus: boolean): Promise<void>;
+    updateEnablementStatus(enablementUpdates: GitInterfaces.AdvSecEnablementUpdate[]): Promise<void>;
+    getEstimatedBillablePushersOrg(): Promise<GitInterfaces.BillablePusher[]>;
+    getEstimatedBillablePushersProject(project: string): Promise<GitInterfaces.BillablePusher[]>;
+    getEstimatedBillableCommittersRepo(project: string, repositoryId: string): Promise<GitInterfaces.BillableCommitter[]>;
+    getPermission(projectName?: string, repositoryId?: string, permission?: string): Promise<boolean>;
     createAnnotatedTag(tagObject: GitInterfaces.GitAnnotatedTag, project: string, repositoryId: string): Promise<GitInterfaces.GitAnnotatedTag>;
     getAnnotatedTag(project: string, repositoryId: string, objectId: string): Promise<GitInterfaces.GitAnnotatedTag>;
+    getBillableCommitters(project: string, billingDate?: Date, skip?: number, take?: number): Promise<GitInterfaces.BillableCommitter[]>;
+    getBillableCommittersDetail(project: string, includeDetails: string, billingDate?: Date): Promise<GitInterfaces.BillableCommitterDetail[]>;
     getBlob(repositoryId: string, sha1: string, project?: string, download?: boolean, fileName?: string, resolveLfs?: boolean): Promise<GitInterfaces.GitBlobRef>;
     getBlobContent(repositoryId: string, sha1: string, project?: string, download?: boolean, fileName?: string, resolveLfs?: boolean): Promise<NodeJS.ReadableStream>;
     getBlobsZip(blobIds: string[], repositoryId: string, project?: string, filename?: string): Promise<NodeJS.ReadableStream>;
@@ -31,7 +44,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getBranchStatsBatch(searchCriteria: GitInterfaces.GitQueryBranchStatsCriteria, repositoryId: string, project?: string): Promise<GitInterfaces.GitBranchStats[]>;
     getChanges(commitId: string, repositoryId: string, project?: string, top?: number, skip?: number): Promise<GitInterfaces.GitCommitChanges>;
     getCherryPickConflict(repositoryId: string, cherryPickId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
-    getCherryPickConflicts(repositoryId: string, cherryPickId: number, project?: string, continuationToken?: string, top?: number, excludeResolved?: boolean, onlyResolved?: boolean, includeObsolete?: boolean): Promise<GitInterfaces.GitConflict[]>;
+    getCherryPickConflicts(repositoryId: string, cherryPickId: number, project?: string, continuationToken?: string, top?: number, excludeResolved?: boolean, onlyResolved?: boolean, includeObsolete?: boolean): Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
     updateCherryPickConflict(conflict: GitInterfaces.GitConflict, repositoryId: string, cherryPickId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     updateCherryPickConflicts(conflictUpdates: GitInterfaces.GitConflict[], repositoryId: string, cherryPickId: number, project?: string): Promise<GitInterfaces.GitConflictUpdateResult[]>;
     getCherryPickRelationships(repositoryNameOrId: string, commitId: string, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitCommitRef[]>;
@@ -71,7 +84,7 @@ export interface IGitApi extends basem.ClientApiBase {
     deleteLike(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<void>;
     getLikes(repositoryId: string, pullRequestId: number, threadId: number, commentId: number, project?: string): Promise<VSSInterfaces.IdentityRef[]>;
     getPullRequestIterationCommits(repositoryId: string, pullRequestId: number, iterationId: number, project?: string, top?: number, skip?: number): Promise<GitInterfaces.GitCommitRef[]>;
-    getPullRequestCommits(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.GitCommitRef[]>;
+    getPullRequestCommits(repositoryId: string, pullRequestId: number, project?: string): Promise<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>;
     getPullRequestConflict(repositoryId: string, pullRequestId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     getPullRequestConflicts(repositoryId: string, pullRequestId: number, project?: string, skip?: number, top?: number, includeObsolete?: boolean, excludeResolved?: boolean, onlyResolved?: boolean): Promise<GitInterfaces.GitConflict[]>;
     updatePullRequestConflict(conflict: GitInterfaces.GitConflict, repositoryId: string, pullRequestId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
@@ -127,13 +140,14 @@ export interface IGitApi extends basem.ClientApiBase {
     deleteRepositoryFromRecycleBin(project: string, repositoryId: string): Promise<void>;
     getRecycleBinRepositories(project: string): Promise<GitInterfaces.GitDeletedRepository[]>;
     restoreRepositoryFromRecycleBin(repositoryDetails: GitInterfaces.GitRecycleBinRepositoryDetails, project: string, repositoryId: string): Promise<GitInterfaces.GitRepository>;
-    getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean, includeStatuses?: boolean, includeMyBranches?: boolean, latestStatusesOnly?: boolean, peelTags?: boolean, filterContains?: string): Promise<GitInterfaces.GitRef[]>;
+    getRefs(repositoryId: string, project?: string, filter?: string, includeLinks?: boolean, includeStatuses?: boolean, includeMyBranches?: boolean, latestStatusesOnly?: boolean, peelTags?: boolean, filterContains?: string): Promise<VSSInterfaces.PagedList<GitInterfaces.GitRef>>;
     updateRef(newRefInfo: GitInterfaces.GitRefUpdate, repositoryId: string, filter: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRef>;
     updateRefs(refUpdates: GitInterfaces.GitRefUpdate[], repositoryId: string, project?: string, projectId?: string): Promise<GitInterfaces.GitRefUpdateResult[]>;
     createFavorite(favorite: GitInterfaces.GitRefFavorite, project: string): Promise<GitInterfaces.GitRefFavorite>;
     deleteRefFavorite(project: string, favoriteId: number): Promise<void>;
     getRefFavorite(project: string, favoriteId: number): Promise<GitInterfaces.GitRefFavorite>;
     getRefFavorites(project: string, repositoryId?: string, identityId?: string): Promise<GitInterfaces.GitRefFavorite[]>;
+    getRefFavoritesForProject(project: string, identityId?: string): Promise<GitInterfaces.GitRefFavorite[]>;
     createRepository(gitRepositoryToCreate: GitInterfaces.GitRepositoryCreateOptions, project?: string, sourceRef?: string): Promise<GitInterfaces.GitRepository>;
     deleteRepository(repositoryId: string, project?: string): Promise<void>;
     getRepositories(project?: string, includeLinks?: boolean, includeAllUrls?: boolean, includeHidden?: boolean): Promise<GitInterfaces.GitRepository[]>;
@@ -141,7 +155,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getRepositoryWithParent(repositoryId: string, includeParent: boolean, project?: string): Promise<GitInterfaces.GitRepository>;
     updateRepository(newRepositoryInfo: GitInterfaces.GitRepository, repositoryId: string, project?: string): Promise<GitInterfaces.GitRepository>;
     getRevertConflict(repositoryId: string, revertId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
-    getRevertConflicts(repositoryId: string, revertId: number, project?: string, continuationToken?: string, top?: number, excludeResolved?: boolean, onlyResolved?: boolean, includeObsolete?: boolean): Promise<GitInterfaces.GitConflict[]>;
+    getRevertConflicts(repositoryId: string, revertId: number, project?: string, continuationToken?: string, top?: number, excludeResolved?: boolean, onlyResolved?: boolean, includeObsolete?: boolean): Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
     updateRevertConflict(conflict: GitInterfaces.GitConflict, repositoryId: string, revertId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     updateRevertConflicts(conflictUpdates: GitInterfaces.GitConflict[], repositoryId: string, revertId: number, project?: string): Promise<GitInterfaces.GitConflictUpdateResult[]>;
     createRevert(revertToCreate: GitInterfaces.GitAsyncRefOperationParameters, project: string, repositoryId: string): Promise<GitInterfaces.GitRevert>;
@@ -160,6 +174,518 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     public static readonly RESOURCE_AREA_ID = "4e080c62-fa21-4fbc-8fef-2a10a2b38049";
+
+    /**
+     * DELETE Deletes Enablement status and BillableCommitters data from DB. Deleting the enablement data will effectively disable it for the repositories affected.
+     * 
+     * @param {boolean} allProjects
+     * @param {boolean} includeBillableCommitters
+     * @param {string[]} projectIds
+     */
+    public async deleteEnablementStatus(
+        allProjects: boolean,
+        includeBillableCommitters?: boolean,
+        projectIds?: string[]
+        ): Promise<void> {
+        if (allProjects == null) {
+            throw new TypeError('allProjects can not be null or undefined');
+        }
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$allProjects': allProjects,
+                '$includeBillableCommitters': includeBillableCommitters,
+                projectIds: projectIds,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * GET Enablement status for project's repositories.
+     * 
+     * @param {string[]} projectIds - Null defaults to all projects in the host, list of project's repos status to return
+     * @param {Date} billingDate - UTC expected, Null defaults to UtcNow(), can be provided for a point in time status
+     * @param {number} skip - Skip X rows of resultset to simulate paging.
+     * @param {number} take - Return Y rows of resultset to simulate paging.
+     */
+    public async getEnablementStatus(
+        projectIds?: string[],
+        billingDate?: Date,
+        skip?: number,
+        take?: number
+        ): Promise<GitInterfaces.AdvSecEnablementStatus[]> {
+
+        return new Promise<GitInterfaces.AdvSecEnablementStatus[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                projectIds: projectIds,
+                '$billingDate': billingDate,
+                '$skip': skip,
+                '$take': take,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.AdvSecEnablementStatus[]>;
+                res = await this.rest.get<GitInterfaces.AdvSecEnablementStatus[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.AdvSecEnablementStatus,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {boolean} enableOnCreateHost
+     */
+    public async getEnableOnCreateHost(
+        enableOnCreateHost: boolean
+        ): Promise<boolean> {
+        if (enableOnCreateHost == null) {
+            throw new TypeError('enableOnCreateHost can not be null or undefined');
+        }
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$enableOnCreateHost': enableOnCreateHost,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<boolean>;
+                res = await this.rest.get<boolean>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} enableOnCreateProjectId
+     */
+    public async getEnableOnCreateProject(
+        enableOnCreateProjectId: string
+        ): Promise<boolean> {
+        if (enableOnCreateProjectId == null) {
+            throw new TypeError('enableOnCreateProjectId can not be null or undefined');
+        }
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$enableOnCreateProjectId': enableOnCreateProjectId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<boolean>;
+                res = await this.rest.get<boolean>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {boolean} enableOnCreateHost
+     */
+    public async setEnableOnCreateHost(
+        enableOnCreateHost: boolean
+        ): Promise<void> {
+        if (enableOnCreateHost == null) {
+            throw new TypeError('enableOnCreateHost can not be null or undefined');
+        }
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$enableOnCreateHost': enableOnCreateHost,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.replace<void>(url, null, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} enableOnCreateProjectId
+     * @param {boolean} enableOnStatus
+     */
+    public async setEnableOnCreateProject(
+        enableOnCreateProjectId: string,
+        enableOnStatus: boolean
+        ): Promise<void> {
+        if (enableOnCreateProjectId == null) {
+            throw new TypeError('enableOnCreateProjectId can not be null or undefined');
+        }
+        if (enableOnStatus == null) {
+            throw new TypeError('enableOnStatus can not be null or undefined');
+        }
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$enableOnCreateProjectId': enableOnCreateProjectId,
+                '$enableOnStatus': enableOnStatus,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.replace<void>(url, null, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * POST Enablement status for repositories.
+     * 
+     * @param {GitInterfaces.AdvSecEnablementUpdate[]} enablementUpdates
+     */
+    public async updateEnablementStatus(
+        enablementUpdates: GitInterfaces.AdvSecEnablementUpdate[]
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "b43dd56f-a1b4-47a5-a857-73fc1b6c700c",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, enablementUpdates, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get estimated billable pushers for an Organization for last 90 days.
+     * 
+     */
+    public async getEstimatedBillablePushersOrg(
+        ): Promise<GitInterfaces.BillablePusher[]> {
+
+        return new Promise<GitInterfaces.BillablePusher[]>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "2277ffbe-28d4-40d6-9c26-40baf26d1408",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.BillablePusher[]>;
+                res = await this.rest.get<GitInterfaces.BillablePusher[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get estimated billable pushers for a project for last 90 days.
+     * 
+     * @param {string} project - Project ID or project name
+     */
+    public async getEstimatedBillablePushersProject(
+        project: string
+        ): Promise<GitInterfaces.BillablePusher[]> {
+
+        return new Promise<GitInterfaces.BillablePusher[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "1df7833e-1eed-447b-81a3-390c74923900",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.BillablePusher[]>;
+                res = await this.rest.get<GitInterfaces.BillablePusher[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get estimated billable committers for a repository for the last 90 days.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repositoryId
+     */
+    public async getEstimatedBillableCommittersRepo(
+        project: string,
+        repositoryId: string
+        ): Promise<GitInterfaces.BillableCommitter[]> {
+
+        return new Promise<GitInterfaces.BillableCommitter[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "5dcec07b-a844-4efb-9fc1-968fd1f149db",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.BillableCommitter[]>;
+                res = await this.rest.get<GitInterfaces.BillableCommitter[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * GET Advanced Security Permission status.
+     * 
+     * @param {string} projectName
+     * @param {string} repositoryId - Repository user is trying to access
+     * @param {string} permission - Permission being requestd, must be "viewAlert" "dismissAlert" "manage" "viewEnablement" or "repoRead"
+     */
+    public async getPermission(
+        projectName?: string,
+        repositoryId?: string,
+        permission?: string
+        ): Promise<boolean> {
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            let routeValues: any = {
+            };
+
+            let queryValues: any = {
+                '$projectName': projectName,
+                '$repositoryId': repositoryId,
+                '$permission': permission,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "61b21a05-a60f-4910-a733-ba5347c2142d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<boolean>;
+                res = await this.rest.get<boolean>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
 
     /**
      * Create an annotated tag.
@@ -182,7 +708,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
@@ -229,7 +755,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5e8a8081-3851-4626-b677-9891cc04102e",
                     routeValues);
@@ -244,6 +770,114 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitAnnotatedTag,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieve actual billable committers for Advanced Security service for a given date.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {Date} billingDate - UTC expected.  If not specified defaults to the previous billing day.
+     * @param {number} skip - Skip X rows of resultset to simulate paging.
+     * @param {number} take - Return Y rows of resultset to simulate paging.
+     */
+    public async getBillableCommitters(
+        project: string,
+        billingDate?: Date,
+        skip?: number,
+        take?: number
+        ): Promise<GitInterfaces.BillableCommitter[]> {
+
+        return new Promise<GitInterfaces.BillableCommitter[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                '$billingDate': billingDate,
+                '$skip': skip,
+                '$take': take,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "5c5e3ebc-37b0-4547-a957-945912d44922",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.BillableCommitter[]>;
+                res = await this.rest.get<GitInterfaces.BillableCommitter[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieve detailed actual billable committers for Advanced Security service for a given date. Detailed results intentionally does not filter out soft deleted projects and repositories to help diagnose billing issues.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} includeDetails - Return all the details on the billable committers.
+     * @param {Date} billingDate - UTC expected. If not specified defaults to the previous billing day.
+     */
+    public async getBillableCommittersDetail(
+        project: string,
+        includeDetails: string,
+        billingDate?: Date
+        ): Promise<GitInterfaces.BillableCommitterDetail[]> {
+        if (includeDetails == null) {
+            throw new TypeError('includeDetails can not be null or undefined');
+        }
+
+        return new Promise<GitInterfaces.BillableCommitterDetail[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                '$includeDetails': includeDetails,
+                '$billingDate': billingDate,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "5c5e3ebc-37b0-4547-a957-945912d44922",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.BillableCommitterDetail[]>;
+                res = await this.rest.get<GitInterfaces.BillableCommitterDetail[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.BillableCommitterDetail,
+                                              true);
 
                 resolve(ret);
                 
@@ -288,7 +922,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
@@ -348,7 +982,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
@@ -393,7 +1027,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
@@ -445,7 +1079,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "7b28e929-2c99-405d-9c5c-6167a06e6816",
                     routeValues,
@@ -494,7 +1128,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
@@ -545,7 +1179,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues,
@@ -590,7 +1224,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "d5b216de-d8d5-4d32-ae76-51df755b16d3",
                     routeValues);
@@ -646,7 +1280,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5bf884f5-3e07-42e9-afb8-1b872267bf16",
                     routeValues,
@@ -697,7 +1331,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1fe5aab2-d4c0-4b2f-a030-f3831e7aca26",
                     routeValues);
@@ -743,9 +1377,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         excludeResolved?: boolean,
         onlyResolved?: boolean,
         includeObsolete?: boolean
-        ): Promise<GitInterfaces.GitConflict[]> {
+        ): Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>> {
 
-        return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -762,7 +1396,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1fe5aab2-d4c0-4b2f-a030-f3831e7aca26",
                     routeValues,
@@ -772,8 +1406,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
-                res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitConflict,
@@ -815,7 +1449,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1fe5aab2-d4c0-4b2f-a030-f3831e7aca26",
                     routeValues);
@@ -864,7 +1498,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1fe5aab2-d4c0-4b2f-a030-f3831e7aca26",
                     routeValues);
@@ -917,7 +1551,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "8af142a4-27c2-4168-9e82-46b8629aaa0d",
                     routeValues,
@@ -964,7 +1598,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
@@ -1011,7 +1645,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues);
@@ -1064,7 +1698,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "033bad68-9a14-43d1-90e0-59cb8856fef6",
                     routeValues,
@@ -1135,7 +1769,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "615588d5-c0c7-4b88-88f8-e625306446e8",
                     routeValues,
@@ -1189,7 +1823,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
@@ -1249,7 +1883,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
@@ -1312,7 +1946,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "c2570c3b-5b3f-41b8-98bf-5407bfde8d58",
                     routeValues,
@@ -1344,8 +1978,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * @param {GitInterfaces.GitQueryCommitsCriteria} searchCriteria - Search options
      * @param {string} repositoryId - The name or ID of the repository.
      * @param {string} project - Project ID or project name
-     * @param {number} skip - Number of commits to skip.
-     * @param {number} top - Maximum number of commits to return.
+     * @param {number} skip - Number of commits to skip. The value cannot exceed 3,000,000.
+     * @param {number} top - Maximum number of commits to return. The value cannot exceed 50,000.
      * @param {boolean} includeStatuses - True to include additional commit status information.
      */
     public async getCommitsBatch(
@@ -1371,7 +2005,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "6400dfb2-0bcb-462b-b992-5a57f8f1416c",
                     routeValues,
@@ -1413,7 +2047,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "2b6869c4-cb25-42b5-b7a3-0d3e6be0a11a",
                     routeValues);
@@ -1459,7 +2093,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "c4c5a7e6-e9f3-4730-a92b-84baacff694b",
                     routeValues);
@@ -1512,7 +2146,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "158c0340-bf6f-489c-9625-d572a1480d57",
                     routeValues,
@@ -1565,7 +2199,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
@@ -1619,7 +2253,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
@@ -1673,7 +2307,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "1703f858-b9d1-46af-ab62-483e9e1055b5",
                     routeValues,
@@ -1720,7 +2354,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
@@ -1767,7 +2401,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
@@ -1817,7 +2451,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues,
@@ -1867,7 +2501,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "01828ddc-3600-4a41-8633-99b3a73a0eb3",
                     routeValues);
@@ -1947,7 +2581,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
@@ -2028,7 +2662,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
@@ -2092,7 +2726,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
@@ -2173,7 +2807,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
@@ -2246,7 +2880,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "fb93c0db-47ed-4a31-8c20-47552878fb44",
                     routeValues,
@@ -2285,7 +2919,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "630fd2e4-fb88-4f85-ad21-13f3fd1fbca9",
                     routeValues);
@@ -2347,7 +2981,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "7cf2abb6-c964-4f7e-9872-f78c66e72e9c",
                     routeValues,
@@ -2400,7 +3034,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "985f7ae9-844f-4906-9897-7ef41516c0e2",
                     routeValues,
@@ -2454,7 +3088,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "985f7ae9-844f-4906-9897-7ef41516c0e2",
                     routeValues,
@@ -2511,7 +3145,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
@@ -2562,7 +3196,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
@@ -2612,7 +3246,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
@@ -2651,7 +3285,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
@@ -2701,7 +3335,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965d9361-878b-413b-a494-45d5b5fd8ab7",
                     routeValues);
@@ -2746,7 +3380,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
@@ -2799,7 +3433,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
@@ -2852,7 +3486,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "5f2e2851-1389-425b-a00b-fb2adb3ef31b",
                     routeValues);
@@ -2911,7 +3545,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "e7ea0883-095f-4926-b5fb-f24691c26fb9",
                     routeValues,
@@ -2948,9 +3582,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         repositoryId: string,
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitCommitRef[]> {
+        ): Promise<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>> {
 
-        return new Promise<GitInterfaces.GitCommitRef[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -2959,7 +3593,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "52823034-34a8-4576-922c-8d8b77e9e4c4",
                     routeValues);
@@ -2968,8 +3602,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
-                res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitCommitRef,
@@ -3009,7 +3643,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
@@ -3074,7 +3708,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues,
@@ -3127,7 +3761,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
@@ -3176,7 +3810,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "d840fb74-bbef-42d3-b250-564604c054a4",
                     routeValues);
@@ -3238,7 +3872,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4216bdcf-b6b1-4d59-8b82-c34cc183fc8b",
                     routeValues,
@@ -3289,7 +3923,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues);
@@ -3342,7 +3976,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.2",
                     "git",
                     "d43911ee-6958-46b0-a42b-8445b8a0d004",
                     routeValues,
@@ -3395,7 +4029,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
@@ -3448,7 +4082,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
@@ -3501,7 +4135,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
@@ -3551,7 +4185,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
@@ -3607,7 +4241,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "75cf11c5-979f-4038-a76e-058a06adf2bf",
                     routeValues);
@@ -3634,7 +4268,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Create a label for a specified pull request. The only required field is the name of the new label.
+     * Create a tag (if that does not exists yet) and add that as a label (tag) for a specified pull request. The only required field is the name of the new label (tag).
      * 
      * @param {TfsCoreInterfaces.WebApiCreateTagRequestData} label - Label to assign to the pull request.
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
@@ -3663,7 +4297,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
@@ -3690,7 +4324,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Removes a label from the set of those assigned to the pull request.
+     * Removes a label (tag) from the set of those assigned to the pull request. The tag itself will not be deleted.
      * 
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
      * @param {number} pullRequestId - ID of the pull request.
@@ -3720,7 +4354,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
@@ -3747,7 +4381,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Retrieves a single label that has been assigned to a pull request.
+     * Retrieves a single label (tag) that has been assigned to a pull request.
      * 
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
      * @param {number} pullRequestId - ID of the pull request.
@@ -3777,7 +4411,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
@@ -3804,7 +4438,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * Get all the labels assigned to a pull request.
+     * Get all the labels (tags) assigned to a pull request.
      * 
      * @param {string} repositoryId - The repository ID of the pull request’s target branch.
      * @param {number} pullRequestId - ID of the pull request.
@@ -3831,7 +4465,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "f22387e3-984e-4c52-9c6d-fbb8f14c812d",
                     routeValues,
@@ -3879,7 +4513,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
@@ -3932,7 +4566,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "48a52185-5b9e-4736-9dc1-bb1e2feac80b",
                     routeValues);
@@ -3979,7 +4613,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "b3a6eebe-9cf0-49ea-b6cb-1a4c5f5007b0",
                     routeValues);
@@ -4031,7 +4665,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4080,7 +4714,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4129,7 +4763,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4179,7 +4813,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4229,7 +4863,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4276,7 +4910,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4328,7 +4962,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4377,7 +5011,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "4b6702c7-aa35-4b89-9c96-b9abf6d3e540",
                     routeValues);
@@ -4421,7 +5055,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "01a46dea-7d46-4d40-bc84-319e7c260d99",
                     routeValues);
@@ -4480,7 +5114,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "a5d28130-9cd2-40fa-9f08-902e7daa9efb",
                     routeValues,
@@ -4533,7 +5167,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
@@ -4599,7 +5233,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
@@ -4662,7 +5296,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues,
@@ -4712,7 +5346,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "9946fd70-0d40-406e-b686-b4744cbbcc37",
                     routeValues);
@@ -4761,7 +5395,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "696f3a82-47c9-487f-9117-b9d00972ca84",
                     routeValues);
@@ -4810,7 +5444,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
@@ -4860,7 +5494,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
@@ -4910,7 +5544,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
@@ -4957,7 +5591,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
@@ -5010,7 +5644,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "b5f6bb4f-8d1e-4d79-8d11-4c9172c99c35",
                     routeValues);
@@ -5063,7 +5697,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
@@ -5116,7 +5750,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
@@ -5169,7 +5803,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
@@ -5219,7 +5853,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
@@ -5274,7 +5908,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "965a3ec7-5ed8-455a-bdcb-835a5ea7fe7b",
                     routeValues);
@@ -5323,7 +5957,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
@@ -5382,7 +6016,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
@@ -5439,7 +6073,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues,
@@ -5492,7 +6126,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "ab6e2e5d-a0b7-4153-b64a-a4efe0d49449",
                     routeValues);
@@ -5539,7 +6173,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "0a637fcc-5370-4ce8-b0e8-98091f5f9482",
                     routeValues);
@@ -5585,7 +6219,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.3",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues);
@@ -5641,7 +6275,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.3",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
@@ -5698,7 +6332,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.2",
+                    "7.2-preview.3",
                     "git",
                     "ea98d07b-3c87-4971-8ede-a613694ffb55",
                     routeValues,
@@ -5743,7 +6377,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
@@ -5784,7 +6418,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
@@ -5830,7 +6464,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "a663da97-81db-4eb3-8b83-287670f63073",
                     routeValues);
@@ -5878,9 +6512,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         latestStatusesOnly?: boolean,
         peelTags?: boolean,
         filterContains?: string
-        ): Promise<GitInterfaces.GitRef[]> {
+        ): Promise<VSSInterfaces.PagedList<GitInterfaces.GitRef>> {
 
-        return new Promise<GitInterfaces.GitRef[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<GitInterfaces.GitRef>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId
@@ -5898,7 +6532,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
@@ -5908,8 +6542,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<GitInterfaces.GitRef[]>;
-                res = await this.rest.get<GitInterfaces.GitRef[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitRef>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitRef>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitRef,
@@ -5957,7 +6591,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
@@ -6010,7 +6644,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "2d874a60-a811-4f62-9c9f-963a6ea0a55b",
                     routeValues,
@@ -6054,7 +6688,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
@@ -6098,7 +6732,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
@@ -6142,7 +6776,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
                     routeValues);
@@ -6192,9 +6826,55 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "876f70af-5792-485a-a1c7-d0a7b2f42bbb",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
+                res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRefFavorite,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {string} identityId
+     */
+    public async getRefFavoritesForProject(
+        project: string,
+        identityId?: string
+        ): Promise<GitInterfaces.GitRefFavorite[]> {
+
+        return new Promise<GitInterfaces.GitRefFavorite[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                identityId: identityId,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "4720896c-594c-4a6d-b94c-12eddd80b34a",
                     routeValues,
                     queryValues);
 
@@ -6242,7 +6922,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -6287,7 +6967,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -6340,7 +7020,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -6385,7 +7065,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -6438,7 +7118,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -6485,7 +7165,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -6535,7 +7215,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "10d7ae6d-1050-446d-852a-bd5d99f834bf",
                     routeValues);
@@ -6581,9 +7261,9 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
         excludeResolved?: boolean,
         onlyResolved?: boolean,
         includeObsolete?: boolean
-        ): Promise<GitInterfaces.GitConflict[]> {
+        ): Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>> {
 
-        return new Promise<GitInterfaces.GitConflict[]>(async (resolve, reject) => {
+        return new Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project,
                 repositoryId: repositoryId,
@@ -6600,7 +7280,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "10d7ae6d-1050-446d-852a-bd5d99f834bf",
                     routeValues,
@@ -6610,8 +7290,8 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
-                res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitConflict,
@@ -6653,7 +7333,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "10d7ae6d-1050-446d-852a-bd5d99f834bf",
                     routeValues);
@@ -6702,7 +7382,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "10d7ae6d-1050-446d-852a-bd5d99f834bf",
                     routeValues);
@@ -6748,7 +7428,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
@@ -6795,7 +7475,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues);
@@ -6848,7 +7528,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "bc866058-5449-4715-9cf1-a510b6ff193c",
                     routeValues,
@@ -6898,7 +7578,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues);
@@ -6957,7 +7637,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "428dd4fb-fda5-4722-af02-9313b80305da",
                     routeValues,
@@ -7002,7 +7682,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "9393b4fb-4445-4919-972b-9ad16f442d83",
                     routeValues);
@@ -7061,7 +7741,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,
@@ -7121,7 +7801,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.1",
+                    "7.2-preview.1",
                     "git",
                     "729f6437-6f92-44ec-8bee-273a7111063c",
                     routeValues,

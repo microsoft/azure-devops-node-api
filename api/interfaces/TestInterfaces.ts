@@ -545,6 +545,7 @@ export interface CodeCoverageSummary {
      * List of coverage data and details for the build
      */
     coverageData?: CodeCoverageData[];
+    coverageDetailedSummaryStatus?: CoverageDetailedSummaryStatus;
     /**
      * Uri of build against which difference in coverage is computed
      */
@@ -570,6 +571,104 @@ export interface Coverage2 {
     dateModified?: Date;
     lastError?: string;
     state?: number;
+}
+
+/**
+ * Represents status of code coverage summary for a build
+ */
+export enum CoverageDetailedSummaryStatus {
+    /**
+     * No coverage status
+     */
+    None = 0,
+    /**
+     * The summary evaluation is in progress
+     */
+    InProgress = 1,
+    /**
+     * The summary evaluation is finalized and won't change
+     */
+    Finalized = 2,
+    /**
+     * The summary evaluation is pending
+     */
+    Pending = 3,
+    /**
+     * Summary evaluation may be ongoing but another merge has been requested.
+     */
+    UpdateRequestQueued = 4,
+    /**
+     * No coverage modules found
+     */
+    NoModulesFound = 5,
+    /**
+     * Number of Files exceeded
+     */
+    NumberOfFilesExceeded = 6,
+    /**
+     * TNo Input Files
+     */
+    NoInputFiles = 7,
+    /**
+     * Build got cancelled by user
+     */
+    BuildCancelled = 8,
+    /**
+     * Coverage Jobs failed
+     */
+    FailedJobs = 9,
+    /**
+     * Module merge Timeout
+     */
+    ModuleMergeJobTimeout = 10,
+    /**
+     * Coverage successfully completed
+     */
+    CodeCoverageSuccess = 11,
+    /**
+     * Invalid Build Configuration
+     */
+    InvalidBuildConfiguration = 12,
+    /**
+     * Coverage Analyzer Build not found
+     */
+    CoverageAnalyzerBuildNotFound = 13,
+    /**
+     * Failed to requeue the build
+     */
+    FailedToRequeue = 14,
+    /**
+     * Build got Bailed out
+     */
+    BuildBailedOut = 15,
+    /**
+     * No Code coverage configured
+     */
+    NoCodeCoverageTask = 16,
+    /**
+     * CoverageMerge Job failed
+     */
+    MergeJobFailed = 17,
+    /**
+     * CoverageMergeInvoker Job failed
+     */
+    MergeInvokerJobFailed = 18,
+    /**
+     * CoverageMonitor Job failed
+     */
+    MonitorJobFailed = 19,
+    /**
+     * CoverageMergeInvoker Job timeout
+     */
+    ModuleMergeInvokerJobTimeout = 20,
+    /**
+     * CoverageMonitor Job timeout
+     */
+    MonitorJobTimeout = 21,
+    /**
+     * Invalid Coverage Input file
+     */
+    InvalidCoverageInput = 22,
 }
 
 /**
@@ -774,6 +873,11 @@ export interface FileCoverage {
     path: string;
 }
 
+export interface FileCoverageData {
+    coverageStatistics?: CoverageStatistics;
+    name?: string;
+}
+
 export interface FileCoverageRequest {
     filePath: string;
     pullRequestBaseIterationId: number;
@@ -841,6 +945,13 @@ export interface FlakySettings {
     manualMarkUnmarkFlaky?: boolean;
 }
 
+export interface FolderCoverageData {
+    coverageStatistics?: CoverageStatistics;
+    files?: FileCoverageData[];
+    folders?: FolderCoverageData[];
+    name?: string;
+}
+
 export interface FunctionCoverage {
     class?: string;
     name?: string;
@@ -901,6 +1012,21 @@ export interface LastResultDetails {
      * The user who executed the last result.
      */
     runBy?: VSSInterfaces.IdentityRef;
+}
+
+export enum LayoutType {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Entry type for Group information
+     */
+    Group = 1,
+    /**
+     * Entry type for Job information
+     */
+    Job = 2,
 }
 
 export interface LegacyBuildConfiguration {
@@ -1116,6 +1242,20 @@ export interface LineBlockCoverage {
     status: number;
 }
 
+/**
+ * Links
+ */
+export interface Link<T> {
+    /**
+     * Link type
+     */
+    type: T;
+    /**
+     * Link url
+     */
+    url: string;
+}
+
 export interface LinkedWorkItemsQuery {
     automatedTestNames?: string[];
     planId?: number;
@@ -1206,6 +1346,29 @@ export interface NewTestResultLoggingSettings {
      * LogNewTests defines whether or not we will record new test cases coming into the system
      */
     logNewTests?: boolean;
+}
+
+export enum OneMRXSessionState {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Session state with Running
+     */
+    Running = 1,
+    /**
+     * Session state with Completed
+     */
+    Completed = 2,
+    /**
+     * Session state with Waiting
+     */
+    Waiting = 3,
+    /**
+     * Session state with Cancelled
+     */
+    Cancelled = 4,
 }
 
 export enum OperationType {
@@ -2191,6 +2354,119 @@ export enum Service {
 }
 
 /**
+ * This session object is exposed outside for 1MRX to consume and we internally convert to server.OneMRXSession in server.SessionDataContractConverter
+ */
+export interface Session {
+    /**
+     * Session end time
+     */
+    endTimeUTC: Date;
+    /**
+     * Session layout
+     */
+    layout: any[];
+    /**
+     * Session name
+     */
+    name: string;
+    /**
+     * Session result
+     */
+    result: SessionResult;
+    /**
+     * Session source pipeline details
+     */
+    sessionSourcePipeline: SessionSourcePipeline;
+    /**
+     * Session source
+     */
+    source: Source;
+    /**
+     * Session start time
+     */
+    startTimeUTC: Date;
+    /**
+     * Session state
+     */
+    state: OneMRXSessionState;
+    /**
+     * List of test run ids
+     */
+    testRuns: number[];
+    /**
+     * Session timeline
+     */
+    timeline?: Timeline<SessionTimelineType>[];
+    /**
+     * Session type
+     */
+    type: string;
+    /**
+     * Session Uid
+     */
+    uid: string;
+}
+
+export enum SessionLinkType {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Link type for Session information
+     */
+    SessionInfo = 1,
+}
+
+export enum SessionResult {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Session result with Passed
+     */
+    Passed = 1,
+    /**
+     * Session result with Failed
+     */
+    Failed = 2,
+}
+
+/**
+ * SessionSourcePipeline
+ */
+export interface SessionSourcePipeline {
+    /**
+     * Source pipeline id
+     */
+    buildId: number;
+    /**
+     * Source pipeline url
+     */
+    buildUrl: string;
+}
+
+export enum SessionTimelineType {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Timeline type for Queued status
+     */
+    Queued = 1,
+    /**
+     * Timeline type for Completed status
+     */
+    Completed = 2,
+    /**
+     * Timeline type for Started status
+     */
+    Started = 3,
+}
+
+/**
  * An abstracted reference to some other resource. This class is used to provide the build data contracts with a uniform way to reference other resources in a way that provides easy traversal through links.
  */
 export interface ShallowReference {
@@ -2235,6 +2511,43 @@ export interface SharedStepModel {
      * Shared step workitem revision.
      */
     revision: number;
+}
+
+/**
+ * Session source
+ */
+export interface Source {
+    /**
+     * Source links
+     */
+    links?: Link<SessionLinkType>[];
+    /**
+     * Source origin system
+     */
+    originSystem: string;
+    /**
+     * Source session id
+     */
+    sessionId: string;
+    /**
+     * Source tenant Id
+     */
+    tenantId: string;
+    /**
+     * Source tenant name
+     */
+    tenantName: string;
+}
+
+export interface SourceViewBuildCoverage {
+    /**
+     * Build Configuration
+     */
+    configuration?: BuildConfiguration;
+    /**
+     * Folder Level CoverageDetails
+     */
+    folderCoverageData?: FolderCoverageData;
 }
 
 /**
@@ -3378,6 +3691,10 @@ export enum TestLogType {
      * Subresult Attachment
      */
     System = 5,
+    /**
+     * merged Coverage file
+     */
+    MergedCoverageFile = 6,
 }
 
 export interface TestMessageLog2 {
@@ -5148,6 +5465,24 @@ export interface TestVariable {
     values?: string[];
 }
 
+/**
+ * Timeline
+ */
+export interface Timeline<T> {
+    /**
+     * Timeline display name
+     */
+    display: string;
+    /**
+     * Timeline timestamp
+     */
+    timestampUTC: Date;
+    /**
+     * Timeline type
+     */
+    type: T;
+}
+
 export interface UpdatedProperties {
     id?: number;
     lastUpdated?: Date;
@@ -5261,6 +5596,33 @@ export var TypeInfo = {
     },
     Coverage2: <any>{
     },
+    CoverageDetailedSummaryStatus: {
+        enumValues: {
+            "none": 0,
+            "inProgress": 1,
+            "finalized": 2,
+            "pending": 3,
+            "updateRequestQueued": 4,
+            "noModulesFound": 5,
+            "numberOfFilesExceeded": 6,
+            "noInputFiles": 7,
+            "buildCancelled": 8,
+            "failedJobs": 9,
+            "moduleMergeJobTimeout": 10,
+            "codeCoverageSuccess": 11,
+            "invalidBuildConfiguration": 12,
+            "coverageAnalyzerBuildNotFound": 13,
+            "failedToRequeue": 14,
+            "buildBailedOut": 15,
+            "noCodeCoverageTask": 16,
+            "mergeJobFailed": 17,
+            "mergeInvokerJobFailed": 18,
+            "monitorJobFailed": 19,
+            "moduleMergeInvokerJobTimeout": 20,
+            "monitorJobTimeout": 21,
+            "invalidCoverageInput": 22
+        }
+    },
     CoverageQueryFlags: {
         enumValues: {
             "modules": 1,
@@ -5330,6 +5692,13 @@ export var TypeInfo = {
     },
     LastResultDetails: <any>{
     },
+    LayoutType: {
+        enumValues: {
+            "none": 0,
+            "group": 1,
+            "job": 2
+        }
+    },
     LegacyBuildConfiguration: <any>{
     },
     LegacyReleaseReference: <any>{
@@ -5346,6 +5715,15 @@ export var TypeInfo = {
             "resultSummary": 2,
             "resultsAnalysis": 3,
             "runSummary": 4
+        }
+    },
+    OneMRXSessionState: {
+        enumValues: {
+            "none": 0,
+            "running": 1,
+            "completed": 2,
+            "waiting": 3,
+            "cancelled": 4
         }
     },
     OperationType: {
@@ -5449,6 +5827,31 @@ export var TypeInfo = {
             "tcm": 1,
             "tfs": 2
         }
+    },
+    Session: <any>{
+    },
+    SessionLinkType: {
+        enumValues: {
+            "none": 0,
+            "sessionInfo": 1
+        }
+    },
+    SessionResult: {
+        enumValues: {
+            "none": 0,
+            "passed": 1,
+            "failed": 2
+        }
+    },
+    SessionTimelineType: {
+        enumValues: {
+            "none": 0,
+            "queued": 1,
+            "completed": 2,
+            "started": 3
+        }
+    },
+    SourceViewBuildCoverage: <any>{
     },
     SuiteExpand: {
         enumValues: {
@@ -5555,7 +5958,8 @@ export var TypeInfo = {
             "codeCoverage": 2,
             "testImpact": 3,
             "intermediate": 4,
-            "system": 5
+            "system": 5,
+            "mergedCoverageFile": 6
         }
     },
     TestMessageLogDetails: <any>{
@@ -5762,6 +6166,8 @@ export var TypeInfo = {
     },
     TestSummaryForWorkItem: <any>{
     },
+    Timeline: <any>{
+    },
     UpdatedProperties: <any>{
     },
     UpdateTestRunRequest: <any>{
@@ -5897,6 +6303,9 @@ TypeInfo.CloneOperationInformation.fields = {
 };
 
 TypeInfo.CodeCoverageSummary.fields = {
+    coverageDetailedSummaryStatus: {
+        enumType: TypeInfo.CoverageDetailedSummaryStatus
+    },
     status: {
         enumType: TypeInfo.CoverageSummaryStatus
     }
@@ -6277,6 +6686,27 @@ TypeInfo.RunUpdateModel.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
+    }
+};
+
+TypeInfo.Session.fields = {
+    endTimeUTC: {
+        isDate: true,
+    },
+    result: {
+        enumType: TypeInfo.SessionResult
+    },
+    startTimeUTC: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.OneMRXSessionState
+    },
+};
+
+TypeInfo.SourceViewBuildCoverage.fields = {
+    configuration: {
+        typeInfo: TypeInfo.BuildConfiguration
     }
 };
 
@@ -6915,6 +7345,12 @@ TypeInfo.TestSuite.fields = {
 TypeInfo.TestSummaryForWorkItem.fields = {
     summary: {
         typeInfo: TypeInfo.AggregatedDataForResultTrend
+    }
+};
+
+TypeInfo.Timeline.fields = {
+    timestampUTC: {
+        isDate: true,
     }
 };
 
