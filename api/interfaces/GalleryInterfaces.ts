@@ -847,6 +847,19 @@ export enum ExtensionQueryFlags {
      * AllAttributes is designed to be a mask that defines all sub-elements of the extension should be returned.  NOTE: This is not actually All flags. This is now locked to the set defined since changing this enum would be a breaking change and would change the behavior of anyone using it. Try not to use this value when making calls to the service, instead be explicit about the options required.
      */
     AllAttributes = 16863,
+    /**
+     * Excluding unpublished extensions from acquisition flow. The flag indicates whether an extension is unpublished or locked.
+     */
+    ExcludeUnpublished1 = 4356,
+    ExcludeUnpublished2 = 4372,
+    ExcludeUnpublished3 = 6404,
+    ExcludeUnpublished4 = 6420,
+    ExcludeUnpublished5 = 8196,
+    ExcludeUnpublished6 = 20740,
+    ExcludeUnpublished7 = 20756,
+    ExcludeUnpublished8 = 22788,
+    ExcludeUnpublished9 = 22804,
+    ExcludeUnpublished10 = 37124,
 }
 
 /**
@@ -2128,7 +2141,17 @@ export var TypeInfo = {
             "includeLcids": 8192,
             "includeSharedOrganizations": 16384,
             "includeNameConflictInfo": 32768,
-            "allAttributes": 16863
+            "allAttributes": 16863,
+            "excludeUnpublished1": 4356,
+            "excludeUnpublished2": 4372,
+            "excludeUnpublished3": 6404,
+            "excludeUnpublished4": 6420,
+            "excludeUnpublished5": 8196,
+            "excludeUnpublished6": 20740,
+            "excludeUnpublished7": 20756,
+            "excludeUnpublished8": 22788,
+            "excludeUnpublished9": 22804,
+            "excludeUnpublished10": 37124
         }
     },
     ExtensionQueryResult: <any>{

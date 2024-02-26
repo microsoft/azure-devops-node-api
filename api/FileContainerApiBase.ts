@@ -21,7 +21,7 @@ export interface IFileContainerApiBase extends basem.ClientApiBase {
     createItems(items: VSSInterfaces.VssJsonCollectionWrapperV<FileContainerInterfaces.FileContainerItem[]>, containerId: number, scope?: string): Promise<FileContainerInterfaces.FileContainerItem[]>;
     deleteItem(containerId: number, itemPath: string, scope?: string): Promise<void>;
     getContainers(scope?: string, artifactUris?: string): Promise<FileContainerInterfaces.FileContainer[]>;
-    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string, includeDownloadTickets?: boolean, isShallow?: boolean, ignoreRequestedMediaType?: boolean, includeBlobMetadata?: boolean, saveAbsolutePath?: boolean): Promise<FileContainerInterfaces.FileContainerItem[]>;
+    getItems(containerId: number, scope?: string, itemPath?: string, metadata?: boolean, format?: string, downloadFileName?: string, includeDownloadTickets?: boolean, isShallow?: boolean, ignoreRequestedMediaType?: boolean, includeBlobMetadata?: boolean, saveAbsolutePath?: boolean, preferRedirect?: boolean): Promise<FileContainerInterfaces.FileContainerItem[]>;
 }
 
 export class FileContainerApiBase extends basem.ClientApiBase implements IFileContainerApiBase {
@@ -53,7 +53,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.4",
+                    "7.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -107,7 +107,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.4",
+                    "7.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -155,7 +155,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.4",
+                    "7.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,
@@ -193,6 +193,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
      * @param {boolean} ignoreRequestedMediaType
      * @param {boolean} includeBlobMetadata
      * @param {boolean} saveAbsolutePath
+     * @param {boolean} preferRedirect
      */
     public async getItems(
         containerId: number,
@@ -205,7 +206,8 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
         isShallow?: boolean,
         ignoreRequestedMediaType?: boolean,
         includeBlobMetadata?: boolean,
-        saveAbsolutePath?: boolean
+        saveAbsolutePath?: boolean,
+        preferRedirect?: boolean
         ): Promise<FileContainerInterfaces.FileContainerItem[]> {
 
         return new Promise<FileContainerInterfaces.FileContainerItem[]>(async (resolve, reject) => {
@@ -224,11 +226,12 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 ignoreRequestedMediaType: ignoreRequestedMediaType,
                 includeBlobMetadata: includeBlobMetadata,
                 saveAbsolutePath: saveAbsolutePath,
+                preferRedirect: preferRedirect,
             };
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.1-preview.4",
+                    "7.2-preview.4",
                     "Container",
                     "e4f5c81e-e250-447b-9fef-bd48471bea5e",
                     routeValues,

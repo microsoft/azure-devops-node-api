@@ -697,6 +697,10 @@ export interface Condition {
      */
     name?: string;
     /**
+     * The release condition result.
+     */
+    result?: boolean;
+    /**
      * Gets or set value of the condition.
      */
     value?: string;
@@ -1135,6 +1139,7 @@ export interface DeploymentJob {
 }
 
 export interface DeploymentManualInterventionPendingEvent {
+    approval?: ReleaseApproval;
     deployment?: Deployment;
     emailRecipients?: string[];
     environmentOwner?: VSSInterfaces.IdentityRef;
@@ -2389,10 +2394,6 @@ export interface ReleaseArtifact {
 }
 
 export interface ReleaseCondition extends Condition {
-    /**
-     * The release condition result.
-     */
-    result?: boolean;
 }
 
 export interface ReleaseCreatedEvent extends ReleaseEvent {
@@ -4957,6 +4958,9 @@ TypeInfo.DeploymentJob.fields = {
 };
 
 TypeInfo.DeploymentManualInterventionPendingEvent.fields = {
+    approval: {
+        typeInfo: TypeInfo.ReleaseApproval
+    },
     deployment: {
         typeInfo: TypeInfo.Deployment
     },

@@ -219,7 +219,7 @@ export enum Operation {
 /**
  * A list that contains a single page of results from a query.
  */
-export interface PagedList<T> {
+export interface PagedList<T> extends Array<T> {
     /**
      * A string that can be passed to the same endpoint that returned this PagedList in order to retrieve the next page of results.
      */
@@ -368,6 +368,16 @@ export interface TraceFilter {
     userLogin?: string;
 }
 
+export enum UserProfileSyncState {
+    None = 0,
+    Completed = 1,
+    NewProfileDataAndImageRetrieved = 2,
+    ProfileDataBackupDone = 3,
+    NewProfileDataSet = 4,
+    NewProfileDataUpdateFailed = 5,
+    NewProfileImageUpdateFailed = 6,
+}
+
 export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {
     value?: any[];
 }
@@ -482,6 +492,17 @@ export var TypeInfo = {
     SignedUrl: <any>{
     },
     TraceFilter: <any>{
+    },
+    UserProfileSyncState: {
+        enumValues: {
+            "none": 0,
+            "completed": 1,
+            "newProfileDataAndImageRetrieved": 2,
+            "profileDataBackupDone": 3,
+            "newProfileDataSet": 4,
+            "newProfileDataUpdateFailed": 5,
+            "newProfileImageUpdateFailed": 6
+        }
     },
     VssNotificationEvent: <any>{
     },

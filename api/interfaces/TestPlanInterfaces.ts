@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ---------------------------------------------------------
  * Copyright(C) Microsoft Corporation. All rights reserved.
  * ---------------------------------------------------------
@@ -934,10 +934,10 @@ export interface TestPlanReference {
  */
 export interface TestPlansHubRefreshData {
     defineColumnOptionFields?: string[];
-    defineTabCustomColumnFieldMap?: { [key: string]: string; };
+    defineTabCustomColumnFieldMap?: { [key: string] : string; };
     errorMessage?: string;
     executeColumnOptionFields?: string[];
-    executeTabCustomColumnFieldMap?: { [key: string]: string; };
+    executeTabCustomColumnFieldMap?: { [key: string] : string; };
     isAdvancedExtensionEnabled?: boolean;
     selectedPivotId?: string;
     selectedSuiteId?: number;

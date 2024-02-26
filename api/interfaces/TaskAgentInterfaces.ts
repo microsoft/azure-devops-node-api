@@ -573,6 +573,8 @@ export enum ElasticComputeState {
     Failed = 4,
     Stopped = 5,
     Reimaging = 6,
+    UnhealthyVm = 7,
+    UnhealthyVmssVm = 8,
 }
 
 /**
@@ -655,6 +657,9 @@ export enum ElasticNodeState {
     FailedToRestartPendingDelete = 16,
     FailedVMPendingDelete = 17,
     AssignedPendingDelete = 18,
+    RetryDelete = 19,
+    UnhealthyVm = 20,
+    UnhealthyVmPendingDelete = 21,
 }
 
 /**
@@ -689,6 +694,10 @@ export interface ElasticPool {
      * Timestamp the pool was first detected to be offline
      */
     offlineSince?: Date;
+    /**
+     * Operating system type of the nodes in the pool
+     */
+    orchestrationType?: OrchestrationType;
     /**
      * Operating system type of the nodes in the pool
      */
@@ -795,6 +804,10 @@ export interface ElasticPoolSettings {
      * Keep machines in the pool on failure for investigation
      */
     maxSavedNodeCount?: number;
+    /**
+     * Operating system type of the machines in the pool
+     */
+    orchestrationType?: OrchestrationType;
     /**
      * Operating system type of the machines in the pool
      */
@@ -1463,6 +1476,11 @@ export enum OperationType {
     DeleteVMs = 4,
 }
 
+export enum OrchestrationType {
+    Uniform = 0,
+    Flexible = 1,
+}
+
 /**
  * Represents a downloadable package.
  */
@@ -1569,6 +1587,10 @@ export interface ResourceItem {
      * Gets or sets Id of the resource.
      */
     id?: string;
+    /**
+     * Indicates whether resource is outdated or not.
+     */
+    isOutdated?: boolean;
     /**
      * Indicates whether resource is shared with other projects or not.
      */
@@ -1753,6 +1775,10 @@ export interface ServiceEndpoint {
      * Gets or sets the identifier of this endpoint.
      */
     id?: string;
+    /**
+     * If this endpoint is disabled.
+     */
+    isDisabled?: boolean;
     /**
      * EndPoint state indicator
      */
@@ -2768,12 +2794,17 @@ export interface TaskCommandRestrictions {
 
 export interface TaskCompletedEvent extends TaskEvent {
     /**
+     * The api request was no delivered successfully
+     */
+    deliveryFailed?: boolean;
+    /**
      * The result of the task.
      */
     result?: TaskResult;
 }
 
 export interface TaskDefinition {
+    _buildConfigMapping?: { [key: string] : string; };
     agentExecution?: TaskExecution;
     author?: string;
     category?: string;
@@ -3583,6 +3614,24 @@ export interface TimelineRecordFeedLinesWrapper {
 }
 
 /**
+ * A reference to a timeline record.
+ */
+export interface TimelineRecordReference {
+    /**
+     * The ID of the record.
+     */
+    id?: string;
+    /**
+     * String identifier that is consistent across attempts.
+     */
+    identifier?: string;
+    /**
+     * The state of the record.
+     */
+    state?: TimelineRecordState;
+}
+
+/**
  * The state of the timeline record.
  */
 export enum TimelineRecordState {
@@ -3902,7 +3951,9 @@ export var TypeInfo = {
             "deleting": 3,
             "failed": 4,
             "stopped": 5,
-            "reimaging": 6
+            "reimaging": 6,
+            "unhealthyVm": 7,
+            "unhealthyVmssVm": 8
         }
     },
     ElasticNode: <any>{
@@ -3929,7 +3980,10 @@ export var TypeInfo = {
             "failedToStartPendingDelete": 15,
             "failedToRestartPendingDelete": 16,
             "failedVMPendingDelete": 17,
-            "assignedPendingDelete": 18
+            "assignedPendingDelete": 18,
+            "retryDelete": 19,
+            "unhealthyVm": 20,
+            "unhealthyVmPendingDelete": 21
         }
     },
     ElasticPool: <any>{
@@ -4038,6 +4092,12 @@ export var TypeInfo = {
             "increaseCapacity": 2,
             "reimage": 3,
             "deleteVMs": 4
+        }
+    },
+    OrchestrationType: {
+        enumValues: {
+            "uniform": 0,
+            "flexible": 1
         }
     },
     PackageMetadata: <any>{
@@ -4329,6 +4389,8 @@ export var TypeInfo = {
     },
     TimelineRecord: <any>{
     },
+    TimelineRecordReference: <any>{
+    },
     TimelineRecordState: {
         enumValues: {
             "pending": 0,
@@ -4526,6 +4588,9 @@ TypeInfo.ElasticPool.fields = {
     offlineSince: {
         isDate: true,
     },
+    orchestrationType: {
+        enumType: TypeInfo.OrchestrationType
+    },
     osType: {
         enumType: TypeInfo.OperatingSystemType
     },
@@ -4559,6 +4624,9 @@ TypeInfo.ElasticPoolLog.fields = {
 };
 
 TypeInfo.ElasticPoolSettings.fields = {
+    orchestrationType: {
+        enumType: TypeInfo.OrchestrationType
+    },
     osType: {
         enumType: TypeInfo.OperatingSystemType
     }
@@ -5188,6 +5256,12 @@ TypeInfo.TimelineRecord.fields = {
     startTime: {
         isDate: true,
     },
+    state: {
+        enumType: TypeInfo.TimelineRecordState
+    }
+};
+
+TypeInfo.TimelineRecordReference.fields = {
     state: {
         enumType: TypeInfo.TimelineRecordState
     }

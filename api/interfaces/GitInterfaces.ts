@@ -15,6 +15,48 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AdvSecEnablementStatus {
+    /**
+     * Enabled by VSID
+     */
+    changedById?: string;
+    /**
+     * Enabled changed on datetime
+     */
+    changedOnDate?: Date;
+    /**
+     * Enabled status 0 disabled, 1 enabled, Null never explicitly set, always whatever project is, ya this should probably be an enum somewhere
+     */
+    enabled?: boolean;
+    /**
+     * Enabled changed on datetime To Be Removed M223 +
+     */
+    enabledChangedOnDate?: Date;
+    /**
+     * ProjectId
+     */
+    projectId?: string;
+    /**
+     * RepositoryId
+     */
+    repositoryId?: string;
+}
+
+export interface AdvSecEnablementUpdate {
+    /**
+     * New status
+     */
+    newStatus?: boolean;
+    /**
+     * ProjectId
+     */
+    projectId?: string;
+    /**
+     * RepositoryId Actual RepositoryId to Modify or Magic Repository Id "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF" for ALL Repositories for that project
+     */
+    repositoryId?: string;
+}
+
 export interface AssociatedWorkItem {
     assignedTo?: string;
     /**
@@ -102,6 +144,89 @@ export interface Attachment {
  * Real time event (SignalR) for an auto-complete update on a pull request
  */
 export interface AutoCompleteUpdatedEvent extends RealTimePullRequestEvent {
+}
+
+/**
+ * Used by AdvSec to return billable committers.
+ */
+export interface BillableCommitter {
+    /**
+     * RepositoryId commit was pushed to.
+     */
+    repoId?: string;
+    /**
+     * Visual Studio ID /Team Foundation ID
+     */
+    vSID?: string;
+}
+
+export interface BillableCommitterDetail extends BillableCommitter {
+    /**
+     * ID (SHA-1) of the commit.
+     */
+    commitId?: string;
+    /**
+     * Committer email address after parsing.
+     */
+    committerEmail?: string;
+    /**
+     * Time reported by the commit.
+     */
+    commitTime?: Date;
+    /**
+     * DisplayName of the Pusher.
+     */
+    displayName?: string;
+    /**
+     * MailNickName of the Pusher.
+     */
+    mailNickName?: string;
+    /**
+     * Project Id commit was pushed to.
+     */
+    projectId?: string;
+    /**
+     * Project name commit was pushed to.
+     */
+    projectName?: string;
+    /**
+     * Time of the push that contained the commit.
+     */
+    pushedTime?: Date;
+    /**
+     * Pusher Id for the push.
+     */
+    pusherId?: string;
+    /**
+     * Push Id that contained the commit.
+     */
+    pushId?: number;
+    /**
+     * Repository name commit was pushed to.
+     */
+    repoName?: string;
+    /**
+     * SamAccountName of the Pusher.
+     */
+    samAccountName?: string;
+}
+
+/**
+ * Used by AdvSec to estimate billable pushers for a Host or Project.
+ */
+export interface BillablePusher {
+    /**
+     * ProjectId that was pushed to.
+     */
+    projectId?: string;
+    /**
+     * RepositoryId that was pushed to.
+     */
+    repoId?: string;
+    /**
+     * Visual Studio ID /Team Foundation ID
+     */
+    vSID?: string;
 }
 
 /**
@@ -288,7 +413,7 @@ export interface CommentPosition {
      */
     line?: number;
     /**
-     * The character offset of a thread's position inside of a line. Starts at 0.
+     * The character offset of a thread's position inside of a line. Starts at 1.
      */
     offset?: number;
 }
@@ -1979,6 +2104,18 @@ export interface GitPullRequestSearchCriteria {
      */
     includeLinks?: boolean;
     /**
+     * If specified, filters pull requests that created/closed before this date based on the queryTimeRangeType specified.
+     */
+    maxTime?: Date;
+    /**
+     * If specified, filters pull requests that created/closed after this date based on the queryTimeRangeType specified.
+     */
+    minTime?: Date;
+    /**
+     * The type of time range which should be used for minTime and maxTime. Defaults to Created if unset.
+     */
+    queryTimeRangeType?: PullRequestTimeRangeType;
+    /**
      * If set, search for pull requests whose target branch is in this repository.
      */
     repositoryId?: string;
@@ -2567,6 +2704,10 @@ export enum GitStatusState {
      * Status is not applicable to the target object.
      */
     NotApplicable = 5,
+    /**
+     * Status Partially Succeeded, build finished with warnings.
+     */
+    PartiallySucceeded = 6,
 }
 
 /**
@@ -2825,6 +2966,10 @@ export interface IdentityRefWithVote extends VSSInterfaces.IdentityRef {
      */
     isFlagged?: boolean;
     /**
+     * Indicates if this approve vote should still be handled even though vote didn't change.
+     */
+    isReapprove?: boolean;
+    /**
      * Indicates if this is a required reviewer for this pull request. <br /> Branches can have policies that require particular reviewers are required for pull requests.
      */
     isRequired?: boolean;
@@ -3065,6 +3210,20 @@ export enum PullRequestStatus {
 export interface PullRequestTabExtensionConfig {
     pullRequestId?: number;
     repositoryId?: string;
+}
+
+/**
+ * Specifies the desired type of time range for pull requests queries.
+ */
+export enum PullRequestTimeRangeType {
+    /**
+     * The date when the pull request was created.
+     */
+    Created = 1,
+    /**
+     * The date when the pull request was closed (completed, abandoned, or merged externally).
+     */
+    Closed = 2,
 }
 
 /**
@@ -3880,7 +4039,11 @@ export enum VersionControlRecursionType {
 }
 
 export var TypeInfo = {
+    AdvSecEnablementStatus: <any>{
+    },
     Attachment: <any>{
+    },
+    BillableCommitterDetail: <any>{
     },
     Change: <any>{
     },
@@ -4252,7 +4415,8 @@ export var TypeInfo = {
             "succeeded": 2,
             "failed": 3,
             "error": 4,
-            "notApplicable": 5
+            "notApplicable": 5,
+            "partiallySucceeded": 6
         }
     },
     GitTargetVersionDescriptor: <any>{
@@ -4345,6 +4509,12 @@ export var TypeInfo = {
             "abandoned": 2,
             "completed": 3,
             "all": 4
+        }
+    },
+    PullRequestTimeRangeType: {
+        enumValues: {
+            "created": 1,
+            "closed": 2
         }
     },
     RefFavoriteType: {
@@ -4459,8 +4629,26 @@ export var TypeInfo = {
     },
 };
 
+TypeInfo.AdvSecEnablementStatus.fields = {
+    changedOnDate: {
+        isDate: true,
+    },
+    enabledChangedOnDate: {
+        isDate: true,
+    }
+};
+
 TypeInfo.Attachment.fields = {
     createdDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.BillableCommitterDetail.fields = {
+    commitTime: {
+        isDate: true,
+    },
+    pushedTime: {
         isDate: true,
     }
 };
@@ -5326,6 +5514,15 @@ TypeInfo.GitPullRequestQueryInput.fields = {
 };
 
 TypeInfo.GitPullRequestSearchCriteria.fields = {
+    maxTime: {
+        isDate: true,
+    },
+    minTime: {
+        isDate: true,
+    },
+    queryTimeRangeType: {
+        enumType: TypeInfo.PullRequestTimeRangeType
+    },
     status: {
         enumType: TypeInfo.PullRequestStatus
     }

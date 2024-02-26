@@ -184,6 +184,10 @@ export interface Comment extends WorkItemTrackingResource {
      */
     createdOnBehalfOf?: VSSInterfaces.IdentityRef;
     /**
+     * Represents the possible types for the comment format.
+     */
+    format?: CommentFormat;
+    /**
      * The id assigned to the comment.
      */
     id?: number;
@@ -207,6 +211,10 @@ export interface Comment extends WorkItemTrackingResource {
      * The reactions of the comment.
      */
     reactions?: CommentReaction[];
+    /**
+     * The text of the comment in HTML format.
+     */
+    renderedText?: string;
     /**
      * The text of the comment.
      */
@@ -249,6 +257,14 @@ export enum CommentExpandOptions {
      */
     RenderedTextOnly = 16,
     All = -17,
+}
+
+/**
+ * Represents the possible types for the comment format. Should be in sync with WorkItemCommentFormat.cs
+ */
+export enum CommentFormat {
+    Markdown = 0,
+    Html = 1,
 }
 
 /**
@@ -572,6 +588,60 @@ export enum GetFieldsExpand {
      * Includes fields that have been deleted.
      */
     IncludeDeleted = 2,
+}
+
+/**
+ * Describes Github connection.
+ */
+export interface GitHubConnectionModel {
+    /**
+     * Github connection authorization type (f. e. PAT, OAuth)
+     */
+    authorizationType?: string;
+    /**
+     * Github connection created by
+     */
+    createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Github connection id
+     */
+    id?: string;
+    /**
+     * Whether current Github connection is valid or not
+     */
+    isConnectionValid?: boolean;
+    /**
+     * Github connection name (should contain organization/user name)
+     */
+    name?: string;
+}
+
+/**
+ * Describes Github connection's repo.
+ */
+export interface GitHubConnectionRepoModel {
+    /**
+     * Error message
+     */
+    errorMessage?: string;
+    /**
+     * Repository web url
+     */
+    gitHubRepositoryUrl?: string;
+}
+
+/**
+ * Describes Github connection's repo bulk request
+ */
+export interface GitHubConnectionReposBatchRequest {
+    /**
+     * Requested repos urls
+     */
+    gitHubRepositoryUrls?: GitHubConnectionRepoModel[];
+    /**
+     * Operation type (f. e. add, remove)
+     */
+    operationType?: string;
 }
 
 /**
@@ -1215,6 +1285,14 @@ export interface WorkItemClassificationNode extends WorkItemTrackingResource {
  */
 export interface WorkItemComment extends WorkItemTrackingResource {
     /**
+     * Represents the possible types for the comment format.
+     */
+    format?: CommentFormat;
+    /**
+     * The text of the comment in HTML format.
+     */
+    renderedText?: string;
+    /**
      * Identity of user who added the comment.
      */
     revisedBy?: IdentityReference;
@@ -1494,6 +1572,20 @@ export interface WorkItemField2 extends WorkItemField {
      * Indicates whether this field is marked as locked for editing.
      */
     isLocked?: boolean;
+}
+
+/**
+ * Describes the list of allowed values of the field.
+ */
+export interface WorkItemFieldAllowedValues {
+    /**
+     * The list of field allowed values.
+     */
+    allowedValues?: string[];
+    /**
+     * Name of the field.
+     */
+    fieldName?: string;
 }
 
 /**
@@ -1952,20 +2044,6 @@ export interface WorkItemTypeColorAndIcon {
 }
 
 /**
- * Describes the list of allowed values of the field.
- */
-export interface WorkItemTypeFieldAlowedValues {
-    /**
-     * The list of field allowed values.
-     */
-    allowedValues?: string[];
-    /**
-     * Name of the field.
-     */
-    fieldName?: string;
-}
-
-/**
  * Field instance of a work item type.
  */
 export interface WorkItemTypeFieldInstance extends WorkItemTypeFieldInstanceBase {
@@ -2123,6 +2201,10 @@ export interface WorkItemUpdate extends WorkItemTrackingResource {
     workItemId?: number;
 }
 
+export interface WorkItemUpdate2 extends WorkItemUpdate {
+    id?: number;
+}
+
 export var TypeInfo = {
     AccountMyWorkResult: <any>{
     },
@@ -2151,6 +2233,12 @@ export var TypeInfo = {
             "renderedText": 8,
             "renderedTextOnly": 16,
             "all": -17
+        }
+    },
+    CommentFormat: {
+        enumValues: {
+            "markdown": 0,
+            "html": 1
         }
     },
     CommentList: <any>{
@@ -2361,6 +2449,8 @@ export var TypeInfo = {
     },
     WorkItemUpdate: <any>{
     },
+    WorkItemUpdate2: <any>{
+    },
 };
 
 TypeInfo.AccountMyWorkResult.fields = {
@@ -2424,6 +2514,9 @@ TypeInfo.Comment.fields = {
     },
     createdOnBehalfDate: {
         isDate: true,
+    },
+    format: {
+        enumType: TypeInfo.CommentFormat
     },
     modifiedDate: {
         isDate: true,
@@ -2541,6 +2634,9 @@ TypeInfo.WorkItemClassificationNode.fields = {
 };
 
 TypeInfo.WorkItemComment.fields = {
+    format: {
+        enumType: TypeInfo.CommentFormat
+    },
     revisedDate: {
         isDate: true,
     }
@@ -2615,6 +2711,12 @@ TypeInfo.WorkItemTypeTemplateUpdateModel.fields = {
 };
 
 TypeInfo.WorkItemUpdate.fields = {
+    revisedDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.WorkItemUpdate2.fields = {
     revisedDate: {
         isDate: true,
     }

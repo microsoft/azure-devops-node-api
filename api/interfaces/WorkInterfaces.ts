@@ -940,6 +940,11 @@ export interface TaskboardWorkItemColumn {
     workItemId?: number;
 }
 
+export interface TeamAutomationRulesSettingsRequestModel {
+    backlogLevelName?: string;
+    rulesStates?: { [key: string] : boolean; };
+}
+
 /**
  * Mapping of teams to the corresponding work item category
  */

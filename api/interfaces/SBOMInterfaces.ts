@@ -154,6 +154,7 @@ export enum Result {
     Success = 0,
     Failure = 1,
     InProgress = 2,
+    FailCanRetry = 3,
 }
 
 /**
@@ -211,6 +212,10 @@ export interface SBOMTelemetry {
      */
     taskErrorMessage?: string;
     /**
+     * The name of the task that logged SBOM telemetry
+     */
+    taskName?: string;
+    /**
      * The unique id for this telemetry
      */
     telemetryId?: string;
@@ -263,7 +268,8 @@ export var TypeInfo = {
         enumValues: {
             "success": 0,
             "failure": 1,
-            "inProgress": 2
+            "inProgress": 2,
+            "failCanRetry": 3
         }
     },
     SBOMTelemetry: <any>{

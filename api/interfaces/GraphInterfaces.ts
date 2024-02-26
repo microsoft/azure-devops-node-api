@@ -529,6 +529,17 @@ export interface PagedGraphGroups {
     graphGroups?: GraphGroup[];
 }
 
+export interface PagedGraphMembers {
+    /**
+     * This will be non-null if there is another page of data. There will never be more than one continuation token returned by a request.
+     */
+    continuationToken?: string[];
+    /**
+     * The enumerable list of members found within a page.
+     */
+    graphMembers?: GraphMember[];
+}
+
 export interface PagedGraphServicePrincipals {
     /**
      * This will be non-null if there is another page of data. There will never be more than one continuation token returned by a request.
