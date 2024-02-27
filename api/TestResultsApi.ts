@@ -14,7 +14,7 @@ import * as restm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import basem = require('./ClientApiBases');
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
-import Contracts = require("./TFS/TestManagement/Contracts");
+import Contracts = require("./interfaces/TestInterfaces");
 import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ITestResultsApi extends basem.ClientApiBase {
