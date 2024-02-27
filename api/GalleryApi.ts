@@ -75,6 +75,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getPublisher(publisherName: string, flags?: number): Promise<GalleryInterfaces.Publisher>;
     updatePublisher(publisher: GalleryInterfaces.Publisher, publisherName: string): Promise<GalleryInterfaces.Publisher>;
     updatePublisherMembers(roleAssignments: GalleryInterfaces.PublisherUserRoleAssignmentRef[], publisherName: string, limitToCallerIdentityDomain?: boolean): Promise<GalleryInterfaces.PublisherRoleAssignment[]>;
+    publishExtensionWithPublisherSignature(customHeaders: any, contentStream: NodeJS.ReadableStream, publisherName: string, extensionName: string, extensionType?: string, reCaptchaToken?: string, bypassScopeCheck?: boolean): Promise<GalleryInterfaces.PublishedExtension>;
     getPublisherWithoutToken(publisherName: string): Promise<GalleryInterfaces.Publisher>;
     getQuestions(publisherName: string, extensionName: string, count?: number, page?: number, afterDate?: Date): Promise<GalleryInterfaces.QuestionsResult>;
     reportQuestion(concern: GalleryInterfaces.Concern, pubName: string, extName: string, questionId: number): Promise<GalleryInterfaces.Concern>;
@@ -2159,7 +2160,9 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
     }
 
     /**
-     * @param {GalleryInterfaces.AzureRestApiRequestModel} azureRestApiRequestModel
+     * Rest end point to validate if an Azure publisher owns an extension for 3rd party commerce scenario. Azure only supports POST operations and the above signature is not typical of the REST operations. http://sharepoint/sites/AzureUX/_layouts/15/WopiFrame2.aspx?sourcedoc={A793D31E-6DC6-4174-8FA3-DE3F82B51642}&file=Data%20Market%20Partner%20integration%20with%20Marketplace%20service.docx&action=default
+     * 
+     * @param {GalleryInterfaces.AzureRestApiRequestModel} azureRestApiRequestModel - All the parameters are sent in the request body
      */
     public async extensionValidator(
         azureRestApiRequestModel: GalleryInterfaces.AzureRestApiRequestModel
@@ -2819,6 +2822,68 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
 
                 resolve(ret);
                 
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {NodeJS.ReadableStream} contentStream - Content to upload
+     * @param {string} publisherName
+     * @param {string} extensionName
+     * @param {string} extensionType
+     * @param {string} reCaptchaToken
+     * @param {boolean} bypassScopeCheck
+     */
+    public async publishExtensionWithPublisherSignature(
+        customHeaders: any,
+        contentStream: NodeJS.ReadableStream,
+        publisherName: string,
+        extensionName: string,
+        extensionType?: string,
+        reCaptchaToken?: string,
+        bypassScopeCheck?: boolean
+        ): Promise<GalleryInterfaces.PublishedExtension> {
+
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            let queryValues: any = {
+                extensionType: extensionType,
+                reCaptchaToken: reCaptchaToken,
+                bypassScopeCheck: bypassScopeCheck,
+            };
+            
+            customHeaders = customHeaders || {};
+            customHeaders["Content-Type"] = "multipart/related";
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "gallery",
+                    "e11ea35a-16fe-4b80-ab11-c4cab88a0969",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json',
+                                                                                verData.apiVersion);
+                options.additionalHeaders = customHeaders;
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
             }
             catch (err) {
                 reject(err);

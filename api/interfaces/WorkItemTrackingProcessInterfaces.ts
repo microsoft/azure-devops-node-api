@@ -1024,13 +1024,22 @@ export enum RuleConditionType {
      * $WhenNotChanged.This condition limits the execution of its children to cases when another field has not changed, i.e.when the Is value of the referenced field is equal to the Was value of that field.
      */
     WhenNotChanged = 4,
+    /**
+     * $WhenWas. This condition limits the execution of its children to cases when another field value is changed from one value to another. e.g. If the condition is : When the work item state changes from New to Approved, here $WhenWas clause defines the "New" state of the workitem and $When clause defines "Approved" state.
+     */
     WhenWas = 5,
     WhenStateChangedTo = 6,
     WhenStateChangedFromAndTo = 7,
     WhenWorkItemIsCreated = 8,
     WhenValueIsDefined = 9,
     WhenValueIsNotDefined = 10,
+    /**
+     * This condition checks if current user is member of a particular group. This condition does not have any 1:1 mapping with any server side rule condition, rather this is a dummy condition added for customer simplicity of understanding. This condition is later translated to a FOR membership filter . e.g. If the condition is : WhenCurrentUserIsMemberOfGroup "Approvers" then "MakeRequired" Field1.Here it translates to a For rule , "MakeRequired" for "Approvers"
+     */
     WhenCurrentUserIsMemberOfGroup = 11,
+    /**
+     * This condition checks if current user is not member of a particular group. This condition does not have any 1:1 mapping with any server side rule condition, rather this is a dummy condition added for customer simplicity of understanding. This condition is later translated to a NOT membership filter . e.g. If the condition is : WhenCurrentUserIsNotMemberOfGroup "Approvers" then "MakeRequired" Field1.Here it translates to a Not rule , "MakeRequired" not "Approvers"
+     */
     WhenCurrentUserIsNotMemberOfGroup = 12,
 }
 

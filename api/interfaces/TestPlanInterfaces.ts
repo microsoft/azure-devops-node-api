@@ -10,7 +10,7 @@
 
 "use strict";
 
-import TFS_TestManagement_Contracts = require("../interfaces/TestInterfaces");
+import TFS_TestManagement_Contracts = require("../TFS/TestManagement/Contracts");
 import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 

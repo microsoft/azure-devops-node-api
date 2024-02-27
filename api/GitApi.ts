@@ -1206,8 +1206,10 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     }
 
     /**
-     * @param {GitInterfaces.GitQueryBranchStatsCriteria} searchCriteria
-     * @param {string} repositoryId
+     * Retrieve statistics for multiple commits
+     * 
+     * @param {GitInterfaces.GitQueryBranchStatsCriteria} searchCriteria - Base Commit and List of Target Commits to compare.
+     * @param {string} repositoryId - The name or ID of the repository.
      * @param {string} project - Project ID or project name
      */
     public async getBranchStatsBatch(

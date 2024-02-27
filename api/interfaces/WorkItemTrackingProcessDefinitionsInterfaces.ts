@@ -117,6 +117,9 @@ export interface Control {
      * Inner text of the control.
      */
     metadata?: string;
+    /**
+     * Order in which the control should appear in its group.
+     */
     order?: number;
     /**
      * A value indicating whether this layout node has been overridden by a child layout.

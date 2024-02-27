@@ -669,6 +669,25 @@ export interface Change {
     timestamp?: Date;
 }
 
+export interface CheckConfigurationReference {
+    /**
+     * Check configuration Id of generated gate.
+     */
+    id?: number;
+    /**
+     * Name of the resource for which gate was generated.
+     */
+    resourceName?: string;
+    /**
+     * Type of the resource for which the gate was generated.
+     */
+    resourceType?: string;
+    /**
+     * Version of the check configuration gate was generated with.
+     */
+    version?: number;
+}
+
 export interface CodeRepositoryReference {
     /**
      * Gets and sets the repository references.
@@ -1637,6 +1656,9 @@ export interface Folder {
     path?: string;
 }
 
+/**
+ * Specifies the desired ordering of folders.
+ */
 export enum FolderPathQueryOrder {
     /**
      * No order.
@@ -2431,6 +2453,10 @@ export interface ReleaseDefinition extends ReleaseDefinitionShallowReference {
      */
     isDeleted?: boolean;
     /**
+     * Whether release definition is disabled.
+     */
+    isDisabled?: boolean;
+    /**
      * Gets the reference of last release.
      */
     lastRelease?: ReleaseReference;
@@ -2711,6 +2737,10 @@ export enum ReleaseDefinitionExpands {
 }
 
 export interface ReleaseDefinitionGate {
+    /**
+     * Gets or sets the flag that indicates if gate was generated.
+     */
+    isGenerated?: boolean;
     /**
      * Gets or sets the gates workflow.
      */
@@ -4038,6 +4068,10 @@ export interface WorkflowTask {
      * Gets or sets as the task always run or not.
      */
     alwaysRun?: boolean;
+    /**
+     * Gets or sets the check configuration if check is injected as gate.
+     */
+    checkConfig?: CheckConfigurationReference;
     /**
      * Gets or sets the task condition.
      */

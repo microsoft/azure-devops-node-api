@@ -379,8 +379,17 @@ export interface TeamProjectReference {
  * A data transfer object that stores the metadata associated with the creation of temporary data.
  */
 export interface TemporaryDataCreatedDTO extends TemporaryDataDTO {
+    /**
+     * Temporary data expiration date.
+     */
     expirationDate?: Date;
+    /**
+     * Temporary data id.
+     */
     id?: string;
+    /**
+     * Rest url for the temporary data.
+     */
     url?: string;
 }
 
@@ -388,8 +397,17 @@ export interface TemporaryDataCreatedDTO extends TemporaryDataDTO {
  * A data transfer object that stores the metadata associated with the temporary data.
  */
 export interface TemporaryDataDTO {
+    /**
+     * Temporary data expire in seconds
+     */
     expirationSeconds?: number;
+    /**
+     * Temporary data origin
+     */
     origin?: string;
+    /**
+     * Temporary data.
+     */
     value?: any;
 }
 

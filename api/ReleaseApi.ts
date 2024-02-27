@@ -1220,22 +1220,24 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
     }
 
     /**
+     * Get a list of deployments
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} definitionId
-     * @param {number} definitionEnvironmentId
-     * @param {string} createdBy
-     * @param {Date} minModifiedTime
-     * @param {Date} maxModifiedTime
-     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus
-     * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus
-     * @param {boolean} latestAttemptsOnly
-     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder
-     * @param {number} top
-     * @param {number} continuationToken
-     * @param {string} createdFor
-     * @param {Date} minStartedTime
-     * @param {Date} maxStartedTime
-     * @param {string} sourceBranch
+     * @param {number} definitionId - List the deployments for a given definition id.
+     * @param {number} definitionEnvironmentId - List the deployments for a given definition environment id.
+     * @param {string} createdBy - List the deployments for which deployments are created as identity specified.
+     * @param {Date} minModifiedTime - List the deployments with LastModified time >= minModifiedTime.
+     * @param {Date} maxModifiedTime - List the deployments with LastModified time <= maxModifiedTime.
+     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus - List the deployments with given deployment status. Defult is 'All'.
+     * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus - List the deployments with given operation status. Default is 'All'.
+     * @param {boolean} latestAttemptsOnly - 'true' to include deployments with latest attempt only. Default is 'false'.
+     * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder - List the deployments with given query order. Default is 'Descending'.
+     * @param {number} top - List the deployments with given top. Default top is '50' and Max top is '100'.
+     * @param {number} continuationToken - List the deployments with deployment id >= continuationToken.
+     * @param {string} createdFor - List the deployments for which deployments are requested as identity specified.
+     * @param {Date} minStartedTime - List the deployments with StartedOn time >= minStartedTime.
+     * @param {Date} maxStartedTime - List the deployments with StartedOn time <= maxStartedTime.
+     * @param {string} sourceBranch - List the deployments that are deployed from given branch name.
      */
     public async getDeployments(
         project: string,

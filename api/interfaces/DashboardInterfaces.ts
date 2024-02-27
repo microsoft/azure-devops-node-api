@@ -174,6 +174,9 @@ export enum DashboardScope {
     Project = 2,
 }
 
+/**
+ * None - Team member cannot edit dashboard Edit - Team member can add, configure and delete widgets Manage - Team member can add, reorder, delete dashboards Manage Permissions - Team member can manage membership of other members to perform group operations.
+ */
 export enum GroupMemberPermission {
     None = 0,
     Edit = 1,
@@ -217,6 +220,9 @@ export interface SemanticVersion {
     patch?: number;
 }
 
+/**
+ * Read - User can see dashboards Create - User can create dashboards Edit - User can add, configure and delete widgets, and edit dashboard settings. Delete - User can delete dashboards Manage Permissions - Team member can manage membership of other members to perform group operations.
+ */
 export enum TeamDashboardPermission {
     None = 0,
     Read = 1,

@@ -274,6 +274,9 @@ export interface CustomerSupportRequest {
      * Reason for support request
      */
     reason?: string;
+    /**
+     * ReCaptcha Token
+     */
     reCaptchaToken?: string;
     /**
      * VSID of the user making the support request
@@ -484,6 +487,9 @@ export interface ExtensionEvent {
      * Id which identifies each data point uniquely
      */
     id?: number;
+    /**
+     * Generic properties container which stores the data related to each event. For well known events like uninstall, install etc. We expect the Properties object to be a List<UninstallProperties>, List<InstallProperties>
+     */
     properties?: any;
     /**
      * Timestamp of when the event occurred
@@ -938,6 +944,9 @@ export enum ExtensionVersionFlags {
  * One condition in a QueryFilter.
  */
 export interface FilterCriteria {
+    /**
+     * The FilterType defines how the filters are to be applied to the extensions. See the documentation on the filter type to understand how the filters are matched.
+     */
     filterType?: number;
     /**
      * The value used in the match based on the filter type.
@@ -1587,6 +1596,9 @@ export interface Review {
      * Flag for soft deletion
      */
     isDeleted?: boolean;
+    /**
+     * Flag for Ignoring Review from average rating calculation
+     */
     isIgnored?: boolean;
     /**
      * Version of the product for which review was submitted

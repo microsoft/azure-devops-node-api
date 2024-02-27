@@ -53,12 +53,14 @@ export class ExtensionManagementApi extends basem.ClientApiBase implements IExte
     public static readonly RESOURCE_AREA_ID = "6c2b0933-3600-42ae-bf8b-93d4f7e83594";
 
     /**
-     * @param {string} itemId
-     * @param {boolean} testCommerce
-     * @param {boolean} isFreeOrTrialInstall
-     * @param {boolean} isAccountOwner
-     * @param {boolean} isLinked
-     * @param {boolean} isConnectedServer
+     * This API is called by acquisition/install page to get possible user actions like Buy/Request
+     * 
+     * @param {string} itemId - Fully qualified name of extension (<publisher_id>.<extension_id>)
+     * @param {boolean} testCommerce - Parameter to test paid preview extension without making azure plans public
+     * @param {boolean} isFreeOrTrialInstall - Parameter represents install or trial workflow (required for legacy install flows)
+     * @param {boolean} isAccountOwner - Parameter represents whether user is owner or PCA of an account
+     * @param {boolean} isLinked - Parameter represents whether account is linked with a subscription
+     * @param {boolean} isConnectedServer - Parameter represents whether Buy operation should be evaluated
      * @param {boolean} isBuyOperationValid
      */
     public async getAcquisitionOptions(
