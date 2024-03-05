@@ -678,6 +678,9 @@ export interface PackageVersion {
      * Used to correct mistakes in the version numbering scheme.
      */
     epoch?: number;
+    /**
+     * Human readable version string. This string is of the form <epoch>:<name>-<revision> and is only set when kind is NORMAL.
+     */
     fullName?: string;
     /**
      * Required. Distinguishes between sentinel MIN/MAX versions and normal versions.

@@ -42,6 +42,8 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * Delete the billing info for an organization.
+     * 
      * @param {string} organizationId
      */
     public async deleteBillingInfo(
@@ -82,6 +84,8 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * Delete the meter usage history from Primary SU for an organization.
+     * 
      * @param {string} organizationId
      */
     public async deleteMeterUsageHistory(
@@ -164,6 +168,8 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * Save the billing info for an organization.
+     * 
      * @param {ManagementInterfaces.BillingInfo} billingInfo
      * @param {string} organizationId
      */

@@ -1014,21 +1014,6 @@ export interface LastResultDetails {
     runBy?: VSSInterfaces.IdentityRef;
 }
 
-export enum LayoutType {
-    /**
-     * Default
-     */
-    None = 0,
-    /**
-     * Entry type for Group information
-     */
-    Group = 1,
-    /**
-     * Entry type for Job information
-     */
-    Job = 2,
-}
-
 export interface LegacyBuildConfiguration {
     branchName?: string;
     buildConfigurationId?: number;
@@ -1402,6 +1387,10 @@ export interface PipelineReference {
      * Reference of the phase.
      */
     phaseReference?: PhaseReference;
+    /**
+     * Reference of the BuildDefinitionId.
+     */
+    pipelineDefinitionId?: number;
     /**
      * Reference of the pipeline with which this pipeline instance is related.
      */
@@ -4477,6 +4466,83 @@ export interface TestResultsQuery {
     resultsFilter?: ResultsFilter;
 }
 
+/**
+ * The TestResultSession is a higher-level container for test results by encapsulating multiple TestRun objects
+ */
+export interface TestResultsSession {
+    /**
+     * TestResultsSession end time
+     */
+    endTimeUTC: Date;
+    /**
+     * TestResultsSession layout
+     */
+    layout: any[];
+    /**
+     * TestResultsSession name
+     */
+    name: string;
+    /**
+     * TestResultsSession result
+     */
+    result: SessionResult;
+    /**
+     * TestResultsSession source pipeline details
+     */
+    sessionSourcePipeline: SessionSourcePipeline;
+    /**
+     * TestResultsSession source
+     */
+    source: Source;
+    /**
+     * TestResultsSession start time
+     */
+    startTimeUTC: Date;
+    /**
+     * TestResultsSession state
+     */
+    state: TestResultsSessionState;
+    /**
+     * List of test run ids
+     */
+    testRuns: number[];
+    /**
+     * TestResultsSession timeline
+     */
+    timeline?: Timeline<SessionTimelineType>[];
+    /**
+     * TestResultsSession type
+     */
+    type: string;
+    /**
+     * TestResultsSession Uid
+     */
+    uid: string;
+}
+
+export enum TestResultsSessionState {
+    /**
+     * Default
+     */
+    None = 0,
+    /**
+     * Session state with Running
+     */
+    Running = 1,
+    /**
+     * Session state with Completed
+     */
+    Completed = 2,
+    /**
+     * Session state with Waiting
+     */
+    Waiting = 3,
+    /**
+     * Session state with Cancelled
+     */
+    Cancelled = 4,
+}
+
 export interface TestResultsSettings {
     /**
      * IsRequired and EmitDefaultValue are passed as false as if users doesn't pass anything, should not come for serialisation and deserialisation.
@@ -5026,6 +5092,17 @@ export interface TestSession {
      * Url of Test Session Resource
      */
     url?: string;
+}
+
+export interface TestSessionEnvironment {
+    /**
+     * Environment display name
+     */
+    displayName: string;
+    /**
+     * Processor architecture
+     */
+    processorArchitecture: string;
 }
 
 export interface TestSessionExploredWorkItemReference extends TestSessionWorkItemReference {
@@ -5692,13 +5769,6 @@ export var TypeInfo = {
     },
     LastResultDetails: <any>{
     },
-    LayoutType: {
-        enumValues: {
-            "none": 0,
-            "group": 1,
-            "job": 2
-        }
-    },
     LegacyBuildConfiguration: <any>{
     },
     LegacyReleaseReference: <any>{
@@ -6056,6 +6126,17 @@ export var TypeInfo = {
     TestResultsEx2: <any>{
     },
     TestResultsQuery: <any>{
+    },
+    TestResultsSession: <any>{
+    },
+    TestResultsSessionState: {
+        enumValues: {
+            "none": 0,
+            "running": 1,
+            "completed": 2,
+            "waiting": 3,
+            "cancelled": 4
+        }
     },
     TestResultsSettings: <any>{
     },
@@ -7125,6 +7206,21 @@ TypeInfo.TestResultsQuery.fields = {
     resultsFilter: {
         typeInfo: TypeInfo.ResultsFilter
     }
+};
+
+TypeInfo.TestResultsSession.fields = {
+    endTimeUTC: {
+        isDate: true,
+    },
+    result: {
+        enumType: TypeInfo.SessionResult
+    },
+    startTimeUTC: {
+        isDate: true,
+    },
+    state: {
+        enumType: TypeInfo.TestResultsSessionState
+    },
 };
 
 TypeInfo.TestResultsSettings.fields = {

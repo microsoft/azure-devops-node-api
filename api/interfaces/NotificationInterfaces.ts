@@ -52,7 +52,13 @@ export interface BlockSubscriptionChannel {
  * Default delivery preference for group subscribers. Indicates how the subscriber should be notified.
  */
 export enum DefaultGroupDeliveryPreference {
+    /**
+     * Do not send notifications by default. Note: notifications can still be delivered to subscribers, for example via a custom subscription.
+     */
     NoDelivery = -1,
+    /**
+     * Deliver notifications to each member of the group representing the subscriber. Only applicable when the subscriber is a group.
+     */
     EachMember = 2,
 }
 
@@ -266,6 +272,9 @@ export interface ExpressionFilterGroup {
     start?: number;
 }
 
+/**
+ * This class represents the Subscription Filter associated with a subscription in a user readable format e.g. "filterModel":{ "clauses":[ { "logicalOperator":"", "fieldName":"PortfolioProject", "operator":"=", "value":"@@MyProjectName@@", "index":1 } ], "groups":[ ], "maxGroupLevel":0 }
+ */
 export interface ExpressionFilterModel {
     /**
      * Flat list of clauses in this subscription

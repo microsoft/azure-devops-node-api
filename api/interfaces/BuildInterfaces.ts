@@ -2400,7 +2400,13 @@ export interface RealtimeBuildEvent {
 }
 
 export enum RepositoryCleanOptions {
+    /**
+     * Run git clean -fdx && git reset --hard or Tf /scorch on $(build.sourcesDirectory)
+     */
     Source = 0,
+    /**
+     * Run git clean -fdx && git reset --hard or Tf /scorch on $(build.sourcesDirectory), also re-create $(build.binariesDirectory)
+     */
     SourceAndOutputDir = 1,
     /**
      * Re-create $(build.sourcesDirectory)

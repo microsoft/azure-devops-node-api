@@ -226,6 +226,20 @@ export interface SBOMTelemetry {
 }
 
 /**
+ * Used to provide the FileHash of the SBOM file and EBOM ID to be added to the catalog file.
+ */
+export interface SignRequest {
+    /**
+     * The EBOM ID for the associated image.
+     */
+    ebomId?: string;
+    /**
+     * The file hash of the generated SBOM file.
+     */
+    fileHash?: FileHash;
+}
+
+/**
  * The base reponse object for all responses from the signing api.
  */
 export interface SignResponseBase {

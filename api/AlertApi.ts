@@ -25,7 +25,7 @@ export interface IAlertApi extends basem.ClientApiBase {
     getAlertInstances(project: string, alertId: number, repository: string, ref?: string): Promise<AlertInterfaces.AlertAnalysisInstance[]>;
     uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string): Promise<number>;
     getUxFilters(project: string, repository: string, alertType: AlertInterfaces.AlertType): Promise<AlertInterfaces.UxFilters>;
-    getSarif(sarifId: number): Promise<boolean>;
+    getSarif(sarifId: number): Promise<AlertInterfaces.SarifUploadStatus>;
 }
 
 export class AlertApi extends basem.ClientApiBase implements IAlertApi {
@@ -257,9 +257,11 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
     }
 
     /**
+     * Get instances of an alert.
+     * 
      * @param {string} project - Project ID or project name
-     * @param {number} alertId
-     * @param {string} repository
+     * @param {number} alertId - ID of alert to retrieve
+     * @param {string} repository - Name or id of a repository that alert is part of
      * @param {string} ref
      */
     public async getAlertInstances(
@@ -418,16 +420,16 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
      */
     public async getSarif(
         sarifId: number
-        ): Promise<boolean> {
+        ): Promise<AlertInterfaces.SarifUploadStatus> {
 
-        return new Promise<boolean>(async (resolve, reject) => {
+        return new Promise<AlertInterfaces.SarifUploadStatus>(async (resolve, reject) => {
             let routeValues: any = {
                 sarifId: sarifId
             };
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "Alert",
                     "a04689e7-0f81-48a2-8d18-40654c47494c",
                     routeValues);
@@ -436,11 +438,11 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<boolean>;
-                res = await this.rest.get<boolean>(url, options);
+                let res: restm.IRestResponse<AlertInterfaces.SarifUploadStatus>;
+                res = await this.rest.get<AlertInterfaces.SarifUploadStatus>(url, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              AlertInterfaces.TypeInfo.SarifUploadStatus,
                                               false);
 
                 resolve(ret);
