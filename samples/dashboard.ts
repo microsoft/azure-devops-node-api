@@ -57,7 +57,7 @@ export async function run(projectId: string) {
                                               typeId: null,
                                               url: null
                                               };
-    const widgetMetadata: DashboardInterfaces.WidgetMetadataResponse = await dashboardApiObject.getWidgetMetadata('ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.OtherLinksWidget');
+    const widgetMetadata: DashboardInterfaces.WidgetMetadataResponse = await dashboardApiObject.getWidgetMetadata('ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.OtherLinksWidget', projectId);
     console.log('Creating widget with metadata:', widgetMetadata);
     widget = await dashboardApiObject.createWidget(widget, teamContext, dashboard.id);
     //Ensure its been created and we can get it.
@@ -72,7 +72,7 @@ export async function run(projectId: string) {
     console.log('Widget name updated to', widget.name);
 
     common.heading('Get Widget data');
-    const widgetTypes: DashboardInterfaces.WidgetTypesResponse = await dashboardApiObject.getWidgetTypes(DashboardInterfaces.WidgetScope.Project_Team);
+    const widgetTypes: DashboardInterfaces.WidgetTypesResponse = await dashboardApiObject.getWidgetTypes(DashboardInterfaces.WidgetScope.Project_Team, projectId);
     console.log('First widget type:', widgetTypes.widgetTypes[0]);
 
     common.heading('Delete a widget');

@@ -12,7 +12,7 @@ let samples: string[] = require("./samples.json");
 let coreApi: cApi.ICoreApi;
 const maxLoops: number = 500;
 
-let selection: string = process.argv[2];
+const selection: string = process.argv[2];
 if (selection) {
     if (samples.indexOf(selection) == -1) {
         console.error("Not a valid sample.  See list of samples");
@@ -41,7 +41,19 @@ async function createProject(projectId: string): Promise<boolean> {
                                                          revision: null,
                                                          state: null,
                                                          url: null};
-    await coreApi.queueCreateProject(projectToCreate);
+    let num = 0;
+    while (num < maxLoops) {
+        try {
+            await coreApi.queueCreateProject(projectToCreate);
+            break;
+        } catch (err) {
+            const errTypeKey = err.result.typeKey.toString();
+            if (!(errTypeKey == 'ProjectWorkPendingException' || errTypeKey == 'ProjectAlreadyExistsException')) {
+                throw err;
+            }
+            num++;
+        }
+    }
 
     //Poll until project exists
     let project: coreInterfaces.TeamProject = null;
@@ -114,11 +126,4 @@ async function runSamples(selected?: string) {
     }
 }
 
-function run() {
-    runSamples();
-}
-
-runSamples(process.argv[2]);
-
-
-
+runSamples(selection);
