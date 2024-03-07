@@ -58,7 +58,7 @@ export async function run() {
         /********** Dashboard **********/
         printSectionStart("Dashboard");
         const dashboardApi = await vstsCollectionLevel.getDashboardApi();
-        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User);
+        const widgetTypes: WidgetTypesResponse = await dashboardApi.getWidgetTypes(WidgetScope.Collection_User, common.getProject());
 
         if (widgetTypes) {
             console.log(`found ${widgetTypes.widgetTypes.length} widget types`);
