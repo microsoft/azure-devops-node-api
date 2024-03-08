@@ -61,7 +61,7 @@ extends:
           displayName: Run unit tests
         - task: Npm@1
           displayName: Publish azure-devops-node-api to npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          # condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
           inputs:
             command: publish
             workingDir: '_build'
