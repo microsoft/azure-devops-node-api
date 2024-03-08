@@ -10,13 +10,15 @@ extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     sdl:
+      sbom:
+        enabled: false
       sourceAnalysisPool:
-        name: Azure-Pipelines-1ESPT-ExDShared
-        image: windows-2022
+        name: 1ES-ABTT-Shared-Pool
+        image: abtt-windows-2022
         os: windows
     pool:
-      name: Azure-Pipelines-1ESPT-ExDShared
-      image: ubuntu-latest
+      name: 1ES-ABTT-Shared-Pool
+      image: abtt-ubuntu-2204
       os: linux
     customBuildTags:
     - ES365AIMigrationTooling
@@ -57,11 +59,12 @@ extends:
           displayName: npm run build
         - script: npm run units
           displayName: Run unit tests
-        - bash: |
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-            cd _build
-            npm publish || true # Ignore publish failures, usually will happen because package already exists
-          displayName: npm publish
+        - task: Npm@1
+          displayName: Publish azure-devops-node-api to npm
           condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
-          env:
-            NPM_TOKEN: $(npmPublishToken)
+          inputs:
+            command: publish
+            workingDir: '_build'
+            publishRegistry: useExternalRegistry
+            publishEndpoint: btt-npm-publish-token
+          continueOnError: true
