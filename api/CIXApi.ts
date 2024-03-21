@@ -22,7 +22,7 @@ export interface ICixApi extends basem.ClientApiBase {
     createConnection(createConnectionInputs: CIXInterfaces.CreatePipelineConnectionInputs): Promise<OperationsInterfaces.Operation>;
     createProjectConnection(createConnectionInputs: CIXInterfaces.CreatePipelineConnectionInputs, project: string): Promise<CIXInterfaces.PipelineConnection>;
     getDetectedBuildFrameworks(project: string, repositoryType?: string, repositoryId?: string, branch?: string, detectionType?: CIXInterfaces.BuildFrameworkDetectionType, serviceConnectionId?: string): Promise<CIXInterfaces.DetectedBuildFramework[]>;
-    createResources(creationParameters: CIXInterfaces.{ [key: string] : CIXInterfaces.ResourceCreationParameter; }, project: string): Promise<CIXInterfaces.CreatedResources>;
+    createResources(creationParameters: { [key: string] : CIXInterfaces.ResourceCreationParameter; }, project: string): Promise<CIXInterfaces.CreatedResources>;
 }
 
 export class CixApi extends basem.ClientApiBase implements ICixApi {
@@ -238,11 +238,11 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
     }
 
     /**
-     * @param {CIXInterfaces.{ [key: string] : CIXInterfaces.ResourceCreationParameter; }} creationParameters
+     * @param {{ [key: string] : CIXInterfaces.ResourceCreationParameter; }} creationParameters
      * @param {string} project - Project ID or project name
      */
     public async createResources(
-        creationParameters: CIXInterfaces.{ [key: string] : CIXInterfaces.ResourceCreationParameter; },
+        creationParameters: { [key: string] : CIXInterfaces.ResourceCreationParameter; },
         project: string
         ): Promise<CIXInterfaces.CreatedResources> {
 
