@@ -1,36 +1,74 @@
-/*
-* ---------------------------------------------------------
-* Copyright(C) Microsoft Corporation. All rights reserved.
-* ---------------------------------------------------------
-* 
-* ---------------------------------------------------------
-* Generated file, DO NOT EDIT
-* ---------------------------------------------------------
-*/
+﻿/*
+ * ---------------------------------------------------------
+ * Copyright(C) Microsoft Corporation. All rights reserved.
+ * ---------------------------------------------------------
+ *
+ * ---------------------------------------------------------
+ * Generated file, DO NOT EDIT
+ * ---------------------------------------------------------
+ */
 
 "use strict";
+
+
+
+/**
+ * Contains information about the progress or result of an async operation.
+ */
+export interface Operation extends OperationReference {
+    /**
+     * Links to other related objects.
+     */
+    _links?: any;
+    /**
+     * Detailed messaged about the status of an operation.
+     */
+    detailedMessage?: string;
+    /**
+     * Result message for an operation.
+     */
+    resultMessage?: string;
+    /**
+     * URL to the operation result.
+     */
+    resultUrl?: OperationResultReference;
+}
 
 /**
  * Reference for an async operation.
  */
 export interface OperationReference {
     /**
-     * The identifier for this operation.
+     * Unique identifier for the operation.
      */
-    id: string;
+    id?: string;
+    /**
+     * Unique identifier for the plugin.
+     */
+    pluginId?: string;
     /**
      * The current status of the operation.
      */
-    status: OperationStatus;
+    status?: OperationStatus;
     /**
-     * Url to get the full object.
+     * URL to get the full operation object.
      */
-    url: string;
+    url?: string;
 }
 
+export interface OperationResultReference {
+    /**
+     * URL to the operation result.
+     */
+    resultUrl?: string;
+}
+
+/**
+ * The status of an operation.
+ */
 export enum OperationStatus {
     /**
-     * The operation object does not have the status set.
+     * The operation does not have a status set.
      */
     NotSet = 0,
     /**
@@ -56,8 +94,9 @@ export enum OperationStatus {
 }
 
 export var TypeInfo = {
-    OperationReference: {
-        fields: <any>null
+    Operation: <any>{
+    },
+    OperationReference: <any>{
     },
     OperationStatus: {
         enumValues: {
@@ -66,13 +105,19 @@ export var TypeInfo = {
             "inProgress": 2,
             "cancelled": 3,
             "succeeded": 4,
-            "failed": 5,
+            "failed": 5
         }
     },
+};
+
+TypeInfo.Operation.fields = {
+    status: {
+        enumType: TypeInfo.OperationStatus
+    }
 };
 
 TypeInfo.OperationReference.fields = {
     status: {
         enumType: TypeInfo.OperationStatus
-    },
+    }
 };

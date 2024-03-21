@@ -368,6 +368,11 @@ export interface TraceFilter {
     userLogin?: string;
 }
 
+export enum UserProfileBackupState {
+    Inactive = 0,
+    Active = 1,
+}
+
 export enum UserProfileSyncState {
     None = 0,
     Completed = 1,
@@ -492,6 +497,12 @@ export var TypeInfo = {
     SignedUrl: <any>{
     },
     TraceFilter: <any>{
+    },
+    UserProfileBackupState: {
+        enumValues: {
+            "inactive": 0,
+            "active": 1
+        }
     },
     UserProfileSyncState: {
         enumValues: {

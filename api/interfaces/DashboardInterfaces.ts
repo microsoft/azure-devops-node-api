@@ -79,6 +79,10 @@ export interface Dashboard {
      */
     eTag?: string;
     /**
+     * Dashboard Global Parameters Config
+     */
+    globalParametersConfig?: string;
+    /**
      * ID of the group for a dashboard. For team-scoped dashboards, this is the unique identifier for the team associated with the dashboard. For project-scoped dashboards this property is empty.
      */
     groupId?: string;

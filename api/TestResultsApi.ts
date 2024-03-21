@@ -41,7 +41,11 @@ export interface ITestResultsApi extends basem.ClientApiBase {
     getCodeCoverageSummary(project: string, buildId: number, deltaBuildId?: number): Promise<Contracts.CodeCoverageSummary>;
     updateCodeCoverageSummary(project: string, buildId: number, coverageData?: Contracts.CodeCoverageData): Promise<void>;
     getTestRunCodeCoverage(project: string, runId: number, flags: number): Promise<Contracts.TestRunCoverage[]>;
+    addCustomFields(newFields: Contracts.CustomTestFieldDefinition[], project: string): Promise<Contracts.CustomTestFieldDefinition[]>;
+    queryCustomFields(project: string, scopeFilter: Contracts.CustomTestFieldScope): Promise<Contracts.CustomTestFieldDefinition[]>;
     getFileLevelCodeCoverage(fileCoverageRequest: Contracts.FileCoverageRequest, project: string): Promise<NodeJS.ReadableStream>;
+    getFlakyTestResultsByBuildDefinitionId(project: string, buildDefinitionId: number, minBuildCreatedDate: Date): Promise<Contracts.TestCaseResult[]>;
+    getFlakyTestResultsByTestRun(project: string, runId: number): Promise<Contracts.TestCaseResult[]>;
     queryTestResultHistory(filter: Contracts.ResultsFilter, project: string): Promise<Contracts.TestResultHistory>;
     getTestRunMessageLogs(project: string, runId: number): Promise<Contracts.TestMessageLogDetails[]>;
     getTestPipelineMetrics(project: string, pipelineId: number, stageName?: string, phaseName?: string, jobName?: string, metricNames?: Contracts.Metrics[], groupByNode?: boolean): Promise<Contracts.PipelineTestMetrics>;
@@ -107,10 +111,16 @@ export interface ITestResultsApi extends basem.ClientApiBase {
     testLogStoreEndpointDetailsForResult(project: string, runId: number, resultId: number, subResultId: number, filePath: string, type: Contracts.TestLogType): Promise<Contracts.TestLogStoreEndpointDetails>;
     getTestLogStoreEndpointDetailsForRunLog(project: string, runId: number, type: Contracts.TestLogType, filePath: string): Promise<Contracts.TestLogStoreEndpointDetails>;
     testLogStoreEndpointDetailsForRun(project: string, runId: number, testLogStoreOperationType: Contracts.TestLogStoreOperationType, filePath?: string, type?: Contracts.TestLogType): Promise<Contracts.TestLogStoreEndpointDetails>;
+    getTestRunsBySessionId(project: string, sessionId: number): Promise<number[]>;
     createTestSession(session: Contracts.TestResultsSession, project: string): Promise<number>;
     getTestSession(project: string, buildId: number): Promise<Contracts.TestResultsSession[]>;
     getTestSessionLayout(project: string, sessionId: string): Promise<any[]>;
     createEnvironment(environments: Contracts.TestSessionEnvironment[], project: string): Promise<void>;
+    createNotification(notifications: Contracts.TestSessionNotification[], project: string, sessionId: number): Promise<number[]>;
+    getSessionNotifications(project: string, sessionId: number): Promise<Contracts.TestSessionNotification[]>;
+    addTestResultsToTestRunSession(results: Contracts.TestCaseResult[], project: string, runId: number): Promise<Contracts.TestCaseResult[]>;
+    getTestSessionResults(project: string, runId: number, detailsToInclude?: Contracts.ResultDetails, skip?: number, top?: number, outcomes?: Contracts.TestOutcome[], newTestsOnly?: boolean): Promise<Contracts.TestCaseResult[]>;
+    updateTestResultsToTestRunSession(results: Contracts.TestCaseResult[], project: string, runId: number): Promise<number[]>;
     createTestSettings(testSettings: Contracts.TestSettings, project: string): Promise<number>;
     deleteTestSettings(project: string, testSettingsId: number): Promise<void>;
     getTestSettingsById(project: string, testSettingsId: number): Promise<Contracts.TestSettings>;
@@ -1252,6 +1262,96 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
     }
 
     /**
+     * @param {Contracts.CustomTestFieldDefinition[]} newFields
+     * @param {string} project - Project ID or project name
+     */
+    public async addCustomFields(
+        newFields: Contracts.CustomTestFieldDefinition[],
+        project: string
+        ): Promise<Contracts.CustomTestFieldDefinition[]> {
+
+        return new Promise<Contracts.CustomTestFieldDefinition[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "b67d46d8-b70e-4dcc-a98c-7f74b52ba82f",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.CustomTestFieldDefinition[]>;
+                res = await this.rest.create<Contracts.CustomTestFieldDefinition[]>(url, newFields, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.CustomTestFieldDefinition,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {Contracts.CustomTestFieldScope} scopeFilter
+     */
+    public async queryCustomFields(
+        project: string,
+        scopeFilter: Contracts.CustomTestFieldScope
+        ): Promise<Contracts.CustomTestFieldDefinition[]> {
+        if (scopeFilter == null) {
+            throw new TypeError('scopeFilter can not be null or undefined');
+        }
+
+        return new Promise<Contracts.CustomTestFieldDefinition[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                scopeFilter: scopeFilter,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "b67d46d8-b70e-4dcc-a98c-7f74b52ba82f",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.CustomTestFieldDefinition[]>;
+                res = await this.rest.get<Contracts.CustomTestFieldDefinition[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.CustomTestFieldDefinition,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * Get file coverage for the specified file
      * 
      * @param {Contracts.FileCoverageRequest} fileCoverageRequest - File details with pull request iteration context
@@ -1279,6 +1379,103 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("text/plain", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} buildDefinitionId
+     * @param {Date} minBuildCreatedDate
+     */
+    public async getFlakyTestResultsByBuildDefinitionId(
+        project: string,
+        buildDefinitionId: number,
+        minBuildCreatedDate: Date
+        ): Promise<Contracts.TestCaseResult[]> {
+        if (buildDefinitionId == null) {
+            throw new TypeError('buildDefinitionId can not be null or undefined');
+        }
+        if (minBuildCreatedDate == null) {
+            throw new TypeError('minBuildCreatedDate can not be null or undefined');
+        }
+
+        return new Promise<Contracts.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                buildDefinitionId: buildDefinitionId,
+                minBuildCreatedDate: minBuildCreatedDate,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "8ed3cf63-7153-4722-a107-c49dae996143",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
+                res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     */
+    public async getFlakyTestResultsByTestRun(
+        project: string,
+        runId: number
+        ): Promise<Contracts.TestCaseResult[]> {
+
+        return new Promise<Contracts.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "31cc4b31-416f-45cd-9b45-39534279e10c",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
+                res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
@@ -4870,6 +5067,50 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
     }
 
     /**
+     * Retrieves Test runs associated to a session
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} sessionId - Id of TestResults session to obtain Test Runs for.
+     */
+    public async getTestRunsBySessionId(
+        project: string,
+        sessionId: number
+        ): Promise<number[]> {
+
+        return new Promise<number[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                sessionId: sessionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "6efc2c12-d4bf-4e86-ae37-b502e57a84c7",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<number[]>;
+                res = await this.rest.get<number[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * Creates TestResultsSession object in TCM data store
      * 
      * @param {Contracts.TestResultsSession} session - Received session object.
@@ -5047,6 +5288,249 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let ret = this.formatResponse(res.result,
                                               null,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Creates Notification object in TCM data store for a given session
+     * 
+     * @param {Contracts.TestSessionNotification[]} notifications - Notification(s) to add for the specified sessionId
+     * @param {string} project - Project ID or project name
+     * @param {number} sessionId - ID of Session to add Notification
+     */
+    public async createNotification(
+        notifications: Contracts.TestSessionNotification[],
+        project: string,
+        sessionId: number
+        ): Promise<number[]> {
+
+        return new Promise<number[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                sessionId: sessionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "ebff1c56-2188-4082-9d0e-1838a396f0c8",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<number[]>;
+                res = await this.rest.create<number[]>(url, notifications, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieves TestResultsSession Notification objects in TCM data store
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} sessionId - Id of TestResults session to obtain Notifications for.
+     */
+    public async getSessionNotifications(
+        project: string,
+        sessionId: number
+        ): Promise<Contracts.TestSessionNotification[]> {
+
+        return new Promise<Contracts.TestSessionNotification[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                sessionId: sessionId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "ebff1c56-2188-4082-9d0e-1838a396f0c8",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.TestSessionNotification[]>;
+                res = await this.rest.get<Contracts.TestSessionNotification[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Add Test Results to test run session
+     * 
+     * @param {Contracts.TestCaseResult[]} results
+     * @param {string} project - Project ID or project name
+     * @param {number} runId - RunId of test run
+     */
+    public async addTestResultsToTestRunSession(
+        results: Contracts.TestCaseResult[],
+        project: string,
+        runId: number
+        ): Promise<Contracts.TestCaseResult[]> {
+
+        return new Promise<Contracts.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "ee6d95bf-7506-4c47-8100-9fed82cdc2f7",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
+                res = await this.rest.create<Contracts.TestCaseResult[]>(url, results, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {number} runId
+     * @param {Contracts.ResultDetails} detailsToInclude
+     * @param {number} skip
+     * @param {number} top
+     * @param {Contracts.TestOutcome[]} outcomes
+     * @param {boolean} newTestsOnly
+     */
+    public async getTestSessionResults(
+        project: string,
+        runId: number,
+        detailsToInclude?: Contracts.ResultDetails,
+        skip?: number,
+        top?: number,
+        outcomes?: Contracts.TestOutcome[],
+        newTestsOnly?: boolean
+        ): Promise<Contracts.TestCaseResult[]> {
+
+        return new Promise<Contracts.TestCaseResult[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
+
+            let queryValues: any = {
+                detailsToInclude: detailsToInclude,
+                '$skip': skip,
+                '$top': top,
+                outcomes: outcomes && outcomes.join(","),
+                '$newTestsOnly': newTestsOnly,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "ee6d95bf-7506-4c47-8100-9fed82cdc2f7",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
+                res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              Contracts.TypeInfo.TestCaseResult,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Creates TestResultsMRX objects in TCM data store for existing test results
+     * 
+     * @param {Contracts.TestCaseResult[]} results - Results object with only test results MRX properties and existing testResultId
+     * @param {string} project - Project ID or project name
+     * @param {number} runId - RunId of test run
+     */
+    public async updateTestResultsToTestRunSession(
+        results: Contracts.TestCaseResult[],
+        project: string,
+        runId: number
+        ): Promise<number[]> {
+
+        return new Promise<number[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                runId: runId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testresults",
+                    "ee6d95bf-7506-4c47-8100-9fed82cdc2f7",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<number[]>;
+                res = await this.rest.update<number[]>(url, results, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
 
                 resolve(ret);
                 

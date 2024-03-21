@@ -28,6 +28,8 @@ import testresultsm = require('./TestResultsApi');
 import tfvcm = require('./TfvcApi');
 import wikim = require('./WikiApi');
 import workm = require('./WorkApi');
+import pipelinesm = require('./PipelinesApi');
+import cixm = require('./CIXApi');
 import workitemtrackingm = require('./WorkItemTrackingApi');
 import workitemtrackingprocessm = require('./WorkItemTrackingProcessApi');
 import workitemtrackingprocessdefinitionm = require('./WorkItemTrackingProcessDefinitionsApi');
@@ -387,6 +389,20 @@ export class WebApi {
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
         handlers = handlers || [this.authHandler];
         return new workitemtrackingprocessdefinitionm.WorkItemTrackingProcessDefinitionsApi(serverUrl, handlers, this.options);
+    }
+
+    public async getPipelinesApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<pipelinesm.IPipelinesApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new pipelinesm.PipelinesApi(serverUrl, handlers, this.options);
+    }
+
+    public async getCixApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<cixm.ICixApi> {
+        // TODO: Load RESOURCE_AREA_ID correctly.
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "5264459e-e5e0-4bd8-b118-0985e68a4ec5");
+        handlers = handlers || [this.authHandler];
+        return new cixm.CixApi(serverUrl, handlers, this.options);
     }
 
     /**

@@ -164,7 +164,7 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
     updateVariableGroup(variableGroupParameters: TaskAgentInterfaces.VariableGroupParameters, groupId: number): Promise<TaskAgentInterfaces.VariableGroup>;
     getVariableGroup(project: string, groupId: number): Promise<TaskAgentInterfaces.VariableGroup>;
     getVariableGroups(project: string, groupName?: string, actionFilter?: TaskAgentInterfaces.VariableGroupActionFilter, top?: number, continuationToken?: number, queryOrder?: TaskAgentInterfaces.VariableGroupQueryOrder): Promise<TaskAgentInterfaces.VariableGroup[]>;
-    getVariableGroupsById(project: string, groupIds: number[]): Promise<TaskAgentInterfaces.VariableGroup[]>;
+    getVariableGroupsById(project: string, groupIds: number[], loadSecrets?: boolean): Promise<TaskAgentInterfaces.VariableGroup[]>;
     addVirtualMachineGroup(createParameters: TaskAgentInterfaces.VirtualMachineGroupCreateParameters, project: string, environmentId: number): Promise<TaskAgentInterfaces.VirtualMachineGroup>;
     deleteVirtualMachineGroup(project: string, environmentId: number, resourceId: number): Promise<void>;
     getVirtualMachineGroup(project: string, environmentId: number, resourceId: number): Promise<TaskAgentInterfaces.VirtualMachineGroup>;
@@ -7092,10 +7092,12 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * 
      * @param {string} project - Project ID or project name
      * @param {number[]} groupIds - Comma separated list of Ids of variable groups.
+     * @param {boolean} loadSecrets
      */
     public async getVariableGroupsById(
         project: string,
-        groupIds: number[]
+        groupIds: number[],
+        loadSecrets?: boolean
         ): Promise<TaskAgentInterfaces.VariableGroup[]> {
         if (groupIds == null) {
             throw new TypeError('groupIds can not be null or undefined');
@@ -7108,6 +7110,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
 
             let queryValues: any = {
                 groupIds: groupIds && groupIds.join(","),
+                loadSecrets: loadSecrets,
             };
             
             try {

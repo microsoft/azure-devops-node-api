@@ -163,7 +163,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getRevertForRefName(project: string, repositoryId: string, refName: string): Promise<GitInterfaces.GitRevert>;
     createCommitStatus(gitCommitStatusToCreate: GitInterfaces.GitStatus, commitId: string, repositoryId: string, project?: string): Promise<GitInterfaces.GitStatus>;
     getStatuses(commitId: string, repositoryId: string, project?: string, top?: number, skip?: number, latestOnly?: boolean): Promise<GitInterfaces.GitStatus[]>;
-    getSuggestions(repositoryId: string, project?: string): Promise<GitInterfaces.GitSuggestion[]>;
+    getSuggestions(repositoryId: string, project?: string, preferCompareBranch?: boolean): Promise<GitInterfaces.GitSuggestion[]>;
     getTree(repositoryId: string, sha1: string, project?: string, projectId?: string, recursive?: boolean, fileName?: string): Promise<GitInterfaces.GitTreeRef>;
     getTreeZip(repositoryId: string, sha1: string, project?: string, projectId?: string, recursive?: boolean, fileName?: string): Promise<NodeJS.ReadableStream>;
 }
@@ -7670,10 +7670,12 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
      * 
      * @param {string} repositoryId - ID of the git repository.
      * @param {string} project - Project ID or project name
+     * @param {boolean} preferCompareBranch - If true, prefer the compare branch over the default branch as target branch for pull requests.
      */
     public async getSuggestions(
         repositoryId: string,
-        project?: string
+        project?: string,
+        preferCompareBranch?: boolean
         ): Promise<GitInterfaces.GitSuggestion[]> {
 
         return new Promise<GitInterfaces.GitSuggestion[]>(async (resolve, reject) => {
@@ -7682,12 +7684,17 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 repositoryId: repositoryId
             };
 
+            let queryValues: any = {
+                preferCompareBranch: preferCompareBranch,
+            };
+            
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
                     "7.2-preview.1",
                     "git",
                     "9393b4fb-4445-4919-972b-9ad16f442d83",
-                    routeValues);
+                    routeValues,
+                    queryValues);
 
                 let url: string = verData.requestUrl!;
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 

@@ -1230,11 +1230,19 @@ export interface LineBlockCoverage {
 /**
  * Links
  */
-export interface Link<T> {
+export interface Link {
     /**
-     * Link type
+     * Display Name
      */
-    type: T;
+    displayName?: string;
+    /**
+     * Link Operation Type Valid values = (Open, WebService)
+     */
+    operationType?: string;
+    /**
+     * Link type (maps to enum value; see parent object for acceptable values)
+     */
+    type: string;
     /**
      * Link url
      */
@@ -1331,29 +1339,6 @@ export interface NewTestResultLoggingSettings {
      * LogNewTests defines whether or not we will record new test cases coming into the system
      */
     logNewTests?: boolean;
-}
-
-export enum OneMRXSessionState {
-    /**
-     * Default
-     */
-    None = 0,
-    /**
-     * Session state with Running
-     */
-    Running = 1,
-    /**
-     * Session state with Completed
-     */
-    Completed = 2,
-    /**
-     * Session state with Waiting
-     */
-    Waiting = 3,
-    /**
-     * Session state with Cancelled
-     */
-    Cancelled = 4,
 }
 
 export enum OperationType {
@@ -2015,7 +2000,7 @@ export interface RunCreateModel {
      */
     controller?: string;
     /**
-     * Additional properties of test Run.
+     * Additional properties of test Run. Value of the CustomField cannot be more than 1KB.
      */
     customTestFields?: CustomTestField[];
     /**
@@ -2262,6 +2247,10 @@ export interface RunUpdateModel {
      */
     controller?: string;
     /**
+     * Additional properties of test Run. Value of the CustomField cannot be more than 1KB.
+     */
+    customTestFields?: CustomTestField[];
+    /**
      * true to delete inProgess Results , false otherwise.
      */
     deleteInProgressResults?: boolean;
@@ -2340,71 +2329,6 @@ export enum Service {
     Any = 0,
     Tcm = 1,
     Tfs = 2,
-}
-
-/**
- * This session object is exposed outside for 1MRX to consume and we internally convert to server.OneMRXSession in server.SessionDataContractConverter
- */
-export interface Session {
-    /**
-     * Session end time
-     */
-    endTimeUTC: Date;
-    /**
-     * Session layout
-     */
-    layout: any[];
-    /**
-     * Session name
-     */
-    name: string;
-    /**
-     * Session result
-     */
-    result: SessionResult;
-    /**
-     * Session source pipeline details
-     */
-    sessionSourcePipeline: SessionSourcePipeline;
-    /**
-     * Session source
-     */
-    source: Source;
-    /**
-     * Session start time
-     */
-    startTimeUTC: Date;
-    /**
-     * Session state
-     */
-    state: OneMRXSessionState;
-    /**
-     * List of test run ids
-     */
-    testRuns: number[];
-    /**
-     * Session timeline
-     */
-    timeline?: Timeline<SessionTimelineType>[];
-    /**
-     * Session type
-     */
-    type: string;
-    /**
-     * Session Uid
-     */
-    uid: string;
-}
-
-export enum SessionLinkType {
-    /**
-     * Default
-     */
-    None = 0,
-    /**
-     * Link type for Session information
-     */
-    SessionInfo = 1,
 }
 
 export enum SessionResult {
@@ -2507,9 +2431,9 @@ export interface SharedStepModel {
  */
 export interface Source {
     /**
-     * Source links
+     * Source links Valid values for "type" property = (SessionInfo)
      */
-    links?: Link<SessionLinkType>[];
+    links?: Link[];
     /**
      * Source origin system
      */
@@ -2894,6 +2818,10 @@ export interface TestCaseResult {
      */
     associatedBugs?: ShallowReference[];
     /**
+     * Attempt
+     */
+    attempt?: number;
+    /**
      * ID representing test method in a dll.
      */
     automatedTestId?: string;
@@ -2914,6 +2842,14 @@ export interface TestCaseResult {
      */
     automatedTestTypeId?: string;
     /**
+     * Bucketing System
+     */
+    bucketingSystem?: string;
+    /**
+     * Bucket Uid
+     */
+    bucketUid?: string;
+    /**
      * Shallow reference to build associated with test result.
      */
     build?: ShallowReference;
@@ -2921,6 +2857,10 @@ export interface TestCaseResult {
      * Reference to build associated with test result.
      */
     buildReference?: BuildReference;
+    /**
+     * Type of build
+     */
+    buildType?: string;
     /**
      * Comment in a test result with maxSize= 1000 chars.
      */
@@ -2946,6 +2886,10 @@ export interface TestCaseResult {
      */
     customFields?: CustomTestField[];
     /**
+     * Dimensions
+     */
+    dimensions?: TestResultDimension[];
+    /**
      * Duration of test execution in milliseconds. If not provided value will be set as CompletedDate - StartedDate
      */
     durationInMs?: number;
@@ -2953,6 +2897,14 @@ export interface TestCaseResult {
      * Error message in test execution.
      */
     errorMessage?: string;
+    /**
+     * Exception Type
+     */
+    exceptionType?: string;
+    /**
+     * Execution number
+     */
+    executionNumber?: number;
     /**
      * Information when test results started failing.
      */
@@ -2966,6 +2918,10 @@ export interface TestCaseResult {
      */
     id?: number;
     /**
+     * boolean that holds whether it is a system issue or not
+     */
+    isSystemIssue?: boolean;
+    /**
      * Test result details of test iterations used only for Manual Testing.
      */
     iterationDetails?: TestIterationDetailsModel[];
@@ -2977,6 +2933,18 @@ export interface TestCaseResult {
      * Last updated datetime of test result(UTC).
      */
     lastUpdatedDate?: Date;
+    /**
+     * LayoutId
+     */
+    layoutUid?: string;
+    /**
+     * Links Valid values for "type" property = (MoreInfo, ResultInvestigation, TestInfo)
+     */
+    links?: Link[];
+    /**
+     * Locale
+     */
+    locale?: string;
     /**
      * Test outcome of test result. Valid values = (Unspecified, None, Passed, Failed, Inconclusive, Timeout, Aborted, Blocked, NotExecuted, Warning, Error, NotApplicable, Paused, InProgress, NotImpacted)
      */
@@ -3058,6 +3026,10 @@ export interface TestCaseResult {
      */
     testCaseTitle?: string;
     /**
+     * build phase Valid Value= (SystemSetup, UserSetup, Test, UserCleanup, SystemCleanup)
+     */
+    testPhase?: string;
+    /**
      * Reference to test plan test case workitem is part of.
      */
     testPlan?: ShallowReference;
@@ -3073,6 +3045,10 @@ export interface TestCaseResult {
      * Reference to test suite test case workitem is part of.
      */
     testSuite?: ShallowReference;
+    /**
+     * Topology Id
+     */
+    topologyId?: number;
     /**
      * Url of test result.
      */
@@ -4186,6 +4162,20 @@ export interface TestResultCreateModel {
     testPoint?: ShallowReference;
 }
 
+/**
+ * Represents dimensions
+ */
+export interface TestResultDimension {
+    /**
+     * Test Result Dimension Name
+     */
+    name?: string;
+    /**
+     * Test Result Dimension Value
+     */
+    value?: string;
+}
+
 export interface TestResultDocument {
     operationReference?: TestOperationReference;
     payload?: TestResultPayload;
@@ -4474,6 +4464,10 @@ export interface TestResultsSession {
      * TestResultsSession end time
      */
     endTimeUTC: Date;
+    /**
+     * Id of TestResultsSession
+     */
+    id: number;
     /**
      * TestResultsSession layout
      */
@@ -5118,6 +5112,24 @@ export interface TestSessionExploredWorkItemReference extends TestSessionWorkIte
      * Time when explore of workitem was started.
      */
     startTime?: Date;
+}
+
+/**
+ * Notifications for the TestResults Session
+ */
+export interface TestSessionNotification {
+    /**
+     * Notification Body
+     */
+    body: string;
+    /**
+     * Notification Severity Valid values = (Informational, Warning, Error, Critical)
+     */
+    severity: string;
+    /**
+     * Notification Title
+     */
+    title: string;
 }
 
 /**
@@ -5787,15 +5799,6 @@ export var TypeInfo = {
             "runSummary": 4
         }
     },
-    OneMRXSessionState: {
-        enumValues: {
-            "none": 0,
-            "running": 1,
-            "completed": 2,
-            "waiting": 3,
-            "cancelled": 4
-        }
-    },
     OperationType: {
         enumValues: {
             "add": 1,
@@ -5896,14 +5899,6 @@ export var TypeInfo = {
             "any": 0,
             "tcm": 1,
             "tfs": 2
-        }
-    },
-    Session: <any>{
-    },
-    SessionLinkType: {
-        enumValues: {
-            "none": 0,
-            "sessionInfo": 1
         }
     },
     SessionResult: {
@@ -6768,21 +6763,6 @@ TypeInfo.RunUpdateModel.fields = {
     substate: {
         enumType: TypeInfo.TestRunSubstate
     }
-};
-
-TypeInfo.Session.fields = {
-    endTimeUTC: {
-        isDate: true,
-    },
-    result: {
-        enumType: TypeInfo.SessionResult
-    },
-    startTimeUTC: {
-        isDate: true,
-    },
-    state: {
-        enumType: TypeInfo.OneMRXSessionState
-    },
 };
 
 TypeInfo.SourceViewBuildCoverage.fields = {
