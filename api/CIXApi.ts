@@ -19,7 +19,6 @@ import OperationsInterfaces = require("./interfaces/common/OperationsInterfaces"
 
 export interface ICixApi extends basem.ClientApiBase {
     getConfigurations(project: string, repositoryType?: string, repositoryId?: string, branch?: string, serviceConnectionId?: string): Promise<CIXInterfaces.ConfigurationFile[]>;
-    createConnection(createConnectionInputs: CIXInterfaces.CreatePipelineConnectionInputs): Promise<OperationsInterfaces.Operation>;
     createProjectConnection(createConnectionInputs: CIXInterfaces.CreatePipelineConnectionInputs, project: string): Promise<CIXInterfaces.PipelineConnection>;
     getDetectedBuildFrameworks(project: string, repositoryType?: string, repositoryId?: string, branch?: string, detectionType?: CIXInterfaces.BuildFrameworkDetectionType, serviceConnectionId?: string): Promise<CIXInterfaces.DetectedBuildFramework[]>;
     createResources(creationParameters: { [key: string] : CIXInterfaces.ResourceCreationParameter; }, project: string): Promise<CIXInterfaces.CreatedResources>;
@@ -77,46 +76,6 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
                 let ret = this.formatResponse(res.result,
                                               null,
                                               true);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * LEGACY METHOD - Obsolete Creates a new Pipeline connection between the provider installation and the specified project. Returns an Operation object that holds the redirect Url
-     * 
-     * @param {CIXInterfaces.CreatePipelineConnectionInputs} createConnectionInputs
-     */
-    public async createConnection(
-        createConnectionInputs: CIXInterfaces.CreatePipelineConnectionInputs
-        ): Promise<OperationsInterfaces.Operation> {
-
-        return new Promise<OperationsInterfaces.Operation>(async (resolve, reject) => {
-            let routeValues: any = {
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "pipelines",
-                    "00df4879-9216-45d5-b38d-4a487b626b2c",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<OperationsInterfaces.Operation>;
-                res = await this.rest.create<OperationsInterfaces.Operation>(url, createConnectionInputs, options);
-
-                let ret = this.formatResponse(res.result,
-                                              OperationsInterfaces.TypeInfo.Operation,
-                                              false);
 
                 resolve(ret);
                 
