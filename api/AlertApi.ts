@@ -23,6 +23,7 @@ export interface IAlertApi extends basem.ClientApiBase {
     getAlertSarif(project: string, alertId: number, repository: string, ref?: string, expand?: AlertInterfaces.ExpandOption): Promise<string>;
     updateAlert(stateUpdate: AlertInterfaces.AlertStateUpdate, project: string, alertId: number, repository: string): Promise<AlertInterfaces.Alert>;
     getAlertInstances(project: string, alertId: number, repository: string, ref?: string): Promise<AlertInterfaces.AlertAnalysisInstance[]>;
+    updateAlertsMetadata(alertsMetadata: AlertInterfaces.AlertMetadata[], project: string, repository: string): Promise<AlertInterfaces.AlertMetadataChange[]>;
     uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string): Promise<number>;
     getUxFilters(project: string, repository: string, alertType: AlertInterfaces.AlertType): Promise<AlertInterfaces.UxFilters>;
     getSarif(sarifId: number): Promise<AlertInterfaces.SarifUploadStatus>;
@@ -299,6 +300,52 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
 
                 let ret = this.formatResponse(res.result,
                                               AlertInterfaces.TypeInfo.AlertAnalysisInstance,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Update alert metadata associations.
+     * 
+     * @param {AlertInterfaces.AlertMetadata[]} alertsMetadata - A list of metadata to associate with alerts.
+     * @param {string} project - Project ID or project name
+     * @param {string} repository - The name or ID of the repository.
+     */
+    public async updateAlertsMetadata(
+        alertsMetadata: AlertInterfaces.AlertMetadata[],
+        project: string,
+        repository: string
+        ): Promise<AlertInterfaces.AlertMetadataChange[]> {
+
+        return new Promise<AlertInterfaces.AlertMetadataChange[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repository: repository
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "65de4b84-7519-4ae8-8623-175f79b49b80",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.AlertMetadataChange[]>;
+                res = await this.rest.update<AlertInterfaces.AlertMetadataChange[]>(url, alertsMetadata, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.AlertMetadataChange,
                                               true);
 
                 resolve(ret);

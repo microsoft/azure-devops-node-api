@@ -21,10 +21,10 @@ export interface IManagementApi extends basem.ClientApiBase {
     deleteMeterUsageHistory(organizationId: string): Promise<void>;
     getBillingInfo(organizationId: string): Promise<ManagementInterfaces.BillingInfo>;
     saveBillingInfo(billingInfo: ManagementInterfaces.BillingInfo, organizationId: string): Promise<void>;
+    createBillingSnapshot(meterUsage: ManagementInterfaces.MeterUsage): Promise<void>;
     getBillableCommitterDetails(billingDate?: Date): Promise<ManagementInterfaces.BillableCommitterDetails[]>;
     getLastMeterUsage(): Promise<ManagementInterfaces.MeterUsage>;
     getMeterUsage(billingDate?: Date): Promise<ManagementInterfaces.MeterUsage>;
-    setBillingSnapshot(meterUsage: ManagementInterfaces.MeterUsage): Promise<void>;
     getOrgEnablementStatus(includeAllProperties?: boolean): Promise<ManagementInterfaces.AdvSecEnablementSettings>;
     updateOrgEnablementStatus(savedAdvSecEnablementStatus: ManagementInterfaces.AdvSecEnablementSettingsUpdate): Promise<void>;
     getEstimatedOrgBillablePushers(): Promise<string[]>;
@@ -212,6 +212,47 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * During multi-org billing computation in primary scale unit(EUS21), this API is used to create billing snapshot for a specific org. Primary scale unit will call this API for each org in different scsle units to create billing snapshot. Data will be stored in the org specific partition DB -> billing snapshot table. This is needed as customers will fetch billing data from their org specific partition DB.
+     * 
+     * @param {ManagementInterfaces.MeterUsage} meterUsage
+     */
+    public async createBillingSnapshot(
+        meterUsage: ManagementInterfaces.MeterUsage
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Default", 
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Management",
+                    "e58d8091-3d07-48b1-9527-7d6295fd4081",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.create<void>(url, meterUsage, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * Get all billable committers details, including those not matched with a VSID.
      * 
      * @param {Date} billingDate - The date to query, or if not provided, today
@@ -329,45 +370,6 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
 
                 let ret = this.formatResponse(res.result,
                                               ManagementInterfaces.TypeInfo.MeterUsage,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {ManagementInterfaces.MeterUsage} meterUsage
-     */
-    public async setBillingSnapshot(
-        meterUsage: ManagementInterfaces.MeterUsage
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                action: "Default", 
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Management",
-                    "e58d8091-3d07-48b1-9527-7d6295fd4081",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, meterUsage, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
                                               false);
 
                 resolve(ret);

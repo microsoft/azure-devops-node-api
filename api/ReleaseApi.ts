@@ -3523,7 +3523,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.4",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);
@@ -3559,7 +3559,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.4",
                     "Release",
                     "258b82e0-9d41-43f3-86d6-fef14ddd44bc",
                     routeValues);

@@ -23,6 +23,10 @@ export interface Alert {
      */
     alertType?: AlertType;
     /**
+     * Confidence level of the alert.
+     */
+    confidence?: Confidence;
+    /**
      * Contains information for the dismissal of the alert if the alert has been dismissed.
      */
     dismissal?: Dismissal;
@@ -112,6 +116,34 @@ export interface AlertAnalysisInstance {
      * Result state for a given analysis configuration.
      */
     state?: State;
+}
+
+/**
+ * Alert metadata.
+ */
+export interface AlertMetadata {
+    /**
+     * The ID of the alert.
+     */
+    alertId?: number;
+    /**
+     * A list of metadata to be associated with the alert.
+     */
+    metadata?: Metadata[];
+}
+
+/**
+ * Used to represent an update in a relationship between an alert and an artifact.
+ */
+export interface AlertMetadataChange {
+    /**
+     * The ID of the alert.
+     */
+    alertId?: number;
+    /**
+     * The change that occurred to the metadata.
+     */
+    metadataChange?: MetadataChange;
 }
 
 export interface AlertStateUpdate {
@@ -317,6 +349,17 @@ export enum ComponentType {
     Vcpkg = 16,
 }
 
+export enum Confidence {
+    /**
+     * High confidence level for alert
+     */
+    High = 0,
+    /**
+     * Other confidence level for alert
+     */
+    Other = 1,
+}
+
 /**
  * Information about a vulnerable dependency
  */
@@ -431,6 +474,52 @@ export interface LogicalLocation {
 }
 
 /**
+ * The metadata operation to be performed on the alert.
+ */
+export interface Metadata {
+    /**
+     * The type of operation to be performed.
+     */
+    op?: MetadataOperation;
+    /**
+     * The metadata value
+     */
+    value?: RelationMetadata;
+}
+
+/**
+ * The change that has been made to the metadata.
+ */
+export interface MetadataChange {
+    /**
+     * The type of change on the metadata.
+     */
+    changeType?: MetadataChangeType;
+    /**
+     * Represents a metadata association to an alert.
+     */
+    value?: RelationMetadata;
+}
+
+/**
+ * The type of change that occurred to the metadata.
+ */
+export enum MetadataChangeType {
+    None = 0,
+    Created = 1,
+    Updated = 2,
+    Deleted = 3,
+}
+
+/**
+ * The operation to be performed on the metadata.
+ */
+export enum MetadataOperation {
+    Add = 0,
+    Remove = 1,
+}
+
+/**
  * Location in the source control system where the issue was found
  */
 export interface PhysicalLocation {
@@ -465,10 +554,6 @@ export interface Region {
      */
     columnStart?: number;
     /**
-     * A subset of the code snippet highlighting the issue
-     */
-    highlightSnippet?: string;
-    /**
      * The line number where the code snippet ends
      */
     lineEnd?: number;
@@ -476,10 +561,24 @@ export interface Region {
      * The line number where the code snippet starts
      */
     lineStart?: number;
+}
+
+/**
+ * The metadata to be associated with the alert.
+ */
+export interface RelationMetadata {
     /**
-     * The full code snippet
+     * Any additional attributes of the metadata.
      */
-    snippet?: string;
+    attributes?: { [key: string] : any; };
+    /**
+     * The type of the metadata.
+     */
+    rel?: string;
+    /**
+     * The URL of the metadata.
+     */
+    url?: string;
 }
 
 export interface Result {
@@ -612,9 +711,17 @@ export interface SarifValidationError {
 
 export interface SearchCriteria {
     /**
+     * If provided, only return alerts with the ids specified. <br />Otherwise, return any alert.
+     */
+    alertIds?: number[];
+    /**
      * If provided, only return alerts of this type. Otherwise, return alerts of all types.
      */
     alertType?: AlertType;
+    /**
+     * If provided, only return alerts at these confidence levels. <br />Otherwise, return alerts at any confidence level.
+     */
+    confidenceLevels?: Confidence[];
     /**
      * If provided, only alerts for this dependency are returned. <br />Otherwise, return alerts for all dependencies. <br />In a sarif submission, a dependency (or a vulnerable component) is specified in result.RelatedLocations[].logicalLocation.
      */
@@ -729,6 +836,10 @@ export interface UxFilters {
      * Branches to display alerts for.  If empty, show alerts from all branches
      */
     branches?: Branch[];
+    /**
+     * Confidence levels to show, only valid when AlertType is Secret.
+     */
+    confidenceLevels?: Confidence[];
     packages?: Dependency[];
     /**
      * Pipelines to show alerts for.  If empty, show alerts for all pipelines
@@ -797,14 +908,6 @@ export interface VersionControlSnippet {
      */
     endLine?: number;
     /**
-     * subset of the code snippet highlighting the alert issue
-     */
-    highlightSnippet?: string;
-    /**
-     * larger code snippet
-     */
-    snippet?: string;
-    /**
      * column in the code file where the snippet starts
      */
     startColumn?: number;
@@ -812,10 +915,6 @@ export interface VersionControlSnippet {
      * line in the code file where the snippet starts
      */
     startLine?: number;
-    /**
-     * Version control system where the code was found
-     */
-    versionControl?: string;
     /**
      * path of the code file in the version control system
      */
@@ -834,6 +933,10 @@ export var TypeInfo = {
     Alert: <any>{
     },
     AlertAnalysisInstance: <any>{
+    },
+    AlertMetadata: <any>{
+    },
+    AlertMetadataChange: <any>{
     },
     AlertStateUpdate: <any>{
     },
@@ -880,6 +983,12 @@ export var TypeInfo = {
             "vcpkg": 16
         }
     },
+    Confidence: {
+        enumValues: {
+            "high": 0,
+            "other": 1
+        }
+    },
     Dependency: <any>{
     },
     DependencyResult: <any>{
@@ -898,6 +1007,24 @@ export var TypeInfo = {
         enumValues: {
             "none": 0,
             "validationFingerprint": 1
+        }
+    },
+    Metadata: <any>{
+    },
+    MetadataChange: <any>{
+    },
+    MetadataChangeType: {
+        enumValues: {
+            "none": 0,
+            "created": 1,
+            "updated": 2,
+            "deleted": 3
+        }
+    },
+    MetadataOperation: {
+        enumValues: {
+            "add": 0,
+            "remove": 1
         }
     },
     Result: <any>{
@@ -949,6 +1076,9 @@ TypeInfo.Alert.fields = {
     alertType: {
         enumType: TypeInfo.AlertType
     },
+    confidence: {
+        enumType: TypeInfo.Confidence
+    },
     dismissal: {
         typeInfo: TypeInfo.Dismissal
     },
@@ -990,6 +1120,19 @@ TypeInfo.AlertAnalysisInstance.fields = {
     },
     state: {
         enumType: TypeInfo.State
+    }
+};
+
+TypeInfo.AlertMetadata.fields = {
+    metadata: {
+        isArray: true,
+        typeInfo: TypeInfo.Metadata
+    }
+};
+
+TypeInfo.AlertMetadataChange.fields = {
+    metadataChange: {
+        typeInfo: TypeInfo.MetadataChange
     }
 };
 
@@ -1057,6 +1200,18 @@ TypeInfo.Dismissal.fields = {
     }
 };
 
+TypeInfo.Metadata.fields = {
+    op: {
+        enumType: TypeInfo.MetadataOperation
+    }
+};
+
+TypeInfo.MetadataChange.fields = {
+    changeType: {
+        enumType: TypeInfo.MetadataChangeType
+    }
+};
+
 TypeInfo.Result.fields = {
     dependencyResult: {
         typeInfo: TypeInfo.DependencyResult
@@ -1078,6 +1233,10 @@ TypeInfo.SarifUploadStatus.fields = {
 TypeInfo.SearchCriteria.fields = {
     alertType: {
         enumType: TypeInfo.AlertType
+    },
+    confidenceLevels: {
+        isArray: true,
+        enumType: TypeInfo.Confidence
     },
     fromDate: {
         isDate: true,
@@ -1102,6 +1261,10 @@ TypeInfo.UxFilters.fields = {
     branches: {
         isArray: true,
         typeInfo: TypeInfo.Branch
+    },
+    confidenceLevels: {
+        isArray: true,
+        enumType: TypeInfo.Confidence
     },
     packages: {
         isArray: true,
