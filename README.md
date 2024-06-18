@@ -109,7 +109,7 @@ More detailed information for the endpoints of each API can be found at https://
 
 ## Running Samples
 
-Pre-reqs: [Node >= 4.4.7 LTS](https://nodejs.org) and [typescript (tsc) >= 1.8](https://www.npmjs.com/package/typescript)  
+Pre-reqs: [Node >= 16](https://nodejs.org) and [typescript (tsc) >= 4](https://www.npmjs.com/package/typescript)  
 
 Run `npm install` first
 
@@ -135,6 +135,11 @@ Run a specific sample:
 ```bash
 $ npm run samples -- projectAnalysis
 ```
+
+## Node support
+v14 and above - [current, maintained] - Supports node 16 and above
+
+v13 and below - End Of Life, for Node < 16, contains security vulnerabilities, use at your own risk  
 
 ## API and TFS Mapping
 
