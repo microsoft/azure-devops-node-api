@@ -1,7 +1,7 @@
 {
     "name": "azure-devops-node-api",
     "description": "Node client for Azure DevOps and TFS REST APIs",
-    "version": "13.0.0",
+    "version": "14.0.0",
     "main": "./WebApi.js",
     "types": "./WebApi.d.ts",
     "scripts": {
@@ -23,19 +23,22 @@
         "Teddy Ward <t-edward@microsoft.com>"
     ],
     "license": "MIT",
+    "engines": {
+        "node": ">= 16.0.0"
+    },
     "dependencies": {
         "tunnel": "0.0.6",
-        "typed-rest-client": "^1.8.4"
+        "typed-rest-client": "^2.0.0"
     },
     "devDependencies": {
         "@types/glob": "5.0.35",
         "@types/minimatch": "3.0.3",
         "@types/mocha": "^2.2.44",
-        "@types/shelljs": "0.7.8",
-        "mocha": "^3.5.3",
+        "@types/node": "16.11.7",
+        "@types/shelljs": "0.8.5",
+        "mocha": "^10.4.0",
         "nock": "9.6.1",
-        "shelljs": "0.7.8",
-        "typescript": "3.1.5",
-        "@types/node": "8.9.2"
+        "shelljs": "^0.8.5",
+        "typescript": "4.0.2"
     }
 }
