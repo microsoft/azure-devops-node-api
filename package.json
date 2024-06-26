@@ -1,7 +1,7 @@
 {
     "name": "azure-devops-node-api",
     "description": "Node client for Azure DevOps and TFS REST APIs",
-    "version": "14.0.0",
+    "version": "14.0.1",
     "main": "./WebApi.js",
     "types": "./WebApi.d.ts",
     "scripts": {
@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "tunnel": "0.0.6",
-        "typed-rest-client": "^2.0.0"
+        "typed-rest-client": "^2.0.1"
     },
     "devDependencies": {
         "@types/glob": "5.0.35",
