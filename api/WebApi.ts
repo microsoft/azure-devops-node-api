@@ -70,7 +70,7 @@ export function getPersonalAccessTokenHandler(token: string, allowCrossOriginAut
 }
 
 export function getHandlerFromToken(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
-    if (token.length === 52) {
+    if (token.length === 52 || token.length == 84) {
         return getPersonalAccessTokenHandler(token, allowCrossOriginAuthentication);
     }
     else {
