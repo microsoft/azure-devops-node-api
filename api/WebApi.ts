@@ -49,6 +49,7 @@ import url = require('url');
 import path = require('path');
 
 const isBrowser: boolean = typeof window !== 'undefined';
+const personalAccessTokenRegex : RegExp = new RegExp('^.{76}AZDO.{4}$');
 /**
  * Methods to return handler objects (see handlers folder)
  */
@@ -70,7 +71,7 @@ export function getPersonalAccessTokenHandler(token: string, allowCrossOriginAut
 }
 
 export function getHandlerFromToken(token: string, allowCrossOriginAuthentication?: boolean): VsoBaseInterfaces.IRequestHandler {
-    if (token.length === 52) {
+    if (token.length === 52 || personalAccessTokenRegex.test(token)) {
         return getPersonalAccessTokenHandler(token, allowCrossOriginAuthentication);
     }
     else {
