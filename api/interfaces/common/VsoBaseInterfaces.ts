@@ -84,6 +84,11 @@ export interface IHttpClientResponse {
     readBody(): Promise<string>;
 }
 
+export interface IHttpGlobalAgentOptions {
+    keepAlive?: boolean;
+    timeout?: number;
+}
+
 export interface IRequestOptions {
     headers?: IHeaders;
     socketTimeout?: number;
@@ -99,6 +104,7 @@ export interface IRequestOptions {
     // Allows retries only on Read operations (since writes may not be idempotent)
     allowRetries?: boolean;
     maxRetries?: number;
+    globalAgentOptions?: IHttpGlobalAgentOptions;
 }
 
 export interface IProxyConfiguration {
