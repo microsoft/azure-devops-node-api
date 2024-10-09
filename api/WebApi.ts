@@ -147,9 +147,9 @@ export class WebApi {
         const nodeApiName: string = 'azure-devops-node-api';
         if(isBrowser) {
             if(requestSettings) {
-                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${window.navigator.userAgent})`
+                userAgent = `${requestSettings.productName}/${requestSettings.productVersion} (${nodeApiName}; ${window.navigator?.userAgent})`
             } else {
-                userAgent = `${nodeApiName} (${window.navigator.userAgent})`;
+                userAgent = `${nodeApiName} (${window.navigator?.userAgent})`;
             }
         } else {
             let nodeApiVersion: string = 'unknown';
