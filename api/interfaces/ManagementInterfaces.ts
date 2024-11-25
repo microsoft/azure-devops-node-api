@@ -13,6 +13,21 @@
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AdvSecEnablementFeatures {
+    /**
+     * Dependabot enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br />When true, Dependabot will open PRs to support security updates for outdated dependencies. <br />Setting Dependabot enablement state is only supported for repo enablement and not org or project enablement at this time.
+     */
+    dependabotEnabled?: boolean;
+    /**
+     * Dependency Scanning enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br /> If GHAzDO is NOT already enabled, behavior will depend on if GHAzDO is to be enabled/disabled. DependencyScanningEnabled will not affect anything in this scenario. <br /> If GHAzDO is to be disabled, the value of DependencyScanningEnabled will have no effect. <br /> Setting Dependency Scanning enablement state is only supported for repo enablement and not org or project enablement at this time.
+     */
+    dependencyScanningEnabled?: boolean;
+    /**
+     * ForceRepoSecretScanning will be set to true when Enabled, false when Disabled, and null when not set. <br /> If GHAzDO is NOT already enabled, behavior will depend on if GHAzDO is to be enabled/disabled. ForceRepoSecretScanning will not affect anything in this scenario. <br /> If GHAzDO is to be disabled, the value of ForceRepoSecretScan will have no effect. <br /> If GHAzDO is to be enabled for the first time on a repo, then ForceRepoSecretScanning will have no effect. <br /> If GHAzDO is to be enabled and the repo is already enabled, then ForceRepoSecretScanning will force the secret scanning job to be run if it is set to true. <br /> In all cases where ForceRepoSecretScanning is not expected to affect behavior, it will be set to false before being sent to Tfs.
+     */
+    forceRepoSecretScanning?: boolean;
+}
+
 export interface AdvSecEnablementSettings {
     /**
      * Automatically enable Advanced Security on newly created repositories.
@@ -43,13 +58,13 @@ export interface AdvSecEnablementStatusUpdate {
      */
     advSecEnabled?: boolean;
     /**
+     * Includes additional features that can be enabled alongside Advanced Security.
+     */
+    advSecEnablementFeatures?: AdvSecEnablementFeatures;
+    /**
      * When true, pushes containing secrets will be blocked. <br />When false, pushes are scanned for secrets and are not blocked. <br />If includeAllProperties in the request is false, this value will be null.
      */
     blockPushes?: boolean;
-    /**
-     * Dependabot enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br />When true, Dependabot will open PRs to support security updates for outdated dependencies. <br />If includeAllProperties in the request is false, this value will be null.
-     */
-    dependabotEnabled?: boolean;
 }
 
 /**
@@ -129,40 +144,6 @@ export interface BilledCommitter {
 }
 
 /**
- * BillingInfo contains an organization, its enablement status and the Azure Subscription for it.
- */
-export interface BillingInfo {
-    advSecEnabled?: boolean;
-    /**
-     * The most recent time the enablement state was modified.
-     */
-    advSecEnabledChangedOnDate?: Date;
-    /**
-     * The first time the enablement state was modified.
-     */
-    advSecEnabledFirstChangedOnDate?: Date;
-    azureSubscriptionId?: string;
-    billingMode?: BillingMode;
-    organizationId?: string;
-    tenantId?: string;
-}
-
-export enum BillingMode {
-    /**
-     * None implies the organization is not billable because no Azure Subscription has been set.
-     */
-    None = 0,
-    /**
-     * When an organization is the only organization mapped to an Azure Subscription.
-     */
-    SingleOrg = 1,
-    /**
-     * When an organization is mapped to an Azure Subscription to which at least one other org is mapped.
-     */
-    MultiOrg = 2,
-}
-
-/**
  * Information related to billing for Advanced Security services
  */
 export interface MeterUsage {
@@ -208,15 +189,6 @@ export var TypeInfo = {
     },
     BillableCommitterDetails: <any>{
     },
-    BillingInfo: <any>{
-    },
-    BillingMode: {
-        enumValues: {
-            "none": 0,
-            "singleOrg": 1,
-            "multiOrg": 2
-        }
-    },
     MeterUsage: <any>{
     },
 };
@@ -240,18 +212,6 @@ TypeInfo.BillableCommitterDetails.fields = {
     },
     pushedTime: {
         isDate: true,
-    }
-};
-
-TypeInfo.BillingInfo.fields = {
-    advSecEnabledChangedOnDate: {
-        isDate: true,
-    },
-    advSecEnabledFirstChangedOnDate: {
-        isDate: true,
-    },
-    billingMode: {
-        enumType: TypeInfo.BillingMode
     }
 };
 

@@ -7092,7 +7092,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * 
      * @param {string} project - Project ID or project name
      * @param {number[]} groupIds - Comma separated list of Ids of variable groups.
-     * @param {boolean} loadSecrets
+     * @param {boolean} loadSecrets - Flag indicating if the secrets within variable groups should be loaded.
      */
     public async getVariableGroupsById(
         project: string,

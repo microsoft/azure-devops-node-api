@@ -2804,6 +2804,7 @@ export interface SourceRepositoryItem {
 export enum StageUpdateType {
     Cancel = 0,
     Retry = 1,
+    Run = 2,
 }
 
 export interface SupportedTrigger {
@@ -2966,6 +2967,8 @@ export enum TaskResult {
     Canceled = 3,
     Skipped = 4,
     Abandoned = 5,
+    ManuallyQueued = 6,
+    DependentOnManualQueue = 7,
 }
 
 /**
@@ -3749,7 +3752,8 @@ export var TypeInfo = {
     StageUpdateType: {
         enumValues: {
             "cancel": 0,
-            "retry": 1
+            "retry": 1,
+            "run": 2
         }
     },
     SupportedTrigger: <any>{
@@ -3768,7 +3772,9 @@ export var TypeInfo = {
             "failed": 2,
             "canceled": 3,
             "skipped": 4,
-            "abandoned": 5
+            "abandoned": 5,
+            "manuallyQueued": 6,
+            "dependentOnManualQueue": 7
         }
     },
     Timeline: <any>{

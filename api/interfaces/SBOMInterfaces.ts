@@ -148,16 +148,6 @@ export enum ManifestToolActions {
 }
 
 /**
- * Enum that represents the result of a signing submission or status request.
- */
-export enum Result {
-    Success = 0,
-    Failure = 1,
-    InProgress = 2,
-    FailCanRetry = 3,
-}
-
-/**
  * Represents a SBOM file object and contains additional properties related to the file.
  */
 export interface SBOMFile {
@@ -239,34 +229,6 @@ export interface SignRequest {
     fileHash?: FileHash;
 }
 
-/**
- * The base reponse object for all responses from the signing api.
- */
-export interface SignResponseBase {
-    /**
-     * The customer correlation id that is sent to ESRP for correlating the current request to ESRP.
-     */
-    customerCorrelationId?: string;
-    /**
-     * If this is an error response, it will have more information about the error.
-     */
-    errorInfo?: string;
-    /**
-     * The result of the response.
-     */
-    result?: Result;
-}
-
-/**
- * The response returned by the sign status api.
- */
-export interface SignStatusResponse extends SignResponseBase {
-    /**
-     * The pre-signed download url used to download the signed catalog file.
-     */
-    downloadUrl?: string;
-}
-
 export var TypeInfo = {
     Configuration: <any>{
     },
@@ -278,19 +240,7 @@ export var TypeInfo = {
             "all": 3
         }
     },
-    Result: {
-        enumValues: {
-            "success": 0,
-            "failure": 1,
-            "inProgress": 2,
-            "failCanRetry": 3
-        }
-    },
     SBOMTelemetry: <any>{
-    },
-    SignResponseBase: <any>{
-    },
-    SignStatusResponse: <any>{
     },
 };
 
@@ -303,17 +253,5 @@ TypeInfo.Configuration.fields = {
 TypeInfo.SBOMTelemetry.fields = {
     parameters: {
         typeInfo: TypeInfo.Configuration
-    }
-};
-
-TypeInfo.SignResponseBase.fields = {
-    result: {
-        enumType: TypeInfo.Result
-    }
-};
-
-TypeInfo.SignStatusResponse.fields = {
-    result: {
-        enumType: TypeInfo.Result
     }
 };

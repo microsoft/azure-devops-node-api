@@ -100,6 +100,12 @@ export interface AzureKeyVaultPermission extends AzureResourcePermission {
     vault?: string;
 }
 
+export interface AzureManagedIdentity {
+    clientId?: string;
+    id?: string;
+    name?: string;
+}
+
 /**
  * Azure Management Group
  */
@@ -156,6 +162,7 @@ export interface AzureRoleAssignmentPermission extends AzurePermission {
 }
 
 export interface AzureSpnOperationStatus {
+    errorCode?: SpnEndpointErrorCode;
     severity?: string;
     state?: string;
     statusMessage?: string;
@@ -535,6 +542,10 @@ export interface ServiceEndpoint {
      * Gets or sets the identity reference for the user who created the Service endpoint.
      */
     createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets the date, when the Service endpoint has been created.
+     */
+    creationDate?: Date;
     data?: { [key: string] : string; };
     /**
      * Gets or sets the description of endpoint.
@@ -565,6 +576,14 @@ export interface ServiceEndpoint {
      */
     isShared?: boolean;
     /**
+     * Gets or sets the date, when the Service endpoint has been modified.
+     */
+    modificationDate?: Date;
+    /**
+     * Gets or sets the identity reference for the user who did the latest modification of the Service endpoint.
+     */
+    modifiedBy?: VSSInterfaces.IdentityRef;
+    /**
      * Gets or sets the friendly name of the endpoint.
      */
     name?: string;
@@ -584,6 +603,10 @@ export interface ServiceEndpoint {
      * All other project references where the service endpoint is shared.
      */
     serviceEndpointProjectReferences?: ServiceEndpointProjectReference[];
+    /**
+     * Service Tree ID
+     */
+    serviceManagementReference?: string;
     /**
      * Gets or sets the type of the endpoint.
      */
@@ -663,6 +686,14 @@ export interface ServiceEndpointDetails {
      * Gets or sets the connection url of service endpoint.
      */
     url?: string;
+}
+
+export interface ServiceEndpointEvent {
+    authorization?: EndpointAuthorization;
+    id?: string;
+    name?: string;
+    projectIds?: string[];
+    type?: string;
 }
 
 /**
@@ -831,6 +862,16 @@ export interface ServiceEndpointRequestResult {
 }
 
 /**
+ * Represents the details of service endpoint execution.
+ */
+export interface ServiceEndpointTokenResult {
+    /**
+     * Gets the access token
+     */
+    accessToken?: string;
+}
+
+/**
  * Represents type of the service endpoint.
  */
 export interface ServiceEndpointType {
@@ -888,6 +929,13 @@ export interface ServiceEndpointType {
     uiContributionId?: string;
 }
 
+export enum SpnEndpointErrorCode {
+    /**
+     * Indicates whether user does not have required permissions to register the app in Entra or WIF is disabled.
+     */
+    AppRegistrationFailed = 1,
+}
+
 export var TypeInfo = {
     AadLoginPromptOption: {
         enumValues: {
@@ -907,6 +955,8 @@ export var TypeInfo = {
     },
     AuthConfiguration: <any>{
     },
+    AzureSpnOperationStatus: <any>{
+    },
     OAuthConfiguration: <any>{
     },
     OAuthConfigurationActionFilter: {
@@ -915,6 +965,8 @@ export var TypeInfo = {
             "manage": 2,
             "use": 16
         }
+    },
+    ServiceEndpoint: <any>{
     },
     ServiceEndpointActionFilter: {
         enumValues: {
@@ -946,6 +998,11 @@ export var TypeInfo = {
     },
     ServiceEndpointType: <any>{
     },
+    SpnEndpointErrorCode: {
+        enumValues: {
+            "appRegistrationFailed": 1
+        }
+    },
 };
 
 TypeInfo.AuthConfiguration.fields = {
@@ -957,11 +1014,26 @@ TypeInfo.AuthConfiguration.fields = {
     }
 };
 
+TypeInfo.AzureSpnOperationStatus.fields = {
+    errorCode: {
+        enumType: TypeInfo.SpnEndpointErrorCode
+    }
+};
+
 TypeInfo.OAuthConfiguration.fields = {
     createdOn: {
         isDate: true,
     },
     modifiedOn: {
+        isDate: true,
+    }
+};
+
+TypeInfo.ServiceEndpoint.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    modificationDate: {
         isDate: true,
     }
 };
