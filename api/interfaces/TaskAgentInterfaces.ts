@@ -75,6 +75,12 @@ export interface AgentQueueEvent {
     queue?: TaskAgentQueue;
 }
 
+export interface AgentQueueServiceHookEvent {
+    projectId?: string;
+    queueId?: number;
+    queueName?: string;
+}
+
 export interface AgentQueuesEvent {
     eventType?: string;
     queues?: TaskAgentQueue[];
@@ -1771,6 +1777,10 @@ export interface ServiceEndpoint {
      * Gets or sets the identity reference for the user who created the Service endpoint.
      */
     createdBy?: VSSInterfaces.IdentityRef;
+    /**
+     * Gets or sets the date, when the Service endpoint has been created.
+     */
+    creationDate?: Date;
     data?: { [key: string] : string; };
     /**
      * Gets or sets the description of endpoint.
@@ -1794,6 +1804,14 @@ export interface ServiceEndpoint {
      */
     isShared?: boolean;
     /**
+     * Gets or sets the date, when the Service endpoint has been modified.
+     */
+    modificationDate?: Date;
+    /**
+     * Gets or sets the identity reference for the user who did the latest modification of the Service endpoint.
+     */
+    modifiedBy?: VSSInterfaces.IdentityRef;
+    /**
      * Gets or sets the friendly name of the endpoint.
      */
     name?: string;
@@ -1809,6 +1827,10 @@ export interface ServiceEndpoint {
      * Gets or sets the identity reference for the readers group of the service endpoint.
      */
     readersGroup?: VSSInterfaces.IdentityRef;
+    /**
+     * Service Tree ID
+     */
+    serviceManagementReference?: string;
     /**
      * Gets or sets the type of the endpoint.
      */
@@ -1966,6 +1988,17 @@ export interface ServiceEndpointType {
     uiContributionId?: string;
 }
 
+export enum StageTriggerType {
+    /**
+     * Stage starts automatically
+     */
+    Automatic = 0,
+    /**
+     * Stage starts on manual run
+     */
+    Manual = 1,
+}
+
 /**
  * A task agent.
  */
@@ -2067,6 +2100,7 @@ export interface TaskAgentCloudRequest {
     provisionRequestTime?: Date;
     releaseRequestTime?: Date;
     requestId?: string;
+    requestVersion?: number;
 }
 
 export interface TaskAgentCloudType {
@@ -2684,6 +2718,10 @@ export interface TaskAgentSession {
      */
     agent?: TaskAgentReference;
     /**
+     * This will be false in case an old Agent is creating the session.
+     */
+    agentCanHandleOaepSHA256?: boolean;
+    /**
      * Gets the key used to encrypt message traffic for this session.
      */
     encryptionKey?: TaskAgentSessionKey;
@@ -2706,6 +2744,10 @@ export interface TaskAgentSessionKey {
      * Gets or sets a value indicating whether or not the key value is encrypted. If this value is true, the Value property should be decrypted using the <c>RSA</c> key exchanged with the server during registration.
      */
     encrypted?: boolean;
+    /**
+     * Name of RSAEncryptionPadding that TFS (backend) used. New Agents will check this value. Won't be emitted for old Agents that only support OaepSHA1.
+     */
+    encryptionPadding?: string;
     /**
      * Gets or sets the symmetric key value.
      */
@@ -2813,6 +2855,7 @@ export interface TaskDefinition {
     _buildConfigMapping?: { [key: string] : string; };
     agentExecution?: TaskExecution;
     author?: string;
+    buildConfig?: string;
     category?: string;
     contentsUploaded?: boolean;
     contributionIdentifier?: string;
@@ -3410,6 +3453,12 @@ export interface TaskPackageMetadata {
  */
 export interface TaskReference {
     /**
+     * The build config of the task definition. Corresponds to the version value of task.json file. <br />Example: CmdLineV2 { "_buildConfigMapping": { "Default": "2.232.2", "Node20_229_7": "2.232.3" } }
+     */
+    buildConfig?: string;
+    contributionIdentifier?: string;
+    contributionVersion?: string;
+    /**
      * The ID of the task definition. Corresponds to the id value of task.json file. <br />Example: CmdLineV2 { "id": "D9BAFED4-0B18-4F58-968D-86655B4D2CE9" }
      */
     id?: string;
@@ -3442,6 +3491,8 @@ export enum TaskResult {
     Canceled = 3,
     Skipped = 4,
     Abandoned = 5,
+    ManuallyQueued = 6,
+    DependentOnManualQueue = 7,
 }
 
 export interface TaskSourceDefinition extends DistributedTaskCommonInterfaces.TaskSourceDefinitionBase {
@@ -3623,6 +3674,7 @@ export interface TimelineRecordFeedLinesWrapper {
  * A reference to a timeline record.
  */
 export interface TimelineRecordReference {
+    attempt?: number;
     /**
      * The ID of the record.
      */
@@ -3845,6 +3897,11 @@ export interface VirtualMachineResourceCreateParameters {
     virtualMachineResource?: VirtualMachineResource;
 }
 
+export interface WorkloadIdentityFederationDetailsData {
+    federationIssuer?: string;
+    federationSubject?: string;
+}
+
 export var TypeInfo = {
     AadLoginPromptOption: {
         enumValues: {
@@ -4065,6 +4122,8 @@ export var TypeInfo = {
     },
     KubernetesResource: <any>{
     },
+    KubernetesResourceCreateParametersNewEndpoint: <any>{
+    },
     LogLevel: {
         enumValues: {
             "error": 0,
@@ -4154,6 +4213,8 @@ export var TypeInfo = {
     },
     ServerTaskRequestMessage: <any>{
     },
+    ServiceEndpoint: <any>{
+    },
     ServiceEndpointAuthenticationScheme: <any>{
     },
     ServiceEndpointExecutionData: <any>{
@@ -4165,6 +4226,12 @@ export var TypeInfo = {
     ServiceEndpointRequestResult: <any>{
     },
     ServiceEndpointType: <any>{
+    },
+    StageTriggerType: {
+        enumValues: {
+            "automatic": 0,
+            "manual": 1
+        }
     },
     TaskAgent: <any>{
     },
@@ -4390,7 +4457,9 @@ export var TypeInfo = {
             "failed": 2,
             "canceled": 3,
             "skipped": 4,
-            "abandoned": 5
+            "abandoned": 5,
+            "manuallyQueued": 6,
+            "dependentOnManualQueue": 7
         }
     },
     Timeline: <any>{
@@ -4717,6 +4786,10 @@ TypeInfo.JobCompletedEvent.fields = {
 };
 
 TypeInfo.JobEnvironment.fields = {
+    endpoints: {
+        isArray: true,
+        typeInfo: TypeInfo.ServiceEndpoint
+    },
     mask: {
         isArray: true,
         typeInfo: TypeInfo.MaskHint
@@ -4724,6 +4797,9 @@ TypeInfo.JobEnvironment.fields = {
     secureFiles: {
         isArray: true,
         typeInfo: TypeInfo.SecureFile
+    },
+    systemConnection: {
+        typeInfo: TypeInfo.ServiceEndpoint
     }
 };
 
@@ -4742,6 +4818,12 @@ TypeInfo.KubernetesResource.fields = {
     },
     type: {
         enumType: TypeInfo.EnvironmentResourceType
+    }
+};
+
+TypeInfo.KubernetesResourceCreateParametersNewEndpoint.fields = {
+    endpoint: {
+        typeInfo: TypeInfo.ServiceEndpoint
     }
 };
 
@@ -4811,6 +4893,15 @@ TypeInfo.ServerTaskRequestMessage.fields = {
     },
     taskDefinition: {
         typeInfo: TypeInfo.TaskDefinition
+    }
+};
+
+TypeInfo.ServiceEndpoint.fields = {
+    creationDate: {
+        isDate: true,
+    },
+    modificationDate: {
+        isDate: true,
     }
 };
 

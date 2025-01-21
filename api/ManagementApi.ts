@@ -17,198 +17,27 @@ import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
 import ManagementInterfaces = require("./interfaces/ManagementInterfaces");
 
 export interface IManagementApi extends basem.ClientApiBase {
-    deleteBillingInfo(organizationId: string): Promise<void>;
-    deleteMeterUsageHistory(organizationId: string): Promise<void>;
-    getBillingInfo(organizationId: string): Promise<ManagementInterfaces.BillingInfo>;
-    saveBillingInfo(billingInfo: ManagementInterfaces.BillingInfo, organizationId: string): Promise<void>;
     createBillingSnapshot(meterUsage: ManagementInterfaces.MeterUsage): Promise<void>;
     getBillableCommitterDetails(billingDate?: Date): Promise<ManagementInterfaces.BillableCommitterDetails[]>;
     getLastMeterUsage(): Promise<ManagementInterfaces.MeterUsage>;
     getMeterUsage(billingDate?: Date): Promise<ManagementInterfaces.MeterUsage>;
     getOrgEnablementStatus(includeAllProperties?: boolean): Promise<ManagementInterfaces.AdvSecEnablementSettings>;
     updateOrgEnablementStatus(savedAdvSecEnablementStatus: ManagementInterfaces.AdvSecEnablementSettingsUpdate): Promise<void>;
+    getEstimatedBillablePushersDetailsForOrg(): Promise<ManagementInterfaces.BilledCommitter[]>;
     getEstimatedOrgBillablePushers(): Promise<string[]>;
     getProjectEnablementStatus(project: string, includeAllProperties?: boolean): Promise<ManagementInterfaces.AdvSecEnablementSettings>;
     updateProjectEnablementStatus(savedAdvSecEnablementStatus: ManagementInterfaces.AdvSecEnablementSettingsUpdate, project: string): Promise<void>;
+    getEstimatedBillablePushersDetailsForProject(project: string): Promise<ManagementInterfaces.BilledCommitter[]>;
     getEstimatedProjectBillablePushers(project: string): Promise<string[]>;
     getRepoEnablementStatus(project: string, repository: string, includeAllProperties?: boolean): Promise<ManagementInterfaces.AdvSecEnablementStatus>;
     updateRepoAdvSecEnablementStatus(savedAdvSecEnablementStatus: ManagementInterfaces.AdvSecEnablementStatusUpdate, project: string, repository: string): Promise<void>;
     getEstimatedRepoBillableCommitters(project: string, repository: string): Promise<string[]>;
+    getEstimatedRepoBillablePushersDetails(project: string, repository: string): Promise<ManagementInterfaces.BilledCommitter[]>;
 }
 
 export class ManagementApi extends basem.ClientApiBase implements IManagementApi {
     constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
         super(baseUrl, handlers, 'node-Management-api', options);
-    }
-
-    /**
-     * Delete the billing info for an organization.
-     * 
-     * @param {string} organizationId
-     */
-    public async deleteBillingInfo(
-        organizationId: string
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                action: "Default", 
-                organizationId: organizationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Management",
-                    "de45fbc6-60fd-46e2-95ef-490ad08d656a",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Delete the meter usage history from Primary SU for an organization.
-     * 
-     * @param {string} organizationId
-     */
-    public async deleteMeterUsageHistory(
-        organizationId: string
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                action: "MeterUsageHistory", 
-                organizationId: organizationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Management",
-                    "de45fbc6-60fd-46e2-95ef-490ad08d656a",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.del<void>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Get the billing info for an organization.
-     * 
-     * @param {string} organizationId - Organization ID to get billing info for.
-     */
-    public async getBillingInfo(
-        organizationId: string
-        ): Promise<ManagementInterfaces.BillingInfo> {
-
-        return new Promise<ManagementInterfaces.BillingInfo>(async (resolve, reject) => {
-            let routeValues: any = {
-                action: "Default", 
-                organizationId: organizationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Management",
-                    "de45fbc6-60fd-46e2-95ef-490ad08d656a",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<ManagementInterfaces.BillingInfo>;
-                res = await this.rest.get<ManagementInterfaces.BillingInfo>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              ManagementInterfaces.TypeInfo.BillingInfo,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * Save the billing info for an organization.
-     * 
-     * @param {ManagementInterfaces.BillingInfo} billingInfo
-     * @param {string} organizationId
-     */
-    public async saveBillingInfo(
-        billingInfo: ManagementInterfaces.BillingInfo,
-        organizationId: string
-        ): Promise<void> {
-
-        return new Promise<void>(async (resolve, reject) => {
-            let routeValues: any = {
-                action: "Default", 
-                organizationId: organizationId
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Management",
-                    "de45fbc6-60fd-46e2-95ef-490ad08d656a",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<void>;
-                res = await this.rest.create<void>(url, billingInfo, options);
-
-                let ret = this.formatResponse(res.result,
-                                              null,
-                                              false);
-
-                resolve(ret);
-                
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
     }
 
     /**
@@ -467,6 +296,45 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this organization.
+     * 
+     */
+    public async getEstimatedBillablePushersDetailsForOrg(
+        ): Promise<ManagementInterfaces.BilledCommitter[]> {
+
+        return new Promise<ManagementInterfaces.BilledCommitter[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Details", 
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Management",
+                    "10a9e9c3-89bf-4312-92ed-139ddbcd2e28",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
+                res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * Estimate the committers that would be added to the customer's usage if Advanced Security was enabled for this organization.
      * 
      */
@@ -475,6 +343,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
+                action: "Default", 
             };
 
             try {
@@ -596,6 +465,48 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
     }
 
     /**
+     * Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this project.
+     * 
+     * @param {string} project - Project ID or project name
+     */
+    public async getEstimatedBillablePushersDetailsForProject(
+        project: string
+        ): Promise<ManagementInterfaces.BilledCommitter[]> {
+
+        return new Promise<ManagementInterfaces.BilledCommitter[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Details", 
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Management",
+                    "bf09cb40-ecf4-4496-8cf7-9ec60c64fd3e",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
+                res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * Estimate the number of committers that would be added to the customer's usage if Advanced Security was enabled for this project.
      * 
      * @param {string} project - Project ID or project name
@@ -606,6 +517,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
+                action: "Default", 
                 project: project
             };
 
@@ -746,6 +658,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
 
         return new Promise<string[]>(async (resolve, reject) => {
             let routeValues: any = {
+                action: "Default", 
                 project: project,
                 repository: repository
             };
@@ -763,6 +676,51 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
 
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Estimate the pushers that would be added to the customer's usage if Advanced Security was enabled for this repository.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository
+     */
+    public async getEstimatedRepoBillablePushersDetails(
+        project: string,
+        repository: string
+        ): Promise<ManagementInterfaces.BilledCommitter[]> {
+
+        return new Promise<ManagementInterfaces.BilledCommitter[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Details", 
+                project: project,
+                repository: repository
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Management",
+                    "b60f1ebf-ae77-4557-bd7f-ae3d5598dd1f",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
+                res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,

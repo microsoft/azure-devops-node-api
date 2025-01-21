@@ -1108,7 +1108,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "8893bc5b-35b2-4be7-83cb-99e683551db4",
                     routeValues,
@@ -1161,7 +1161,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "8893bc5b-35b2-4be7-83cb-99e683551db4",
                     routeValues);
@@ -1208,7 +1208,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "83597576-cc2c-453c-bea6-2882ae6a1653",
                     routeValues);
@@ -1256,7 +1256,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "83597576-cc2c-453c-bea6-2882ae6a1653",
                     routeValues);
@@ -1313,7 +1313,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "83597576-cc2c-453c-bea6-2882ae6a1653",
                     routeValues,
@@ -1359,7 +1359,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "distributedtask",
                     "83597576-cc2c-453c-bea6-2882ae6a1653",
                     routeValues);

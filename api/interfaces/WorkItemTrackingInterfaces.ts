@@ -417,6 +417,20 @@ export interface CommentVersion extends WorkItemTrackingResource {
     version?: number;
 }
 
+/**
+ * Describes permanently deleted attachment and work items that had links to this attachment.
+ */
+export interface DestroyedAttachment {
+    /**
+     * Work items with attachment references that have been marked as deleted.
+     */
+    affectedWorkItems?: WorkItemReference[];
+    /**
+     * Permanently deleted attachment.
+     */
+    attachment?: AttachmentReference;
+}
+
 export interface EmailRecipients {
     /**
      * Plaintext email addresses.
