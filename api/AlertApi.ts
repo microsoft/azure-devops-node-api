@@ -24,7 +24,8 @@ export interface IAlertApi extends basem.ClientApiBase {
     updateAlert(stateUpdate: AlertInterfaces.AlertStateUpdate, project: string, alertId: number, repository: string): Promise<AlertInterfaces.Alert>;
     getAlertInstances(project: string, alertId: number, repository: string, ref?: string): Promise<AlertInterfaces.AlertAnalysisInstance[]>;
     updateAlertsMetadata(alertsMetadata: AlertInterfaces.AlertMetadata[], project: string, repository: string): Promise<AlertInterfaces.AlertMetadataChange[]>;
-    uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string): Promise<number>;
+    uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string, notificationFlag?: String): Promise<number>;
+    getBranches(project: string, repository: string, alertType: AlertInterfaces.AlertType, continuationToken?: string, branchNameContains?: string, top?: number, includePullRequestBranches?: boolean): Promise<AlertInterfaces.Branch[]>;
     getUxFilters(project: string, repository: string, alertType: AlertInterfaces.AlertType): Promise<AlertInterfaces.UxFilters>;
     getSarif(sarifId: number): Promise<AlertInterfaces.SarifUploadStatus>;
 }
@@ -258,7 +259,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
     }
 
     /**
-     * Get instances of an alert.
+     * Get instances of an alert on a branch specified with @ref. If @ref is not provided, return instances of an alert on default branch(if the alert exist in default branch) or latest affected branch.
      * 
      * @param {string} project - Project ID or project name
      * @param {number} alertId - ID of alert to retrieve
@@ -363,12 +364,14 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
      * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {string} project - Project ID or project name
      * @param {string} repository - The name or ID of a repository
+     * @param {String} notificationFlag - Header to signal that this is a progress notification
      */
     public async uploadSarif(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
         project: string,
-        repository: string
+        repository: string,
+        notificationFlag?: String
         ): Promise<number> {
 
         return new Promise<number>(async (resolve, reject) => {
@@ -379,6 +382,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
 
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/octet-stream";
+            customHeaders["X-AdvSec-NotificationSarif"] = "notificationFlag";
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
@@ -409,6 +413,73 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
     }
 
     /**
+     * Returns the branches for which analysis results were submitted.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository
+     * @param {AlertInterfaces.AlertType} alertType - The type of alert: Dependency Scanning (1), Secret (2), Code QL (3), etc.
+     * @param {string} continuationToken - A string variable that represents the branch name and is used to fetch branches that follow it in alphabetical order.
+     * @param {string} branchNameContains - A string variable used to fetch branches that contain this string anywhere in the branch name, case insensitive.
+     * @param {number} top - An int variable used to return the top k branches that satisfy the search criteria.
+     * @param {boolean} includePullRequestBranches - A bool variable indicating whether or not to include pull request branches.
+     */
+    public async getBranches(
+        project: string,
+        repository: string,
+        alertType: AlertInterfaces.AlertType,
+        continuationToken?: string,
+        branchNameContains?: string,
+        top?: number,
+        includePullRequestBranches?: boolean
+        ): Promise<AlertInterfaces.Branch[]> {
+        if (alertType == null) {
+            throw new TypeError('alertType can not be null or undefined');
+        }
+
+        return new Promise<AlertInterfaces.Branch[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Branches", 
+                project: project,
+                repository: repository
+            };
+
+            let queryValues: any = {
+                alertType: alertType,
+                continuationToken: continuationToken,
+                branchNameContains: branchNameContains,
+                top: top,
+                includePullRequestBranches: includePullRequestBranches,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "8f90675b-f794-434d-8f2c-cfae0a11c02a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.Branch[]>;
+                res = await this.rest.get<AlertInterfaces.Branch[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.Branch,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
      * @param {string} project - Project ID or project name
      * @param {string} repository
      * @param {AlertInterfaces.AlertType} alertType
@@ -424,6 +495,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
 
         return new Promise<AlertInterfaces.UxFilters>(async (resolve, reject) => {
             let routeValues: any = {
+                action: "Default", 
                 project: project,
                 repository: repository
             };

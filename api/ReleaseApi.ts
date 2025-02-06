@@ -75,7 +75,7 @@ export interface IReleaseApi extends basem.ClientApiBase {
     getPipelineReleaseSettings(project: string): Promise<ReleaseInterfaces.ProjectPipelineReleaseSettings>;
     updatePipelineReleaseSettings(newSettings: ReleaseInterfaces.ProjectPipelineReleaseSettingsUpdateParameters, project: string): Promise<ReleaseInterfaces.ProjectPipelineReleaseSettings>;
     getReleaseProjects(artifactType: string, artifactSourceId: string): Promise<ReleaseInterfaces.ProjectReference[]>;
-    getReleases(project?: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean, tagFilter?: string[], propertyFilters?: string[], releaseIdFilter?: number[], path?: string): Promise<VSSInterfaces.PagedList<ReleaseInterfaces.Release>>;
+    getReleases(project?: string, definitionId?: number, definitionEnvironmentId?: number, searchText?: string, createdBy?: string, statusFilter?: ReleaseInterfaces.ReleaseStatus, environmentStatusFilter?: number, minCreatedTime?: Date, maxCreatedTime?: Date, queryOrder?: ReleaseInterfaces.ReleaseQueryOrder, top?: number, continuationToken?: number, expand?: ReleaseInterfaces.ReleaseExpands, artifactTypeId?: string, sourceId?: string, artifactVersionId?: string, sourceBranchFilter?: string, isDeleted?: boolean, tagFilter?: string[], propertyFilters?: string[], releaseIdFilter?: number[], path?: string): Promise<ReleaseInterfaces.Release[]>;
     createRelease(releaseStartMetadata: ReleaseInterfaces.ReleaseStartMetadata, project: string): Promise<ReleaseInterfaces.Release>;
     deleteRelease(project: string, releaseId: number, comment?: string): Promise<void>;
     getRelease(project: string, releaseId: number, approvalFilters?: ReleaseInterfaces.ApprovalFilters, propertyFilters?: string[], expand?: ReleaseInterfaces.SingleReleaseExpands, topGateRecords?: number): Promise<ReleaseInterfaces.Release>;
@@ -1228,7 +1228,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      * @param {string} createdBy - List the deployments for which deployments are created as identity specified.
      * @param {Date} minModifiedTime - List the deployments with LastModified time >= minModifiedTime.
      * @param {Date} maxModifiedTime - List the deployments with LastModified time <= maxModifiedTime.
-     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus - List the deployments with given deployment status. Defult is 'All'.
+     * @param {ReleaseInterfaces.DeploymentStatus} deploymentStatus - List the deployments with given deployment status. Default is 'All'.
      * @param {ReleaseInterfaces.DeploymentOperationStatus} operationStatus - List the deployments with given operation status. Default is 'All'.
      * @param {boolean} latestAttemptsOnly - 'true' to include deployments with latest attempt only. Default is 'false'.
      * @param {ReleaseInterfaces.ReleaseQueryOrder} queryOrder - List the deployments with given query order. Default is 'Descending'.
@@ -1378,7 +1378,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.7",
+                    "7.2-preview.8",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues,
@@ -1428,7 +1428,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.7",
+                    "7.2-preview.8",
                     "Release",
                     "a7e426b1-03dc-48af-9dfe-c98bac612dcb",
                     routeValues);
@@ -2522,7 +2522,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2566,7 +2566,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2615,7 +2615,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "Release",
                     "616c46e4-f370-4456-adaa-fbaf79c7b79e",
                     routeValues);
@@ -2919,7 +2919,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
      * @param {string} artifactTypeId - Releases with given artifactTypeId will be returned. Values can be Build, Jenkins, GitHub, Nuget, Team Build (external), ExternalTFSBuild, Git, TFVC, ExternalTfsXamlBuild.
      * @param {string} sourceId - Unique identifier of the artifact used. e.g. For build it would be {projectGuid}:{BuildDefinitionId}, for Jenkins it would be {JenkinsConnectionId}:{JenkinsDefinitionId}, for TfsOnPrem it would be {TfsOnPremConnectionId}:{ProjectName}:{TfsOnPremDefinitionId}. For third-party artifacts e.g. TeamCity, BitBucket you may refer 'uniqueSourceIdentifier' inside vss-extension.json https://github.com/Microsoft/vsts-rm-extensions/blob/master/Extensions.
      * @param {string} artifactVersionId - Releases with given artifactVersionId will be returned. E.g. in case of Build artifactType, it is buildId.
-     * @param {string} sourceBranchFilter - Releases with given sourceBranchFilter will be returned.
+     * @param {string} sourceBranchFilter - Releases with given sourceBranchFilter will be returned (Not to be used with environmentStatusFilter).
      * @param {boolean} isDeleted - Gets the soft deleted releases, if true.
      * @param {string[]} tagFilter - A comma-delimited list of tags. Only releases with these tags will be returned.
      * @param {string[]} propertyFilters - A comma-delimited list of extended properties to be retrieved. If set, the returned Releases will contain values for the specified property Ids (if they exist). If not set, properties will not be included. Note that this will not filter out any Release from results irrespective of whether it has property set or not.
@@ -2949,9 +2949,9 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
         propertyFilters?: string[],
         releaseIdFilter?: number[],
         path?: string
-        ): Promise<VSSInterfaces.PagedList<ReleaseInterfaces.Release>> {
+        ): Promise<ReleaseInterfaces.Release[]> {
 
-        return new Promise<VSSInterfaces.PagedList<ReleaseInterfaces.Release>>(async (resolve, reject) => {
+        return new Promise<ReleaseInterfaces.Release[]>(async (resolve, reject) => {
             let routeValues: any = {
                 project: project
             };
@@ -2982,7 +2982,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -2992,8 +2992,8 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
                                                                                 verData.apiVersion);
 
-                let res: restm.IRestResponse<VSSInterfaces.PagedList<ReleaseInterfaces.Release>>;
-                res = await this.rest.get<VSSInterfaces.PagedList<ReleaseInterfaces.Release>>(url, options);
+                let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
+                res = await this.rest.get<ReleaseInterfaces.Release[]>(url, options);
 
                 let ret = this.formatResponse(res.result,
                                               ReleaseInterfaces.TypeInfo.Release,
@@ -3026,7 +3026,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
@@ -3076,7 +3076,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3136,7 +3136,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3199,7 +3199,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3253,7 +3253,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3299,7 +3299,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues,
@@ -3346,7 +3346,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);
@@ -3392,7 +3392,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.8",
+                    "7.2-preview.9",
                     "Release",
                     "a166fde7-27ad-408e-ba75-703c2cc9d500",
                     routeValues);

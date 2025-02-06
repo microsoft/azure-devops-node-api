@@ -688,6 +688,21 @@ export interface CheckConfigurationReference {
     version?: number;
 }
 
+export interface CheckConfigurationResource {
+    /**
+     * Id of the resource.
+     */
+    id?: string;
+    /**
+     * Name of the resource.
+     */
+    name?: string;
+    /**
+     * Type of the resource.
+     */
+    type?: string;
+}
+
 export interface CodeRepositoryReference {
     /**
      * Gets and sets the repository references.
@@ -1879,6 +1894,10 @@ export interface ManualIntervention {
      */
     name?: string;
     /**
+     * Gets or sets pop tenant information.
+     */
+    poPTenant?: ProofOfPresenceTenant;
+    /**
      * Gets releaseReference for manual intervention.
      */
     release?: ReleaseShallowReference;
@@ -1898,6 +1917,10 @@ export interface ManualIntervention {
      * Get task instance identifier.
      */
     taskInstanceId?: string;
+    /**
+     * Gets or sets the type.
+     */
+    type?: ManualInterventionType;
     /**
      * Gets url to access the manual intervention.
      */
@@ -1928,6 +1951,24 @@ export enum ManualInterventionStatus {
      * The manual intervention is canceled.
      */
     Canceled = 8,
+    /**
+     * The manual intervention is bypassed.
+     */
+    Bypassed = 16,
+}
+
+/**
+ * Describes manual intervention status
+ */
+export enum ManualInterventionType {
+    /**
+     * The manual intervention server task.
+     */
+    Task = 1,
+    /**
+     * The manual intervention proof of presence server task.
+     */
+    ProofOfPresence = 2,
 }
 
 export interface ManualInterventionUpdateMetadata {
@@ -2055,6 +2096,33 @@ export interface ProjectReference {
      * Gets name of project.
      */
     name?: string;
+}
+
+export interface ProofOfPresenceTenant {
+    /**
+     * Gets authority of protected tenant.
+     */
+    authority?: string;
+    /**
+     * Gets domain hint of protected tenant.
+     */
+    domainHint?: string;
+    /**
+     * Gets distinct list of resources which have proof of presence check configured for this tenant.
+     */
+    resources?: CheckConfigurationResource[];
+    /**
+     * Gets id of protected tenant.
+     */
+    tenantId?: string;
+    /**
+     * Gets name of protected tenant.
+     */
+    tenantName?: string;
+    /**
+     * Gets timeout of protected tenant PoP check.
+     */
+    timeout?: number;
 }
 
 export interface PropertySelector {
@@ -3792,6 +3860,10 @@ export interface ServerDeploymentInput extends BaseDeploymentInput {
      * Gets or sets the parallel execution input.
      */
     parallelExecution?: ExecutionInput;
+    /**
+     * Gets or sets the proof of presence data.
+     */
+    proofOfPresenceTenants?: { [key: string] : ProofOfPresenceTenant; };
 }
 
 /**
@@ -4467,7 +4539,14 @@ export var TypeInfo = {
             "pending": 1,
             "rejected": 2,
             "approved": 4,
-            "canceled": 8
+            "canceled": 8,
+            "bypassed": 16
+        }
+    },
+    ManualInterventionType: {
+        enumValues: {
+            "task": 1,
+            "proofOfPresence": 2
         }
     },
     ManualInterventionUpdateMetadata: <any>{
@@ -5106,6 +5185,9 @@ TypeInfo.ManualIntervention.fields = {
     },
     status: {
         enumType: TypeInfo.ManualInterventionStatus
+    },
+    type: {
+        enumType: TypeInfo.ManualInterventionType
     }
 };
 

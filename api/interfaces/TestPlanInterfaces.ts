@@ -253,6 +253,10 @@ export enum ExcludeFlags {
  */
 export interface ExportTestCaseParams {
     /**
+     * Columns needs to be exported
+     */
+    columnOptions?: string[];
+    /**
      * Test Case IDs to exported
      */
     testCaseIds: number[];
@@ -832,6 +836,16 @@ export interface TestPlan extends TestPlanUpdateParams {
 }
 
 /**
+ * Test Plan/Suite restore request body params
+ */
+export interface TestPlanAndSuiteRestoreModel {
+    /**
+     * Indicates whether the deleted test plan/suite should be restored.
+     */
+    isDeleted?: boolean;
+}
+
+/**
  * The test plan create parameters.
  */
 export interface TestPlanCreateParams {
@@ -887,6 +901,10 @@ export interface TestPlanCreateParams {
      * Value to configure how same tests across test suites under a test plan need to behave
      */
     testOutcomeSettings?: TFS_TestManagement_Contracts.TestOutcomeSettings;
+    /**
+     * The Yaml Release Reference associated with this test plan.
+     */
+    yamlReleaseReference?: TFS_TestManagement_Contracts.YamlReleaseReference;
 }
 
 /**

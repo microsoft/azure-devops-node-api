@@ -147,6 +147,11 @@ export interface AggregatedRunsByState {
     state?: TestRunState;
 }
 
+export interface AnalysisFailureGroupReturn {
+    analysisFailureGroupId: number;
+    failureGroupUid: string;
+}
+
 /**
  * The types of test attachments.
  */
@@ -178,6 +183,17 @@ export interface BatchResponse {
     error: string;
     responses?: Response[];
     status: string;
+}
+
+export interface BranchCoverageStatistics {
+    /**
+     * number of covered branches
+     */
+    coveredBranches?: number;
+    /**
+     * total number of branches
+     */
+    totalBranches?: number;
 }
 
 /**
@@ -692,6 +708,8 @@ export enum CoverageQueryFlags {
 export interface CoverageStatistics {
     blocksCovered?: number;
     blocksNotCovered?: number;
+    branchesCovered?: number;
+    branchesNotCovered?: number;
     linesCovered?: number;
     linesNotCovered?: number;
     linesPartiallyCovered?: number;
@@ -756,37 +774,103 @@ export interface CreateTestRunRequest {
  */
 export interface CustomTestField {
     /**
-     * Field Name.
+     * Name of the Custom Test Field
      */
     fieldName: string;
     /**
-     * Field value.
+     * 1. If the CustomTestField is registered as Bit data type, value should be sent as case insensitive string - either "true" or "false". 2. If the CustomTestField is registered as Datetime data type, value should be sent as string in the format of "YYYY-MM-DD hh:mm:ss" 3. If the CustomTestField is registered as Int data type, value should be sent as string representation of 32 bit signed integer. Ex: "5". 4. If the CustomTestField is registered as Float data type, value should be sent as string for example "4.237" 5. If the CustomTestField is registered as String data type, Any string up to 1kB is accepted. 6. If the CustomTestField is registered as Guid, value should be sent as case insensitive string representation of GUID in usual format "XXXXXXXX-XXXX-XXXX-XXXXXXXXXXXX" where X can be either number 0-9 or letter A-F. For example "f88d6b84-3549-4af0-a4f4-58139cd0a14f".
      */
     value: any;
 }
 
+/**
+ * Data structure which stores details for the customTestFields to be updated
+ */
 export interface CustomTestFieldDefinition {
+    /**
+     * ID assigned to the custom test field upon creation, should be left empty when creating.
+     */
     fieldId?: number;
+    /**
+     * The name of custom field cannot be longer than 50 characters (spaces, numbers, and special characters are not allowed) and must be unique in the project. The names are case insensitive.
+     */
     fieldName: string;
+    /**
+     * Data type of the customTestField.
+     */
     fieldType: CustomTestFieldType;
+    /**
+     * Artifact to which customTestField will be set.
+     */
     scope: CustomTestFieldScope;
 }
 
+/**
+ * Type of the artifact applicable to CustomTestField.
+ */
 export enum CustomTestFieldScope {
     None = 0,
+    /**
+     * Custom field can be used with TestRun artifact.
+     */
     TestRun = 1,
+    /**
+     * Custom field can be used with TestResult artifact.
+     */
     TestResult = 2,
+    /**
+     * Custom test field can be used with either TestRun or TestResult artifact.
+     */
+    TestRunAndTestResult = 3,
+    /**
+     * Reserved for internal Azure DevOps functionality. Not to be used.
+     */
     System = 4,
     All = 7,
 }
 
+/**
+ * Data type of the custom test field
+ */
 export enum CustomTestFieldType {
+    /**
+     * Boolean data type.
+     */
     Bit = 2,
+    /**
+     * Datetime data type.
+     */
     DateTime = 4,
+    /**
+     * Integer data type.
+     */
     Int = 8,
+    /**
+     * Floating integer data type.
+     */
     Float = 6,
+    /**
+     * String data type.
+     */
     String = 12,
+    /**
+     * Unique identifier data type.
+     */
     Guid = 14,
+}
+
+/**
+ * Data structure which stores details for the customTestField to be updated.
+ */
+export interface CustomTestFieldUpdateDefinition {
+    /**
+     * Custom test field id which is to be updated.
+     */
+    fieldId: number;
+    /**
+     * The name of custom field cannot be longer than 50 characters(spaces, numbers, and special characters are not allowed) and must be unique in the project.CustomTestField name is case insensitive.
+     */
+    fieldName: string;
 }
 
 export interface DatedTestFieldData {
@@ -1268,6 +1352,28 @@ export interface LinkedWorkItemsQueryResult {
 }
 
 /**
+ * Computer which ran tests in the session
+ */
+export interface Machine {
+    /**
+     * GUID identifier for the environment the machine was configured with
+     */
+    environmentUid?: string;
+    /**
+     * Machine instance id
+     */
+    instanceId?: number;
+    /**
+     * Name of the machine
+     */
+    name?: string;
+    /**
+     * Session Machine timeline Valid values for "type" property = (Requested, Ready, Released)
+     */
+    timeline?: Timeline[];
+}
+
+/**
  * Test summary metrics.
  */
 export enum Metrics {
@@ -1473,6 +1579,10 @@ export interface PlanUpdateModel {
      * Test Outcome settings
      */
     testOutcomeSettings?: TestOutcomeSettings;
+    /**
+     * The Yaml Release Reference associated with this test plan.
+     */
+    yamlReleaseReference?: YamlReleaseReference;
 }
 
 /**
@@ -2000,7 +2110,7 @@ export interface RunCreateModel {
      */
     controller?: string;
     /**
-     * Additional properties of test Run. Value of the CustomField cannot be more than 1KB.
+     * List of custom data for additional categorization of the test run. Value of the CustomTestField cannot be more than 1KB.
      */
     customTestFields?: CustomTestField[];
     /**
@@ -2247,7 +2357,7 @@ export interface RunUpdateModel {
      */
     controller?: string;
     /**
-     * Additional properties of test Run. Value of the CustomField cannot be more than 1KB.
+     * List of custom data for additional categorization of the test run. Value of the CustomTestField cannot be more than 1KB.
      */
     customTestFields?: CustomTestField[];
     /**
@@ -2331,6 +2441,20 @@ export enum Service {
     Tfs = 2,
 }
 
+/**
+ * Container class for TestSessionEnvironment and Machine objects related to a test session
+ */
+export interface SessionEnvironmentAndMachine {
+    /**
+     * Session Environments
+     */
+    environments?: TestSessionEnvironment[];
+    /**
+     * Session Machines
+     */
+    machines?: Machine[];
+}
+
 export enum SessionResult {
     /**
      * Default
@@ -2358,25 +2482,6 @@ export interface SessionSourcePipeline {
      * Source pipeline url
      */
     buildUrl: string;
-}
-
-export enum SessionTimelineType {
-    /**
-     * Default
-     */
-    None = 0,
-    /**
-     * Timeline type for Queued status
-     */
-    Queued = 1,
-    /**
-     * Timeline type for Completed status
-     */
-    Completed = 2,
-    /**
-     * Timeline type for Started status
-     */
-    Started = 3,
 }
 
 /**
@@ -2693,6 +2798,36 @@ export interface TestActionResultModel extends TestResultModelBase {
     url?: string;
 }
 
+/**
+ * Test analysis failure group object
+ */
+export interface TestAnalysisFailureGroup {
+    /**
+     * classification category of the group Allowable values: 'Critical', 'System', 'Discounted'
+     */
+    classificationCategory?: string;
+    /**
+     * analysis group dimensions
+     */
+    dimensions?: { [key: string] : any; };
+    /**
+     * reason for the analysis category
+     */
+    displayReason?: string;
+    /**
+     * title of the analysis category display
+     */
+    displayTitle?: string;
+    /**
+     * analysis failure group id
+     */
+    failureGroupId?: number;
+    /**
+     * unique id across the object
+     */
+    uid?: string;
+}
+
 export interface TestAttachment {
     /**
      * Attachment type.
@@ -2810,6 +2945,10 @@ export interface TestCaseResult {
      */
     afnStripId?: number;
     /**
+     * AnalysisFailureGroups
+     */
+    analysisFailureGroups?: TestAnalysisFailureGroup[];
+    /**
      * Reference to area path of test.
      */
     area?: ShallowReference;
@@ -2882,7 +3021,7 @@ export interface TestCaseResult {
      */
     createdDate?: Date;
     /**
-     * Additional properties of test result.
+     * Array of custom data for additional categorization of the test result. Value of the CustomTestField cannot be more than 1KB.
      */
     customFields?: CustomTestField[];
     /**
@@ -2993,6 +3132,10 @@ export interface TestCaseResult {
      * Reference to identity executed the test.
      */
     runBy?: VSSInterfaces.IdentityRef;
+    /**
+     * TestCaseId for the testResult from the source system
+     */
+    sourceSystemTestCaseId?: string;
     /**
      * Stacktrace with maxSize= 1000 chars.
      */
@@ -3706,6 +3849,7 @@ export interface TestMessageLogEntry2 {
 export interface TestMethod {
     container?: string;
     name: string;
+    testResult?: TestCaseResult;
 }
 
 /**
@@ -3887,6 +4031,10 @@ export interface TestPlan {
      * URL of the test plan resource.
      */
     url?: string;
+    /**
+     * The Yaml Release Reference associated with this test plan.
+     */
+    yamlReleaseReference?: YamlReleaseReference;
 }
 
 export interface TestPlanCloneRequest {
@@ -4254,6 +4402,38 @@ export interface TestResultHistoryForGroup {
 }
 
 /**
+ * Class to capture logs associated with a TestResultMachine
+ */
+export interface TestResultLog {
+    /**
+     * FileType of the log being attached to a TestResultMachine Valid values : AutomationLogFile, Screenshot, LogFolder, Other
+     */
+    fileType?: string;
+    /**
+     * Path to the log file. Max length: 300 characters
+     */
+    path?: string;
+    /**
+     * Type of the path for the log Valid values : AzureBlobStorage, UNC, URI
+     */
+    type?: string;
+}
+
+/**
+ * Class to map TestCaseResult to Machine objects the test ran on
+ */
+export interface TestResultMachine {
+    configurationName?: string;
+    isReportingMachine?: boolean;
+    machineName?: string;
+    processorArchitecture?: string;
+    properties?: { [key: string] : any; };
+    sessionMachineInstanceId?: number;
+    testResultId?: number;
+    testResultLogs?: TestResultLog[];
+}
+
+/**
  * Represents a Meta Data of a test result.
  */
 export interface TestResultMetaData {
@@ -4501,9 +4681,9 @@ export interface TestResultsSession {
      */
     testRuns: number[];
     /**
-     * TestResultsSession timeline
+     * TestResultsSession timeline Valid values for "type" property = (Queued, Completed, Started)
      */
-    timeline?: Timeline<SessionTimelineType>[];
+    timeline?: Timeline[];
     /**
      * TestResultsSession type
      */
@@ -5088,6 +5268,27 @@ export interface TestSession {
     url?: string;
 }
 
+/**
+ * Test session anaylsis
+ */
+export interface TestSessionAnalysis {
+    /**
+     * session analysis engine
+     */
+    analysisEngine?: string;
+    /**
+     * analysis failure groups
+     */
+    analysisFailureGroups?: TestAnalysisFailureGroup[];
+    /**
+     * session analysis type
+     */
+    analysisType?: string;
+}
+
+/**
+ * Test session environment
+ */
 export interface TestSessionEnvironment {
     /**
      * Environment display name
@@ -5097,6 +5298,10 @@ export interface TestSessionEnvironment {
      * Processor architecture
      */
     processorArchitecture: string;
+    /**
+     * Uid of environment
+     */
+    uid: string;
 }
 
 export interface TestSessionExploredWorkItemReference extends TestSessionWorkItemReference {
@@ -5194,6 +5399,16 @@ export enum TestSessionState {
      * This is required for Feedback session which are declined
      */
     Declined = 5,
+}
+
+/**
+ * Notifications for the Test Session Test Run
+ */
+export interface TestSessionTestRun {
+    /**
+     * Set of testRunIds for a test Session
+     */
+    testRuns?: number[];
 }
 
 export interface TestSessionWorkItemReference {
@@ -5557,7 +5772,7 @@ export interface TestVariable {
 /**
  * Timeline
  */
-export interface Timeline<T> {
+export interface Timeline {
     /**
      * Timeline display name
      */
@@ -5569,7 +5784,7 @@ export interface Timeline<T> {
     /**
      * Timeline type
      */
-    type: T;
+    type: string;
 }
 
 export interface UpdatedProperties {
@@ -5628,6 +5843,20 @@ export interface WorkItemToTestLinks {
     executedIn?: Service;
     tests?: TestMethod[];
     workItem: WorkItemReference;
+}
+
+/**
+ * Reference to yaml release resource.
+ */
+export interface YamlReleaseReference {
+    /**
+     * ID of the yaml release definition
+     */
+    definitionId?: number;
+    /**
+     * Stages to skip while queuing yaml release.
+     */
+    stagesToSkip?: string;
 }
 
 export var TypeInfo = {
@@ -5749,6 +5978,7 @@ export var TypeInfo = {
             "none": 0,
             "testRun": 1,
             "testResult": 2,
+            "testRunAndTestResult": 3,
             "system": 4,
             "all": 7
         }
@@ -5790,6 +6020,8 @@ export var TypeInfo = {
     LegacyTestRun: <any>{
     },
     LegacyTestSettings: <any>{
+    },
+    Machine: <any>{
     },
     Metrics: {
         enumValues: {
@@ -5901,19 +6133,13 @@ export var TypeInfo = {
             "tfs": 2
         }
     },
+    SessionEnvironmentAndMachine: <any>{
+    },
     SessionResult: {
         enumValues: {
             "none": 0,
             "passed": 1,
             "failed": 2
-        }
-    },
-    SessionTimelineType: {
-        enumValues: {
-            "none": 0,
-            "queued": 1,
-            "completed": 2,
-            "started": 3
         }
     },
     SourceViewBuildCoverage: <any>{
@@ -6032,6 +6258,8 @@ export var TypeInfo = {
     TestMessageLogEntry: <any>{
     },
     TestMessageLogEntry2: <any>{
+    },
+    TestMethod: <any>{
     },
     TestOutcome: {
         enumValues: {
@@ -6241,6 +6469,8 @@ export var TypeInfo = {
     TestSuite: <any>{
     },
     TestSummaryForWorkItem: <any>{
+    },
+    TestToWorkItemLinks: <any>{
     },
     Timeline: <any>{
     },
@@ -6573,6 +6803,13 @@ TypeInfo.LegacyTestSettings.fields = {
     }
 };
 
+TypeInfo.Machine.fields = {
+    timeline: {
+        isArray: true,
+        typeInfo: TypeInfo.Timeline
+    }
+};
+
 TypeInfo.PipelineTestMetrics.fields = {
     resultSummary: {
         typeInfo: TypeInfo.ResultSummary
@@ -6762,6 +6999,13 @@ TypeInfo.RunUpdateModel.fields = {
     },
     substate: {
         enumType: TypeInfo.TestRunSubstate
+    }
+};
+
+TypeInfo.SessionEnvironmentAndMachine.fields = {
+    machines: {
+        isArray: true,
+        typeInfo: TypeInfo.Machine
     }
 };
 
@@ -6989,6 +7233,12 @@ TypeInfo.TestMessageLogEntry2.fields = {
     }
 };
 
+TypeInfo.TestMethod.fields = {
+    testResult: {
+        typeInfo: TypeInfo.TestCaseResult
+    }
+};
+
 TypeInfo.TestParameter2.fields = {
     creationDate: {
         isDate: true,
@@ -7201,6 +7451,10 @@ TypeInfo.TestResultsSession.fields = {
     state: {
         enumType: TypeInfo.TestResultsSessionState
     },
+    timeline: {
+        isArray: true,
+        typeInfo: TypeInfo.Timeline
+    }
 };
 
 TypeInfo.TestResultsSettings.fields = {
@@ -7424,6 +7678,12 @@ TypeInfo.TestSummaryForWorkItem.fields = {
     }
 };
 
+TypeInfo.TestToWorkItemLinks.fields = {
+    test: {
+        typeInfo: TypeInfo.TestMethod
+    }
+};
+
 TypeInfo.Timeline.fields = {
     timestampUTC: {
         isDate: true,
@@ -7455,5 +7715,9 @@ TypeInfo.UpdateTestRunResponse.fields = {
 TypeInfo.WorkItemToTestLinks.fields = {
     executedIn: {
         enumType: TypeInfo.Service
+    },
+    tests: {
+        isArray: true,
+        typeInfo: TypeInfo.TestMethod
     }
 };
