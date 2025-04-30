@@ -368,21 +368,6 @@ export interface TraceFilter {
     userLogin?: string;
 }
 
-export enum UserProfileBackupState {
-    Inactive = 0,
-    Active = 1,
-}
-
-export enum UserProfileSyncState {
-    None = 0,
-    Completed = 1,
-    NewProfileDataAndImageRetrieved = 2,
-    ProfileDataBackupDone = 3,
-    NewProfileDataSet = 4,
-    NewProfileDataUpdateFailed = 5,
-    NewProfileImageUpdateFailed = 6,
-}
-
 export interface VssJsonCollectionWrapper extends VssJsonCollectionWrapperBase {
     value?: any[];
 }
@@ -497,23 +482,6 @@ export var TypeInfo = {
     SignedUrl: <any>{
     },
     TraceFilter: <any>{
-    },
-    UserProfileBackupState: {
-        enumValues: {
-            "inactive": 0,
-            "active": 1
-        }
-    },
-    UserProfileSyncState: {
-        enumValues: {
-            "none": 0,
-            "completed": 1,
-            "newProfileDataAndImageRetrieved": 2,
-            "profileDataBackupDone": 3,
-            "newProfileDataSet": 4,
-            "newProfileDataUpdateFailed": 5,
-            "newProfileImageUpdateFailed": 6
-        }
     },
     VssNotificationEvent: <any>{
     },

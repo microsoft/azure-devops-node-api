@@ -31,6 +31,13 @@ export interface Artifact {
     url?: string;
 }
 
+export interface Build {
+    artifactSourceVersionUrl?: string;
+    type?: string;
+    versionId?: string;
+    versionName?: string;
+}
+
 export interface BuildResourceParameters {
     version?: string;
 }
@@ -216,6 +223,7 @@ export interface PipelineResource {
 }
 
 export interface PipelineResourceParameters {
+    runId?: number;
     version?: string;
 }
 
@@ -251,6 +259,7 @@ export enum RepositoryType {
     GitHub = 1,
     AzureReposGit = 2,
     GitHubEnterprise = 3,
+    BitBucket = 4,
     AzureReposGitHyphenated = 2,
 }
 
@@ -266,6 +275,7 @@ export interface Run extends RunReference {
     templateParameters?: { [key: string] : any; };
     url?: string;
     variables?: { [key: string] : Variable; };
+    yamlDetails?: RunYamlDetails;
 }
 
 /**
@@ -295,6 +305,7 @@ export interface RunReference {
 }
 
 export interface RunResources {
+    builds?: { [key: string] : Build; };
     containers?: { [key: string] : ContainerResource; };
     pipelines?: { [key: string] : PipelineResource; };
     repositories?: { [key: string] : RepositoryResource; };
@@ -328,6 +339,13 @@ export enum RunState {
     Completed = 4,
 }
 
+export interface RunYamlDetails {
+    expandedYamlUrl?: string;
+    extendedTemplates?: YamlFileDetails[];
+    includedTemplates?: YamlFileDetails[];
+    rootYamlFile?: YamlFileDetails;
+}
+
 export interface SignalRConnection {
     signedContent?: VSSInterfaces.SignedUrl;
 }
@@ -335,6 +353,12 @@ export interface SignalRConnection {
 export interface Variable {
     isSecret?: boolean;
     value?: string;
+}
+
+export interface YamlFileDetails {
+    ref?: string;
+    repoAlias?: string;
+    yamlFile?: string;
 }
 
 export var TypeInfo = {
@@ -383,6 +407,7 @@ export var TypeInfo = {
             "gitHub": 1,
             "azureReposGit": 2,
             "gitHubEnterprise": 3,
+            "bitBucket": 4,
             "azureReposGitHyphenated": 2
         }
     },

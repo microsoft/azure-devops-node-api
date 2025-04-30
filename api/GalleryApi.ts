@@ -34,7 +34,6 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getCategoryTree(product: string, categoryId: string, lcid?: number, source?: string, productVersion?: string, skus?: string, subSkus?: string, productArchitecture?: string): Promise<GalleryInterfaces.ProductCategory>;
     getRootCategories(product: string, lcid?: number, source?: string, productVersion?: string, skus?: string, subSkus?: string): Promise<GalleryInterfaces.ProductCategoriesResult>;
     getCertificate(publisherName: string, extensionName: string, version?: string): Promise<NodeJS.ReadableStream>;
-    getContentVerificationLog(publisherName: string, extensionName: string): Promise<NodeJS.ReadableStream>;
     createSupportRequest(customerSupportRequest: GalleryInterfaces.CustomerSupportRequest): Promise<void>;
     createDraftForEditExtension(publisherName: string, extensionName: string): Promise<GalleryInterfaces.ExtensionDraft>;
     performEditExtensionDraftOperation(draftPatch: GalleryInterfaces.ExtensionDraftPatch, publisherName: string, extensionName: string, draftId: string): Promise<GalleryInterfaces.ExtensionDraft>;
@@ -101,6 +100,7 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
     getExtensionDailyStatsAnonymous(publisherName: string, extensionName: string, version: string): Promise<GalleryInterfaces.ExtensionDailyStats>;
     incrementExtensionDailyStat(publisherName: string, extensionName: string, version: string, statType: string, targetPlatform?: string): Promise<void>;
     getVerificationLog(publisherName: string, extensionName: string, version: string, targetPlatform?: string): Promise<NodeJS.ReadableStream>;
+    getVSCodeExtensionLatestVersion(publisherName: string, extensionName: string): Promise<GalleryInterfaces.PublishedExtension>;
     updateVSCodeWebExtensionStatistics(itemName: string, version: string, statType: GalleryInterfaces.VSCodeWebExtensionStatisicsType): Promise<void>;
 }
 
@@ -865,40 +865,6 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                     "7.2-preview.1",
                     "gallery",
                     "e905ad6a-3f1f-4d08-9f6d-7d357ff8b7d0",
-                    routeValues);
-
-                let url: string = verData.requestUrl!;
-                
-                let apiVersion: string = verData.apiVersion!;
-                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                resolve((await this.http.get(url, { "Accept": accept })).message);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} publisherName
-     * @param {string} extensionName
-     */
-    public async getContentVerificationLog(
-        publisherName: string,
-        extensionName: string
-        ): Promise<NodeJS.ReadableStream> {
-
-        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
-            let routeValues: any = {
-                publisherName: publisherName,
-                extensionName: extensionName
-            };
-
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "gallery",
-                    "c0f1c7c4-3557-4ffb-b774-1e48c4865e99",
                     routeValues);
 
                 let url: string = verData.requestUrl!;
@@ -4095,6 +4061,50 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
                 resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Endpoint to get the latest version(s) of a VS Code extension.
+     * 
+     * @param {string} publisherName - The name of the publisher of the requested VS Code extension.
+     * @param {string} extensionName - The extension name.
+     */
+    public async getVSCodeExtensionLatestVersion(
+        publisherName: string,
+        extensionName: string
+        ): Promise<GalleryInterfaces.PublishedExtension> {
+
+        return new Promise<GalleryInterfaces.PublishedExtension>(async (resolve, reject) => {
+            let routeValues: any = {
+                publisherName: publisherName,
+                extensionName: extensionName
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "gallery",
+                    "86037ad5-f601-40fb-b363-6ff262b61521",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
+                res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GalleryInterfaces.TypeInfo.PublishedExtension,
+                                              false);
+
+                resolve(ret);
+                
             }
             catch (err) {
                 reject(err);
