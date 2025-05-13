@@ -525,6 +525,10 @@ export interface ExtensionManifest {
      */
     manifestVersion?: number;
     /**
+     * Marketplace uri used as base for other relative uris defined in extension. Uri might be the same as BaseUri.
+     */
+    marketplaceBaseUri?: string;
+    /**
      * Default user claims applied to all contributions (except the ones which have been specified restrictedTo explicitly) to control the visibility of a contribution.
      */
     restrictedTo?: string[];
@@ -586,6 +590,10 @@ export enum ExtensionStateFlags {
      * Extension is currently in a warning state, that can cause a degraded experience. The degraded experience can be caused for example by some installation issues detected such as implicit demands not supported.
      */
     Warning = 512,
+    /**
+     * Extension is currently unpublished in the marketplace. Extension usage should be reviewed and removed if it is no longer needed
+     */
+    Unpublished = 1024,
 }
 
 /**
@@ -771,7 +779,8 @@ export var TypeInfo = {
             "error": 64,
             "needsReauthorization": 128,
             "autoUpgradeError": 256,
-            "warning": 512
+            "warning": 512,
+            "unpublished": 1024
         }
     },
     InstalledExtension: <any>{

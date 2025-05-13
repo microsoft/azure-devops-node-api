@@ -70,6 +70,10 @@ export interface FileContentMetadata {
 
 export interface GitRepository {
     _links?: any;
+    /**
+     * The timestamp when the repository was created.
+     */
+    creationDate?: Date;
     defaultBranch?: string;
     id?: string;
     /**
@@ -877,6 +881,9 @@ TypeInfo.Change.fields = {
 };
 
 TypeInfo.GitRepository.fields = {
+    creationDate: {
+        isDate: true,
+    },
     parentRepository: {
         typeInfo: TypeInfo.GitRepositoryRef
     },

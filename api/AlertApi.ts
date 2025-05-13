@@ -19,14 +19,18 @@ import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface IAlertApi extends basem.ClientApiBase {
     getAlert(project: string, alertId: number, repository: string, ref?: string, expand?: AlertInterfaces.ExpandOption): Promise<AlertInterfaces.Alert>;
-    getAlerts(project: string, repository: string, top?: number, orderBy?: string, criteria?: AlertInterfaces.SearchCriteria, continuationToken?: string): Promise<VSSInterfaces.PagedList<AlertInterfaces.Alert>>;
+    getAlerts(project: string, repository: string, top?: number, orderBy?: string, criteria?: AlertInterfaces.SearchCriteria, expand?: AlertInterfaces.AlertListExpandOption, continuationToken?: string): Promise<VSSInterfaces.PagedList<AlertInterfaces.Alert>>;
     getAlertSarif(project: string, alertId: number, repository: string, ref?: string, expand?: AlertInterfaces.ExpandOption): Promise<string>;
     updateAlert(stateUpdate: AlertInterfaces.AlertStateUpdate, project: string, alertId: number, repository: string): Promise<AlertInterfaces.Alert>;
-    getAlertInstances(project: string, alertId: number, repository: string, ref?: string): Promise<AlertInterfaces.AlertAnalysisInstance[]>;
-    updateAlertsMetadata(alertsMetadata: AlertInterfaces.AlertMetadata[], project: string, repository: string): Promise<AlertInterfaces.AlertMetadataChange[]>;
-    uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string): Promise<number>;
+    getBranches(project: string, repository: string, alertType: AlertInterfaces.AlertType, continuationToken?: string, branchNameContains?: string, top?: number, includePullRequestBranches?: boolean): Promise<AlertInterfaces.Branch[]>;
     getUxFilters(project: string, repository: string, alertType: AlertInterfaces.AlertType): Promise<AlertInterfaces.UxFilters>;
+    getAlertInstances(project: string, alertId: number, repository: string, ref?: string): Promise<AlertInterfaces.AlertAnalysisInstance[]>;
+    createLegalReview(project: string, repository: string, alertId: number, ref?: string): Promise<AlertInterfaces.LegalReview>;
+    updateAlertsMetadata(alertsMetadata: AlertInterfaces.AlertMetadata[], project: string, repository: string): Promise<AlertInterfaces.AlertMetadataChange[]>;
+    uploadSarif(customHeaders: any, contentStream: NodeJS.ReadableStream, project: string, repository: string, notificationFlag?: String): Promise<number>;
     getSarif(sarifId: number): Promise<AlertInterfaces.SarifUploadStatus>;
+    getValidityData(project: string, repository: string, alertId: number): Promise<AlertInterfaces.ValidationRequestInfo>;
+    initiateValidation(project: string, repository: string, alertId: number): Promise<AlertInterfaces.AlertValidationRequestStatus>;
 }
 
 export class AlertApi extends basem.ClientApiBase implements IAlertApi {
@@ -99,6 +103,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
      * @param {number} top - The maximum number of alerts to return
      * @param {string} orderBy - Must be "id" "firstSeen" "lastSeen" "fixedOn" or "severity"  Defaults to "id"
      * @param {AlertInterfaces.SearchCriteria} criteria - Options to limit the alerts returned
+     * @param {AlertInterfaces.AlertListExpandOption} expand
      * @param {string} continuationToken - If there are more alerts than can be returned, a continuation token is placed in the "x-ms-continuationtoken" header.  Use that token here to get the next page of alerts
      */
     public async getAlerts(
@@ -107,6 +112,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
         top?: number,
         orderBy?: string,
         criteria?: AlertInterfaces.SearchCriteria,
+        expand?: AlertInterfaces.AlertListExpandOption,
         continuationToken?: string
         ): Promise<VSSInterfaces.PagedList<AlertInterfaces.Alert>> {
 
@@ -120,6 +126,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 top: top,
                 orderBy: orderBy,
                 criteria: criteria,
+                expand: expand,
                 continuationToken: continuationToken,
             };
             
@@ -258,7 +265,127 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
     }
 
     /**
-     * Get instances of an alert.
+     * Returns the branches for which analysis results were submitted.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository
+     * @param {AlertInterfaces.AlertType} alertType - The type of alert: Dependency Scanning (1), Secret (2), Code QL (3), etc.
+     * @param {string} continuationToken - A string variable that represents the branch name and is used to fetch branches that follow it in alphabetical order.
+     * @param {string} branchNameContains - A string variable used to fetch branches that contain this string anywhere in the branch name, case insensitive.
+     * @param {number} top - An int variable used to return the top k branches that satisfy the search criteria.
+     * @param {boolean} includePullRequestBranches - A bool variable indicating whether or not to include pull request branches.
+     */
+    public async getBranches(
+        project: string,
+        repository: string,
+        alertType: AlertInterfaces.AlertType,
+        continuationToken?: string,
+        branchNameContains?: string,
+        top?: number,
+        includePullRequestBranches?: boolean
+        ): Promise<AlertInterfaces.Branch[]> {
+        if (alertType == null) {
+            throw new TypeError('alertType can not be null or undefined');
+        }
+
+        return new Promise<AlertInterfaces.Branch[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Branches", 
+                project: project,
+                repository: repository
+            };
+
+            let queryValues: any = {
+                alertType: alertType,
+                continuationToken: continuationToken,
+                branchNameContains: branchNameContains,
+                top: top,
+                includePullRequestBranches: includePullRequestBranches,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "8f90675b-f794-434d-8f2c-cfae0a11c02a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.Branch[]>;
+                res = await this.rest.get<AlertInterfaces.Branch[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.Branch,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} project - Project ID or project name
+     * @param {string} repository
+     * @param {AlertInterfaces.AlertType} alertType
+     */
+    public async getUxFilters(
+        project: string,
+        repository: string,
+        alertType: AlertInterfaces.AlertType
+        ): Promise<AlertInterfaces.UxFilters> {
+        if (alertType == null) {
+            throw new TypeError('alertType can not be null or undefined');
+        }
+
+        return new Promise<AlertInterfaces.UxFilters>(async (resolve, reject) => {
+            let routeValues: any = {
+                action: "Default", 
+                project: project,
+                repository: repository
+            };
+
+            let queryValues: any = {
+                alertType: alertType,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "8f90675b-f794-434d-8f2c-cfae0a11c02a",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.UxFilters>;
+                res = await this.rest.get<AlertInterfaces.UxFilters>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.UxFilters,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get instances of an alert on a branch specified with @ref. If @ref is not provided, return instances of an alert on default branch(if the alert exist in default branch) or latest affected branch.
      * 
      * @param {string} project - Project ID or project name
      * @param {number} alertId - ID of alert to retrieve
@@ -301,6 +428,63 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let ret = this.formatResponse(res.result,
                                               AlertInterfaces.TypeInfo.AlertAnalysisInstance,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Create legal review. This creates the legal review associated with the alert. It include the review work item url.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository - Name or id  of a repository for the legal alert
+     * @param {number} alertId - Advance Security alert id of the legal alert to get the legal review
+     * @param {string} ref
+     */
+    public async createLegalReview(
+        project: string,
+        repository: string,
+        alertId: number,
+        ref?: string
+        ): Promise<AlertInterfaces.LegalReview> {
+        if (alertId == null) {
+            throw new TypeError('alertId can not be null or undefined');
+        }
+
+        return new Promise<AlertInterfaces.LegalReview>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repository: repository
+            };
+
+            let queryValues: any = {
+                alertId: alertId,
+                ref: ref,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "65de4b84-7519-4ae8-8623-175f79b49b80",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.LegalReview>;
+                res = await this.rest.create<AlertInterfaces.LegalReview>(url, null, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 
@@ -363,12 +547,14 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
      * @param {NodeJS.ReadableStream} contentStream - Content to upload
      * @param {string} project - Project ID or project name
      * @param {string} repository - The name or ID of a repository
+     * @param {String} notificationFlag - Header to signal that this is a progress notification
      */
     public async uploadSarif(
         customHeaders: any,
         contentStream: NodeJS.ReadableStream,
         project: string,
-        repository: string
+        repository: string,
+        notificationFlag?: String
         ): Promise<number> {
 
         return new Promise<number>(async (resolve, reject) => {
@@ -379,6 +565,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
 
             customHeaders = customHeaders || {};
             customHeaders["Content-Type"] = "application/octet-stream";
+            customHeaders["X-AdvSec-NotificationSarif"] = "notificationFlag";
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
@@ -401,58 +588,6 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                                               false);
 
                 resolve(ret);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    /**
-     * @param {string} project - Project ID or project name
-     * @param {string} repository
-     * @param {AlertInterfaces.AlertType} alertType
-     */
-    public async getUxFilters(
-        project: string,
-        repository: string,
-        alertType: AlertInterfaces.AlertType
-        ): Promise<AlertInterfaces.UxFilters> {
-        if (alertType == null) {
-            throw new TypeError('alertType can not be null or undefined');
-        }
-
-        return new Promise<AlertInterfaces.UxFilters>(async (resolve, reject) => {
-            let routeValues: any = {
-                project: project,
-                repository: repository
-            };
-
-            let queryValues: any = {
-                alertType: alertType,
-            };
-            
-            try {
-                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
-                    "Alert",
-                    "8f90675b-f794-434d-8f2c-cfae0a11c02a",
-                    routeValues,
-                    queryValues);
-
-                let url: string = verData.requestUrl!;
-                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
-                                                                                verData.apiVersion);
-
-                let res: restm.IRestResponse<AlertInterfaces.UxFilters>;
-                res = await this.rest.get<AlertInterfaces.UxFilters>(url, options);
-
-                let ret = this.formatResponse(res.result,
-                                              AlertInterfaces.TypeInfo.UxFilters,
-                                              false);
-
-                resolve(ret);
-                
             }
             catch (err) {
                 reject(err);
@@ -490,6 +625,100 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
 
                 let ret = this.formatResponse(res.result,
                                               AlertInterfaces.TypeInfo.SarifUploadStatus,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get the validity details for an alert.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository - The name or ID of a repository
+     * @param {number} alertId - The ID of the alert
+     */
+    public async getValidityData(
+        project: string,
+        repository: string,
+        alertId: number
+        ): Promise<AlertInterfaces.ValidationRequestInfo> {
+
+        return new Promise<AlertInterfaces.ValidationRequestInfo>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repository: repository,
+                alertId: alertId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "2e022520-3508-4b5f-9855-acb954d673ba",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.ValidationRequestInfo>;
+                res = await this.rest.get<AlertInterfaces.ValidationRequestInfo>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.ValidationRequestInfo,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Initiate the validation process for a given alert
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} repository - The name or ID of a repository
+     * @param {number} alertId - The ID of the alert
+     */
+    public async initiateValidation(
+        project: string,
+        repository: string,
+        alertId: number
+        ): Promise<AlertInterfaces.AlertValidationRequestStatus> {
+
+        return new Promise<AlertInterfaces.AlertValidationRequestStatus>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repository: repository,
+                alertId: alertId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Alert",
+                    "2e022520-3508-4b5f-9855-acb954d673ba",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<AlertInterfaces.AlertValidationRequestStatus>;
+                res = await this.rest.create<AlertInterfaces.AlertValidationRequestStatus>(url, null, options);
+
+                let ret = this.formatResponse(res.result,
+                                              AlertInterfaces.TypeInfo.AlertValidationRequestStatus,
                                               false);
 
                 resolve(ret);

@@ -13,45 +13,6 @@
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
-export interface AdvSecEnablementSettings {
-    /**
-     * Automatically enable Advanced Security on newly created repositories.
-     */
-    enableOnCreate?: boolean;
-    reposEnablementStatus?: AdvSecEnablementStatus[];
-}
-
-export interface AdvSecEnablementSettingsUpdate extends AdvSecEnablementStatusUpdate {
-    /**
-     * Automatically enable Advanced Security on newly created repositories.
-     */
-    enableOnCreate?: boolean;
-}
-
-export interface AdvSecEnablementStatus extends AdvSecEnablementStatusUpdate {
-    /**
-     * The last time the status of Advanced Security for this repository was updated
-     */
-    advSecEnablementLastChangedDate?: Date;
-    projectId?: string;
-    repositoryId?: string;
-}
-
-export interface AdvSecEnablementStatusUpdate {
-    /**
-     * Advanced Security enablement status set to False when disabled and True when enabled; Null is never explicitly set.
-     */
-    advSecEnabled?: boolean;
-    /**
-     * When true, pushes containing secrets will be blocked. <br />When false, pushes are scanned for secrets and are not blocked. <br />If includeAllProperties in the request is false, this value will be null.
-     */
-    blockPushes?: boolean;
-    /**
-     * Dependabot enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br />When true, Dependabot will open PRs to support security updates for outdated dependencies. <br />If includeAllProperties in the request is false, this value will be null.
-     */
-    dependabotEnabled?: boolean;
-}
-
 /**
  * Billable Committers Details for Advanced Security Services
  */
@@ -129,109 +90,219 @@ export interface BilledCommitter {
 }
 
 /**
- * BillingInfo contains an organization, its enablement status and the Azure Subscription for it.
+ * A list of billed committers
  */
-export interface BillingInfo {
-    advSecEnabled?: boolean;
+export interface BilledCommittersList {
     /**
-     * The most recent time the enablement state was modified.
+     * A list of BilledCommitter objects that contain the identityRef of committers.
      */
-    advSecEnabledChangedOnDate?: Date;
+    billedUsers?: BilledCommitter[];
     /**
-     * The first time the enablement state was modified.
+     * Count of billed committers in BilledUsers
      */
-    advSecEnabledFirstChangedOnDate?: Date;
-    azureSubscriptionId?: string;
-    billingMode?: BillingMode;
-    organizationId?: string;
-    tenantId?: string;
+    uniqueCommitterCount?: number;
 }
 
-export enum BillingMode {
+export interface CodeSecurityFeatures {
     /**
-     * None implies the organization is not billable because no Azure Subscription has been set.
+     * CodeQL enablement status set to False when disabled and True when enabled; Null is never explicitly set.
      */
-    None = 0,
+    codeQLEnabled?: boolean;
     /**
-     * When an organization is the only organization mapped to an Azure Subscription.
+     * The VSID of the last user who modified the enablement status of Code Security.
      */
-    SingleOrg = 1,
+    codeSecurityChangedBy?: string;
     /**
-     * When an organization is mapped to an Azure Subscription to which at least one other org is mapped.
+     * Code Security enablement status set to False when disabled and True when enabled; Null is never explicitly set.
      */
-    MultiOrg = 2,
+    codeSecurityEnabled?: boolean;
+    /**
+     * The last time the status of Code Security for this repository was updated
+     */
+    codeSecurityEnablementLastChangedDate?: Date;
+    /**
+     * Dependabot enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br />When true, Dependabot will open PRs to support security updates for outdated dependencies. <br />Setting Dependabot enablement state is only supported for repo enablement and not org or project enablement at this time.
+     */
+    dependabotEnabled?: boolean;
+    /**
+     * Dependency Scanning Injection enablement status set to False when disabled and True when enabled; Null is never explicitly set. <br /> If Advanced Security is NOT already enabled, behavior will depend on if Advanced Security is to be enabled/disabled. DependencyScanningInjectionEnabled will not affect anything in this scenario. <br /> If Advanced Security is to be disabled, the value of DependencyScanningInjectionEnabled will have no effect. <br /> Setting Dependency Scanning enablement state is only supported for repo enablement and not org or project enablement at this time.
+     */
+    dependencyScanningInjectionEnabled?: boolean;
+}
+
+export interface EnablementOnCreateSettings {
+    /**
+     * Automatically enable Code Security on newly created repositories.
+     */
+    enableCodeSecurityOnCreate?: boolean;
+    /**
+     * Automatically enable Secret Protection on newly created repositories.
+     */
+    enableSecretProtectionOnCreate?: boolean;
 }
 
 /**
- * Information related to billing for Advanced Security services
+ * Information related to meter usage estimate for Code Security plan and/or Secret Protection plan
  */
-export interface MeterUsage {
+export interface MeterUsageEstimate {
+    /**
+     * Meter usage estimate when enabling Code Security plan
+     */
+    codeSecurityMeterUsageEstimate?: BilledCommittersList;
+    /**
+     * Meter usage estimate when enabling Secret Protection plan
+     */
+    secretProtectionMeterUsageEstimate?: BilledCommittersList;
+}
+
+/**
+ * Information related to meter usage for a Scanning plan
+ */
+export interface MeterUsageForPlan {
     /**
      * The Azure DevOps account
      */
     accountId?: string;
     azureSubscriptionId?: string;
     /**
-     * Deprecated - use BilledCommittersIdentities instead A list of Cuids for the commiters to the repositories that have Advanced Security features enabled
+     * The identityRef of committers that contributed to repositories with Scanning plan enabled
      */
-    billedCommitters?: string[];
-    /**
-     * A list of BilledCommitter objects that contain the identityRef of committers that have AdvSec enabled
-     */
-    billedUsers?: BilledCommitter[];
+    billedUsers?: BilledCommittersList;
     /**
      * The date this billing information pertains to
      */
     billingDate?: Date;
     /**
-     * True when a bill is generated for Advanced Security feature usage in this organziation
+     * True when the Scanning plan is enabled in this organization
      */
-    isAdvSecBillable?: boolean;
-    /**
-     * True when Advanced Security features are enabled in this organization
-     */
-    isAdvSecEnabled?: boolean;
+    isPlanEnabled?: boolean;
     /**
      * The Azure subscription
      */
     tenantId?: string;
+}
+
+export interface OrgEnablementSettings {
     /**
-     * The number of commiters to repositories that have Advanced Security features enabled
+     * Includes code security features that can be enabled.
      */
-    uniqueCommitterCount?: number;
+    codeSecurityFeatures?: CodeSecurityFeatures;
+    /**
+     * Auto enablement setting for newly created repositories.
+     */
+    enablementOnCreateSettings?: EnablementOnCreateSettings;
+    /**
+     * A list of enablement statuses for repositories within the specified organization or project.
+     */
+    reposEnablementStatus?: RepoEnablementSettings[];
+    /**
+     * Includes secret protection features that can be enabled.
+     */
+    secretProtectionFeatures?: SecretProtectionFeatures;
+}
+
+export enum Plan {
+    /**
+     * No plan is indicated
+     */
+    None = 0,
+    /**
+     * The Code Security plan
+     */
+    CodeSecurity = 1,
+    /**
+     * The Secret Protection plan
+     */
+    SecretProtection = 2,
+    /**
+     * Include all plans
+     */
+    All = 3,
+}
+
+export interface ProjectEnablementSettings {
+    /**
+     * Includes code security features that can be enabled.
+     */
+    codeSecurityFeatures?: CodeSecurityFeatures;
+    /**
+     * Auto enablement setting for newly created repositories.
+     */
+    enablementOnCreateSettings?: EnablementOnCreateSettings;
+    /**
+     * A list of enablement statuses for repositories within the specified organization or project.
+     */
+    reposEnablementStatus?: RepoEnablementSettings[];
+    /**
+     * Includes secret protection features that can be enabled.
+     */
+    secretProtectionFeatures?: SecretProtectionFeatures;
+}
+
+export interface RepoEnablementSettings {
+    /**
+     * Includes Code Security features that can be enabled.
+     */
+    codeSecurityFeatures?: CodeSecurityFeatures;
+    /**
+     * Indicates whether the repository is part of the bundled SKU (old billing plan) or unbundled SKUs (new billing plan).
+     */
+    isBundledSKU?: boolean;
+    /**
+     * The project Id
+     */
+    projectId?: string;
+    /**
+     * The repository Id
+     */
+    repositoryId?: string;
+    /**
+     * Includes Secret Protection features that can be enabled.
+     */
+    secretProtectionFeatures?: SecretProtectionFeatures;
+}
+
+export interface SecretProtectionFeatures {
+    /**
+     * When true, pushes containing secrets will be blocked. <br />When false, pushes are scanned for secrets and are not blocked. <br />If includeAllProperties in the request is false, this value will be null.
+     */
+    blockPushes?: boolean;
+    /**
+     * The VSID of the last user who modified the enablement status of Secret Protection.
+     */
+    secretProtectionChangedBy?: string;
+    /**
+     * Secret Protection enablement status set to False when disabled and True when enabled; Null is never explicitly set.
+     */
+    secretProtectionEnabled?: boolean;
+    /**
+     * The last time the status of Secret Protection for this repository was updated
+     */
+    secretProtectionEnablementLastChangedDate?: Date;
 }
 
 export var TypeInfo = {
-    AdvSecEnablementSettings: <any>{
-    },
-    AdvSecEnablementStatus: <any>{
-    },
     BillableCommitterDetails: <any>{
     },
-    BillingInfo: <any>{
+    CodeSecurityFeatures: <any>{
     },
-    BillingMode: {
+    MeterUsageForPlan: <any>{
+    },
+    OrgEnablementSettings: <any>{
+    },
+    Plan: {
         enumValues: {
-            "none": 0,
-            "singleOrg": 1,
-            "multiOrg": 2
+            "codeSecurity": 1,
+            "secretProtection": 2,
+            "all": 3
         }
     },
-    MeterUsage: <any>{
+    ProjectEnablementSettings: <any>{
     },
-};
-
-TypeInfo.AdvSecEnablementSettings.fields = {
-    reposEnablementStatus: {
-        isArray: true,
-        typeInfo: TypeInfo.AdvSecEnablementStatus
-    }
-};
-
-TypeInfo.AdvSecEnablementStatus.fields = {
-    advSecEnablementLastChangedDate: {
-        isDate: true,
-    }
+    RepoEnablementSettings: <any>{
+    },
+    SecretProtectionFeatures: <any>{
+    },
 };
 
 TypeInfo.BillableCommitterDetails.fields = {
@@ -243,20 +314,55 @@ TypeInfo.BillableCommitterDetails.fields = {
     }
 };
 
-TypeInfo.BillingInfo.fields = {
-    advSecEnabledChangedOnDate: {
+TypeInfo.CodeSecurityFeatures.fields = {
+    codeSecurityEnablementLastChangedDate: {
         isDate: true,
-    },
-    advSecEnabledFirstChangedOnDate: {
-        isDate: true,
-    },
-    billingMode: {
-        enumType: TypeInfo.BillingMode
     }
 };
 
-TypeInfo.MeterUsage.fields = {
+TypeInfo.MeterUsageForPlan.fields = {
     billingDate: {
+        isDate: true,
+    }
+};
+
+TypeInfo.OrgEnablementSettings.fields = {
+    codeSecurityFeatures: {
+        typeInfo: TypeInfo.CodeSecurityFeatures
+    },
+    reposEnablementStatus: {
+        isArray: true,
+        typeInfo: TypeInfo.RepoEnablementSettings
+    },
+    secretProtectionFeatures: {
+        typeInfo: TypeInfo.SecretProtectionFeatures
+    }
+};
+
+TypeInfo.ProjectEnablementSettings.fields = {
+    codeSecurityFeatures: {
+        typeInfo: TypeInfo.CodeSecurityFeatures
+    },
+    reposEnablementStatus: {
+        isArray: true,
+        typeInfo: TypeInfo.RepoEnablementSettings
+    },
+    secretProtectionFeatures: {
+        typeInfo: TypeInfo.SecretProtectionFeatures
+    }
+};
+
+TypeInfo.RepoEnablementSettings.fields = {
+    codeSecurityFeatures: {
+        typeInfo: TypeInfo.CodeSecurityFeatures
+    },
+    secretProtectionFeatures: {
+        typeInfo: TypeInfo.SecretProtectionFeatures
+    }
+};
+
+TypeInfo.SecretProtectionFeatures.fields = {
+    secretProtectionEnablementLastChangedDate: {
         isDate: true,
     }
 };

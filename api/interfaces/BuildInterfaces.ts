@@ -309,7 +309,7 @@ export interface Build {
      */
     templateParameters?: { [key: string] : string; };
     /**
-     * The build that triggered this build via a Build completion trigger.
+     * The build that triggered this build via a Build completion trigger. Do not set it when queuing a new pipeline run.
      */
     triggeredByBuild?: Build;
     /**
@@ -2804,6 +2804,7 @@ export interface SourceRepositoryItem {
 export enum StageUpdateType {
     Cancel = 0,
     Retry = 1,
+    Run = 2,
 }
 
 export interface SupportedTrigger {
@@ -2966,6 +2967,8 @@ export enum TaskResult {
     Canceled = 3,
     Skipped = 4,
     Abandoned = 5,
+    ManuallyQueued = 6,
+    DependentOnManualQueue = 7,
 }
 
 /**
@@ -3065,6 +3068,10 @@ export interface TimelineRecord {
      * The queue ID of the queue that the operation ran on.
      */
     queueId?: number;
+    /**
+     * The ref name
+     */
+    refName?: string;
     /**
      * The result.
      */
@@ -3749,7 +3756,8 @@ export var TypeInfo = {
     StageUpdateType: {
         enumValues: {
             "cancel": 0,
-            "retry": 1
+            "retry": 1,
+            "run": 2
         }
     },
     SupportedTrigger: <any>{
@@ -3768,7 +3776,9 @@ export var TypeInfo = {
             "failed": 2,
             "canceled": 3,
             "skipped": 4,
-            "abandoned": 5
+            "abandoned": 5,
+            "manuallyQueued": 6,
+            "dependentOnManualQueue": 7
         }
     },
     Timeline: <any>{

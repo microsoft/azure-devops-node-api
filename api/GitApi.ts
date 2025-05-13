@@ -62,6 +62,11 @@ export interface IGitApi extends basem.ClientApiBase {
     createForkSyncRequest(syncParams: GitInterfaces.GitForkSyncRequestParameters, repositoryNameOrId: string, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitForkSyncRequest>;
     getForkSyncRequest(repositoryNameOrId: string, forkSyncOperationId: number, project?: string, includeLinks?: boolean): Promise<GitInterfaces.GitForkSyncRequest>;
     getForkSyncRequests(repositoryNameOrId: string, project?: string, includeAbandoned?: boolean, includeLinks?: boolean): Promise<GitInterfaces.GitForkSyncRequest[]>;
+    getHfsItem(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveHfs?: boolean, sanitize?: boolean): Promise<GitInterfaces.GitItem>;
+    getHfsItemContent(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveHfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
+    getHfsItems(repositoryId: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, includeLinks?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, zipForUnix?: boolean): Promise<GitInterfaces.GitItem[]>;
+    getHfsItemText(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveHfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
+    getHfsItemZip(repositoryId: string, path: string, project?: string, scopePath?: string, recursionLevel?: GitInterfaces.VersionControlRecursionType, includeContentMetadata?: boolean, latestProcessedChange?: boolean, download?: boolean, versionDescriptor?: GitInterfaces.GitVersionDescriptor, includeContent?: boolean, resolveHfs?: boolean, sanitize?: boolean): Promise<NodeJS.ReadableStream>;
     createImportRequest(importRequest: GitInterfaces.GitImportRequest, project: string, repositoryId: string): Promise<GitInterfaces.GitImportRequest>;
     getImportRequest(project: string, repositoryId: string, importRequestId: number): Promise<GitInterfaces.GitImportRequest>;
     queryImportRequests(project: string, repositoryId: string, includeAbandoned?: boolean): Promise<GitInterfaces.GitImportRequest[]>;
@@ -154,6 +159,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getRepository(repositoryId: string, project?: string): Promise<GitInterfaces.GitRepository>;
     getRepositoryWithParent(repositoryId: string, includeParent: boolean, project?: string): Promise<GitInterfaces.GitRepository>;
     updateRepository(newRepositoryInfo: GitInterfaces.GitRepository, repositoryId: string, project?: string): Promise<GitInterfaces.GitRepository>;
+    getRepositoriesPaged(projectId: string, includeLinks?: boolean, includeAllUrls?: boolean, includeHidden?: boolean, filterContains?: string, top?: number, continuationToken?: string): Promise<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>;
     getRevertConflict(repositoryId: string, revertId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
     getRevertConflicts(repositoryId: string, revertId: number, project?: string, continuationToken?: string, top?: number, excludeResolved?: boolean, onlyResolved?: boolean, includeObsolete?: boolean): Promise<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
     updateRevertConflict(conflict: GitInterfaces.GitConflict, repositoryId: string, revertId: number, conflictId: number, project?: string): Promise<GitInterfaces.GitConflict>;
@@ -1037,7 +1043,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                resolve((await this.http.get(url, { "Accept": accept })).message);
+                resolve((await this.http.post(url, JSON.stringify(blobIds), { "Accept": accept, "Content-Type": "application/json" })).message);
             }
             catch (err) {
                 reject(err);
@@ -2328,6 +2334,378 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
                 resolve(ret);
                 
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content, which is always returned as a download.
+     * 
+     * @param {string} repositoryId - The name or ID of the repository.
+     * @param {string} path - The item path.
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - The path scope.  The default is null.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - The recursion level of this request. The default is 'none', no recursion.
+     * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
+     * @param {boolean} latestProcessedChange - Set to true to include the latest changes.  Default is false.
+     * @param {boolean} download - Set to true to download the response as a file.  Default is false.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
+     * @param {boolean} resolveHfs - Set to true to resolve Git HFS pointer files to return actual content from Git HFS.  Default is true.
+     * @param {boolean} sanitize - Set to true to sanitize an svg file and return it as image. Useful only if requested for svg file. Default is false.
+     */
+    public async getHfsItem(
+        repositoryId: string,
+        path: string,
+        project?: string,
+        scopePath?: string,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContentMetadata?: boolean,
+        latestProcessedChange?: boolean,
+        download?: boolean,
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        includeContent?: boolean,
+        resolveHfs?: boolean,
+        sanitize?: boolean
+        ): Promise<GitInterfaces.GitItem> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
+
+        return new Promise<GitInterfaces.GitItem>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                path: path,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeContentMetadata: includeContentMetadata,
+                latestProcessedChange: latestProcessedChange,
+                download: download,
+                versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
+                resolveHfs: resolveHfs,
+                sanitize: sanitize,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "17f0a869-1589-43f0-9901-db1b2519087d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.GitItem>;
+                res = await this.rest.get<GitInterfaces.GitItem>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitItem,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content, which is always returned as a download.
+     * 
+     * @param {string} repositoryId - The name or ID of the repository.
+     * @param {string} path - The item path.
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - The path scope.  The default is null.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - The recursion level of this request. The default is 'none', no recursion.
+     * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
+     * @param {boolean} latestProcessedChange - Set to true to include the latest changes.  Default is false.
+     * @param {boolean} download - Set to true to download the response as a file.  Default is false.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
+     * @param {boolean} resolveHfs - Set to true to resolve Git HFS pointer files to return actual content from Git HFS.  Default is true.
+     * @param {boolean} sanitize - Set to true to sanitize an svg file and return it as image. Useful only if requested for svg file. Default is false.
+     */
+    public async getHfsItemContent(
+        repositoryId: string,
+        path: string,
+        project?: string,
+        scopePath?: string,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContentMetadata?: boolean,
+        latestProcessedChange?: boolean,
+        download?: boolean,
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        includeContent?: boolean,
+        resolveHfs?: boolean,
+        sanitize?: boolean
+        ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                path: path,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeContentMetadata: includeContentMetadata,
+                latestProcessedChange: latestProcessedChange,
+                download: download,
+                versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
+                resolveHfs: resolveHfs,
+                sanitize: sanitize,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "17f0a869-1589-43f0-9901-db1b2519087d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                
+                let apiVersion: string = verData.apiVersion!;
+                let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Item Metadata and/or Content for a collection of items. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content which is always returned as a download.
+     * 
+     * @param {string} repositoryId - The name or ID of the repository.
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - The path scope.  The default is null.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - The recursion level of this request. The default is 'none', no recursion.
+     * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
+     * @param {boolean} latestProcessedChange - Set to true to include the latest changes.  Default is false.
+     * @param {boolean} download - Set to true to download the response as a file.  Default is false.
+     * @param {boolean} includeLinks - Set to true to include links to items.  Default is false.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} zipForUnix - Set to true to keep the file permissions for unix (and POSIX) systems like executables and symlinks
+     */
+    public async getHfsItems(
+        repositoryId: string,
+        project?: string,
+        scopePath?: string,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContentMetadata?: boolean,
+        latestProcessedChange?: boolean,
+        download?: boolean,
+        includeLinks?: boolean,
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        zipForUnix?: boolean
+        ): Promise<GitInterfaces.GitItem[]> {
+
+        return new Promise<GitInterfaces.GitItem[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeContentMetadata: includeContentMetadata,
+                latestProcessedChange: latestProcessedChange,
+                download: download,
+                includeLinks: includeLinks,
+                versionDescriptor: versionDescriptor,
+                zipForUnix: zipForUnix,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "17f0a869-1589-43f0-9901-db1b2519087d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
+                res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitItem,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content, which is always returned as a download.
+     * 
+     * @param {string} repositoryId - The name or ID of the repository.
+     * @param {string} path - The item path.
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - The path scope.  The default is null.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - The recursion level of this request. The default is 'none', no recursion.
+     * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
+     * @param {boolean} latestProcessedChange - Set to true to include the latest changes.  Default is false.
+     * @param {boolean} download - Set to true to download the response as a file.  Default is false.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
+     * @param {boolean} resolveHfs - Set to true to resolve Git HFS pointer files to return actual content from Git HFS.  Default is true.
+     * @param {boolean} sanitize - Set to true to sanitize an svg file and return it as image. Useful only if requested for svg file. Default is false.
+     */
+    public async getHfsItemText(
+        repositoryId: string,
+        path: string,
+        project?: string,
+        scopePath?: string,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContentMetadata?: boolean,
+        latestProcessedChange?: boolean,
+        download?: boolean,
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        includeContent?: boolean,
+        resolveHfs?: boolean,
+        sanitize?: boolean
+        ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                path: path,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeContentMetadata: includeContentMetadata,
+                latestProcessedChange: latestProcessedChange,
+                download: download,
+                versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
+                resolveHfs: resolveHfs,
+                sanitize: sanitize,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "17f0a869-1589-43f0-9901-db1b2519087d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                
+                let apiVersion: string = verData.apiVersion!;
+                let accept: string = this.createAcceptHeader("text/plain", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Item Metadata and/or Content for a single item. The download parameter is to indicate whether the content should be available as a download or just sent as a stream in the response. Doesn't apply to zipped content, which is always returned as a download.
+     * 
+     * @param {string} repositoryId - The name or ID of the repository.
+     * @param {string} path - The item path.
+     * @param {string} project - Project ID or project name
+     * @param {string} scopePath - The path scope.  The default is null.
+     * @param {GitInterfaces.VersionControlRecursionType} recursionLevel - The recursion level of this request. The default is 'none', no recursion.
+     * @param {boolean} includeContentMetadata - Set to true to include content metadata.  Default is false.
+     * @param {boolean} latestProcessedChange - Set to true to include the latest changes.  Default is false.
+     * @param {boolean} download - Set to true to download the response as a file.  Default is false.
+     * @param {GitInterfaces.GitVersionDescriptor} versionDescriptor - Version descriptor.  Default is the default branch for the repository.
+     * @param {boolean} includeContent - Set to true to include item content when requesting json.  Default is false.
+     * @param {boolean} resolveHfs - Set to true to resolve Git HFS pointer files to return actual content from Git HFS.  Default is true.
+     * @param {boolean} sanitize - Set to true to sanitize an svg file and return it as image. Useful only if requested for svg file. Default is false.
+     */
+    public async getHfsItemZip(
+        repositoryId: string,
+        path: string,
+        project?: string,
+        scopePath?: string,
+        recursionLevel?: GitInterfaces.VersionControlRecursionType,
+        includeContentMetadata?: boolean,
+        latestProcessedChange?: boolean,
+        download?: boolean,
+        versionDescriptor?: GitInterfaces.GitVersionDescriptor,
+        includeContent?: boolean,
+        resolveHfs?: boolean,
+        sanitize?: boolean
+        ): Promise<NodeJS.ReadableStream> {
+        if (path == null) {
+            throw new TypeError('path can not be null or undefined');
+        }
+
+        return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                repositoryId: repositoryId
+            };
+
+            let queryValues: any = {
+                path: path,
+                scopePath: scopePath,
+                recursionLevel: recursionLevel,
+                includeContentMetadata: includeContentMetadata,
+                latestProcessedChange: latestProcessedChange,
+                download: download,
+                versionDescriptor: versionDescriptor,
+                includeContent: includeContent,
+                resolveHfs: resolveHfs,
+                sanitize: sanitize,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "17f0a869-1589-43f0-9901-db1b2519087d",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                
+                let apiVersion: string = verData.apiVersion!;
+                let accept: string = this.createAcceptHeader("application/zip", apiVersion);
+                resolve((await this.http.get(url, { "Accept": accept })).message);
             }
             catch (err) {
                 reject(err);
@@ -6924,7 +7302,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -6969,7 +7347,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -7022,7 +7400,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -7067,7 +7445,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -7120,7 +7498,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
             
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues,
@@ -7167,7 +7545,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
 
             try {
                 let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
-                    "7.2-preview.1",
+                    "7.2-preview.2",
                     "git",
                     "225f7195-f9c7-4d14-ab28-a83f7ff77e1f",
                     routeValues);
@@ -7182,6 +7560,69 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let ret = this.formatResponse(res.result,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieve git repositories with filter by name and pagination.
+     * 
+     * @param {string} projectId - ID or name of the team project.
+     * @param {boolean} includeLinks - [optional] True to include reference links. The default value is false.
+     * @param {boolean} includeAllUrls - [optional] True to include all remote URLs. The default value is false.
+     * @param {boolean} includeHidden - [optional] True to include hidden repositories. The default value is false.
+     * @param {string} filterContains - [optional] A filter to apply to the refs (contains).
+     * @param {number} top - [optional] Maximum number of repositories to return. It cannot be bigger than 500. If it is not provided but continuationToken is, top will default to 100.
+     * @param {string} continuationToken - The continuation token used for pagination.
+     */
+    public async getRepositoriesPaged(
+        projectId: string,
+        includeLinks?: boolean,
+        includeAllUrls?: boolean,
+        includeHidden?: boolean,
+        filterContains?: string,
+        top?: number,
+        continuationToken?: string
+        ): Promise<VSSInterfaces.PagedList<GitInterfaces.GitRepository>> {
+
+        return new Promise<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>(async (resolve, reject) => {
+            let routeValues: any = {
+                projectId: projectId
+            };
+
+            let queryValues: any = {
+                includeLinks: includeLinks,
+                includeAllUrls: includeAllUrls,
+                includeHidden: includeHidden,
+                filterContains: filterContains,
+                '$top': top,
+                continuationToken: continuationToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "git",
+                    "82aea7e8-9501-45dd-ac58-b069aa73b926",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              GitInterfaces.TypeInfo.GitRepository,
+                                              true);
 
                 resolve(ret);
                 

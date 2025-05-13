@@ -19,8 +19,9 @@ import VSSInterfaces = require("./interfaces/common/VSSInterfaces");
 
 export interface ILocationsApi extends basem.ClientApiBase {
     getConnectionData(connectOptions?: VSSInterfaces.ConnectOptions, lastChangeId?: number, lastChangeId64?: number): Promise<LocationsInterfaces.ConnectionData>;
-    getResourceArea(areaId: string, enterpriseName?: string, organizationName?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
-    getResourceAreaByHost(areaId: string, hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceArea(areaId: string, enterpriseName?: string, organizationName?: string, accessMapping?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceAreaByHost(areaId: string, hostId: string, accessMapping?: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
+    getResourceAreaByInstanceId(areaId: string, instanceId: string, accessMapping: string): Promise<LocationsInterfaces.ResourceAreaInfo>;
     getResourceAreas(enterpriseName?: string, organizationName?: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     getResourceAreasByHost(hostId: string): Promise<LocationsInterfaces.ResourceAreaInfo[]>;
     deleteServiceDefinition(serviceType: string, identifier: string): Promise<void>;
@@ -89,11 +90,13 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
      * @param {string} areaId
      * @param {string} enterpriseName
      * @param {string} organizationName
+     * @param {string} accessMapping
      */
     public async getResourceArea(
         areaId: string,
         enterpriseName?: string,
-        organizationName?: string
+        organizationName?: string,
+        accessMapping?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
 
         return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
@@ -104,6 +107,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
             let queryValues: any = {
                 enterpriseName: enterpriseName,
                 organizationName: organizationName,
+                accessMapping: accessMapping,
             };
             
             try {
@@ -137,10 +141,12 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
     /**
      * @param {string} areaId
      * @param {string} hostId
+     * @param {string} accessMapping
      */
     public async getResourceAreaByHost(
         areaId: string,
-        hostId: string
+        hostId: string,
+        accessMapping?: string
         ): Promise<LocationsInterfaces.ResourceAreaInfo> {
         if (hostId == null) {
             throw new TypeError('hostId can not be null or undefined');
@@ -153,6 +159,62 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
 
             let queryValues: any = {
                 hostId: hostId,
+                accessMapping: accessMapping,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "Location",
+                    "e81700f7-3be2-46de-8624-2eb35882fcaa",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
+                res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * @param {string} areaId
+     * @param {string} instanceId
+     * @param {string} accessMapping
+     */
+    public async getResourceAreaByInstanceId(
+        areaId: string,
+        instanceId: string,
+        accessMapping: string
+        ): Promise<LocationsInterfaces.ResourceAreaInfo> {
+        if (instanceId == null) {
+            throw new TypeError('instanceId can not be null or undefined');
+        }
+        if (accessMapping == null) {
+            throw new TypeError('accessMapping can not be null or undefined');
+        }
+
+        return new Promise<LocationsInterfaces.ResourceAreaInfo>(async (resolve, reject) => {
+            let routeValues: any = {
+                areaId: areaId
+            };
+
+            let queryValues: any = {
+                instanceId: instanceId,
+                accessMapping: accessMapping,
             };
             
             try {
