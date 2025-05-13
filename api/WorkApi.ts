@@ -59,6 +59,8 @@ export interface IWorkApi extends basem.ClientApiBase {
     getPlan(project: string, id: string): Promise<WorkInterfaces.Plan>;
     getPlans(project: string): Promise<WorkInterfaces.Plan[]>;
     updatePlan(updatedPlan: WorkInterfaces.UpdatePlan, project: string, id: string): Promise<WorkInterfaces.Plan>;
+    getPredefinedQueries(project: string): Promise<WorkInterfaces.PredefinedQuery[]>;
+    getPredefinedQueryResults(project: string, id: string, top?: number, includeCompleted?: boolean): Promise<WorkInterfaces.PredefinedQuery>;
     getProcessConfiguration(project: string): Promise<WorkInterfaces.ProcessConfiguration>;
     getBoardRows(teamContext: TfsCoreInterfaces.TeamContext, board: string): Promise<WorkInterfaces.BoardRow[]>;
     updateBoardRows(boardRows: WorkInterfaces.BoardRow[], teamContext: TfsCoreInterfaces.TeamContext, board: string): Promise<WorkInterfaces.BoardRow[]>;
@@ -2190,6 +2192,101 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
 
                 let ret = this.formatResponse(res.result,
                                               WorkInterfaces.TypeInfo.Plan,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieves the set of known queries
+     * 
+     * @param {string} project - Project ID or project name
+     */
+    public async getPredefinedQueries(
+        project: string
+        ): Promise<WorkInterfaces.PredefinedQuery[]> {
+
+        return new Promise<WorkInterfaces.PredefinedQuery[]>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "work",
+                    "9cbba37c-6cc6-4f70-b903-709be86acbf0",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkInterfaces.PredefinedQuery[]>;
+                res = await this.rest.get<WorkInterfaces.PredefinedQuery[]>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Retrieves the specified predefined query including the query results
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} id - Id of the query to run
+     * @param {number} top - The maximum number of items to return
+     * @param {boolean} includeCompleted - Whether or not to retrieve the 'completed' work items (work items in the 'completed' meta state)
+     */
+    public async getPredefinedQueryResults(
+        project: string,
+        id: string,
+        top?: number,
+        includeCompleted?: boolean
+        ): Promise<WorkInterfaces.PredefinedQuery> {
+
+        return new Promise<WorkInterfaces.PredefinedQuery>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                id: id
+            };
+
+            let queryValues: any = {
+                '$top': top,
+                includeCompleted: includeCompleted,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "work",
+                    "9cbba37c-6cc6-4f70-b903-709be86acbf0",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<WorkInterfaces.PredefinedQuery>;
+                res = await this.rest.get<WorkInterfaces.PredefinedQuery>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
                                               false);
 
                 resolve(ret);
