@@ -24,8 +24,8 @@ export interface IProjectAnalysisApi extends basem.ClientApiBase {
 }
 
 export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectAnalysisApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-ProjectAnalysis-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-ProjectAnalysis-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "7658fa33-b1bf-4580-990f-fac5896773d3";

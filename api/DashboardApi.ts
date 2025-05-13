@@ -34,8 +34,8 @@ export interface IDashboardApi extends basem.ClientApiBase {
 }
 
 export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Dashboard-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Dashboard-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "31c84e0a-3ece-48fd-a29d-100849af99ba";

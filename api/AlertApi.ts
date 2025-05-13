@@ -34,8 +34,8 @@ export interface IAlertApi extends basem.ClientApiBase {
 }
 
 export class AlertApi extends basem.ClientApiBase implements IAlertApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Alert-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Alert-api', options);
     }
 
     /**

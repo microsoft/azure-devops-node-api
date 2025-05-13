@@ -30,8 +30,8 @@ export interface IPipelinesApi extends basem.ClientApiBase {
 }
 
 export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Pipelines-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Pipelines-api', options);
     }
 
     /**

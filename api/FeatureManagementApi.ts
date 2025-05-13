@@ -29,8 +29,8 @@ export interface IFeatureManagementApi extends basem.ClientApiBase {
 }
 
 export class FeatureManagementApi extends basem.ClientApiBase implements IFeatureManagementApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-FeatureManagement-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-FeatureManagement-api', options);
     }
 
     /**
