@@ -40,8 +40,8 @@ export interface IProfileApi extends basem.ClientApiBase {
 }
 
 export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Profile-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Profile-api', options);
     }
 
     /**

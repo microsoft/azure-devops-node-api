@@ -25,8 +25,8 @@ export interface IFileContainerApi extends FileContainerApiBase.IFileContainerAp
 }
 
 export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase implements IFileContainerApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, options, userAgent);
     }
 
     /**
