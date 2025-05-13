@@ -105,8 +105,8 @@ export interface IGalleryApi extends compatBase.GalleryCompatHttpClientBase {
 }
 
 export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implements IGalleryApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Gallery-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Gallery-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "69d21c00-f135-441b-b5ce-3626378e0819";

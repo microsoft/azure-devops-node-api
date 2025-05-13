@@ -25,8 +25,8 @@ export interface ICixApi extends basem.ClientApiBase {
 }
 
 export class CixApi extends basem.ClientApiBase implements ICixApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Pipelines-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Pipelines-api', options);
     }
 
     /**

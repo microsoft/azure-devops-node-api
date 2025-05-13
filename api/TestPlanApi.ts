@@ -68,8 +68,8 @@ export interface ITestPlanApi extends basem.ClientApiBase {
 }
 
 export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-TestPlan-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-TestPlan-api', options);
     }
 
     /**

@@ -46,8 +46,8 @@ export interface IExtensionManagementApi extends basem.ClientApiBase {
 }
 
 export class ExtensionManagementApi extends basem.ClientApiBase implements IExtensionManagementApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-ExtensionManagement-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-ExtensionManagement-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "6c2b0933-3600-42ae-bf8b-93d4f7e83594";

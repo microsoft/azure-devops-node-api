@@ -46,8 +46,8 @@ export interface ITaskApi extends basem.ClientApiBase {
 }
 
 export class TaskApi extends basem.ClientApiBase implements ITaskApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Task-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Task-api', options);
     }
 
     /**

@@ -25,8 +25,8 @@ export interface IFileContainerApiBase extends basem.ClientApiBase {
 }
 
 export class FileContainerApiBase extends basem.ClientApiBase implements IFileContainerApiBase {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-FileContainer-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-FileContainer-api', options);
     }
 
     /**
