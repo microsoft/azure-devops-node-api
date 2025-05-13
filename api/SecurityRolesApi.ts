@@ -28,8 +28,8 @@ export interface ISecurityRolesApi extends basem.ClientApiBase {
 }
 
 export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRolesApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-SecurityRoles-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-SecurityRoles-api', options);
     }
 
     /**
