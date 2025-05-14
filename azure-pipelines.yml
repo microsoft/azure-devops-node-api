@@ -82,7 +82,7 @@ extends:
         - bash: |
             package_name=$(npm pkg get name version | jq -r '"\(.name)@\(.version)"')
             echo "##vso[task.setvariable variable=npm_package]$package_name"
-          workingDir: '_build'
+          workingDirectory: '_build'
           displayName: Get package name and version
         - task: Npm@1
           displayName: Remove prerelease tag for azure-devops-node-api in Npm
