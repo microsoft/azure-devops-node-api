@@ -85,11 +85,20 @@ extends:
           workingDir: '_build'
           displayName: Get package name and version
         - task: Npm@1
-          displayName: Publish package as latest in Npmjs registry
+          displayName: Remove prerelease tag for azure-devops-node-api in Npm
           condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
           inputs:
             command: custom
             customCommand: dist-tag remove "$(npm_package)" prerelease
+            workingDir: '_build'
+            publishRegistry: useExternalRegistry
+            publishEndpoint: btt-npm-publish-token
+        - task: Npm@1
+          displayName: Add latest tag for azure-devops-node-api in Npm
+          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          inputs:
+            command: custom
+            customCommand: dist-tag add "$(npm_package)" latest
             workingDir: '_build'
             publishRegistry: useExternalRegistry
             publishEndpoint: btt-npm-publish-token
