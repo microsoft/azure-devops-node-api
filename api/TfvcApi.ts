@@ -602,7 +602,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/zip", apiVersion);
-                resolve((await this.http.get(url, { "Accept": accept })).message);
+                resolve((await this.http.post(url, JSON.stringify(itemRequestData), { "Accept": accept, "Content-Type": "application/json" })).message);
             }
             catch (err) {
                 reject(err);

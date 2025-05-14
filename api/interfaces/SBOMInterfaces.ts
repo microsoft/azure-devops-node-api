@@ -148,16 +148,6 @@ export enum ManifestToolActions {
 }
 
 /**
- * Enum that represents the result of a signing submission or status request.
- */
-export enum Result {
-    Success = 0,
-    Failure = 1,
-    InProgress = 2,
-    FailCanRetry = 3,
-}
-
-/**
  * Represents a SBOM file object and contains additional properties related to the file.
  */
 export interface SBOMFile {
@@ -175,10 +165,40 @@ export interface SBOMFile {
     sbomFormatName?: ManifestInfo;
 }
 
+export interface SbomFileValidationResult {
+    errorType?: string;
+    path?: string;
+}
+
+export interface SbomStorageResult {
+    failureReason?: string;
+    result?: string;
+    sbomStorageApiUrl?: string;
+    sbomZipFileSizeInBytes?: string;
+}
+
+export interface SbomTaskErrors {
+    count?: number;
+    errors?: SbomFileValidationResult[];
+}
+
+export interface SbomTaskTiming {
+    eventName?: string;
+    timeSpan?: string;
+}
+
 /**
  * The telemetry that is logged to a file/console for the given SBOM execution.
  */
 export interface SBOMTelemetry {
+    /**
+     * Additional SBOM task properties
+     */
+    additionalProperties?: { [key: string] : string; };
+    /**
+     * Timing data for additional operations performed in task
+     */
+    additionalTimings?: SbomTaskTiming[];
     /**
      * All available bsi data from the task build execution which includes build and system environment variables like repository and build information.
      */
@@ -192,9 +212,29 @@ export interface SBOMTelemetry {
      */
     e2ETaskResult?: string;
     /**
+     * Errors thrown during task run
+     */
+    errors?: SbomTaskErrors;
+    /**
+     * Operation IDs for ESRP signing operations
+     */
+    esrpOperationIds?: string[];
+    /**
+     * Exceptions thrown during task run
+     */
+    exceptions?: { [key: string] : string; };
+    /**
      * A list of ConfigurationSetting`1 representing each input parameter used in the validation.
      */
     parameters?: Configuration;
+    /**
+     * Pipeline release variables set during task run
+     */
+    pipelineReleaseVariables?: { [key: string] : string; };
+    /**
+     * Pipeline variables set during task run
+     */
+    pipelineVariables?: { [key: string] : string; };
     /**
      * The result of the execution
      */
@@ -203,6 +243,10 @@ export interface SBOMTelemetry {
      * A list of the SBOM formats and related file properties that was used in the generation/validation of the SBOM.
      */
     sBOMFormatsUsed?: SBOMFile[];
+    /**
+     * Results from SBOM storage service calls during task run
+     */
+    sbomStorageResults?: SbomStorageResult[];
     /**
      * Any internal switches and their value that were used during the execution. A switch can be something that was provided through a configuraiton or an environment variable.
      */
@@ -219,6 +263,14 @@ export interface SBOMTelemetry {
      * The unique id for this telemetry
      */
     telemetryId?: string;
+    /**
+     * Task timeout value
+     */
+    timeoutValueInMins?: number;
+    /**
+     * Timing data for SBOM generation operations
+     */
+    timings?: SbomTaskTiming[];
     /**
      * The result of the tool as a numeric value.
      */
@@ -239,34 +291,6 @@ export interface SignRequest {
     fileHash?: FileHash;
 }
 
-/**
- * The base reponse object for all responses from the signing api.
- */
-export interface SignResponseBase {
-    /**
-     * The customer correlation id that is sent to ESRP for correlating the current request to ESRP.
-     */
-    customerCorrelationId?: string;
-    /**
-     * If this is an error response, it will have more information about the error.
-     */
-    errorInfo?: string;
-    /**
-     * The result of the response.
-     */
-    result?: Result;
-}
-
-/**
- * The response returned by the sign status api.
- */
-export interface SignStatusResponse extends SignResponseBase {
-    /**
-     * The pre-signed download url used to download the signed catalog file.
-     */
-    downloadUrl?: string;
-}
-
 export var TypeInfo = {
     Configuration: <any>{
     },
@@ -278,19 +302,7 @@ export var TypeInfo = {
             "all": 3
         }
     },
-    Result: {
-        enumValues: {
-            "success": 0,
-            "failure": 1,
-            "inProgress": 2,
-            "failCanRetry": 3
-        }
-    },
     SBOMTelemetry: <any>{
-    },
-    SignResponseBase: <any>{
-    },
-    SignStatusResponse: <any>{
     },
 };
 
@@ -303,17 +315,5 @@ TypeInfo.Configuration.fields = {
 TypeInfo.SBOMTelemetry.fields = {
     parameters: {
         typeInfo: TypeInfo.Configuration
-    }
-};
-
-TypeInfo.SignResponseBase.fields = {
-    result: {
-        enumType: TypeInfo.Result
-    }
-};
-
-TypeInfo.SignStatusResponse.fields = {
-    result: {
-        enumType: TypeInfo.Result
     }
 };

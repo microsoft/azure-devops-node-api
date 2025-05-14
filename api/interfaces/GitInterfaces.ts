@@ -15,6 +15,13 @@ import TfsCoreInterfaces = require("../interfaces/CoreInterfaces");
 import VSSInterfaces = require("../interfaces/common/VSSInterfaces");
 
 
+export interface AdvSecEnablementOptions {
+    /**
+     * Enforces secret scanning job for a repo where AdvSec is already enabled.
+     */
+    forceRepoSecretScanning?: boolean;
+}
+
 export interface AdvSecEnablementStatus {
     /**
      * Enabled by VSID
@@ -28,6 +35,10 @@ export interface AdvSecEnablementStatus {
      * True if Dependabot is enabled for the repository, false if it is disabled.
      */
     dependabotEnabled?: boolean;
+    /**
+     * True if Dependency Scanning injection is enabled for the repository, false if it is disabled.
+     */
+    dependencyScanningInjectionEnabled?: boolean;
     /**
      * Enabled status 0 disabled, 1 enabled, Null never explicitly set, always whatever project is, ya this should probably be an enum somewhere
      */
@@ -48,9 +59,17 @@ export interface AdvSecEnablementUpdate {
      */
     newDependabotStatus?: boolean;
     /**
+     * New Dependency Scanning injection enablement status.
+     */
+    newDependencyScanningInjectionEnablementStatus?: boolean;
+    /**
      * New status
      */
     newStatus?: boolean;
+    /**
+     * Options that can be added during enablement (i.e. force secret scanning job to run)
+     */
+    options?: AdvSecEnablementOptions;
     /**
      * ProjectId
      */
@@ -1505,6 +1524,10 @@ export interface GitItem extends ItemModel {
      * Git object id
      */
     originalObjectId?: string;
+    /**
+     * Web URL if the item is a Git submodule and target service is supported. Supported services are Azure Repos, GitHub, GitLab, Bitbucket.
+     */
+    submoduleWebUrl?: string;
 }
 
 export interface GitItemDescriptor {
@@ -1741,6 +1764,10 @@ export interface GitPullRequest {
      * Multiple mergebases warning
      */
     hasMultipleMergeBases?: boolean;
+    /**
+     * This optional parameter allows clients to use server-side dynamic choices for the target ref. Due to preexisting contracts, users _must_ specify a target ref, but this option will cause the server to ignore it and choose dynamically from the user's favorites (or the default branch).
+     */
+    ignoreTargetRefAndChooseDynamically?: boolean;
     /**
      * Draft / WIP pull request.
      */
@@ -2050,9 +2077,27 @@ export interface GitPullRequestQuery {
 }
 
 /**
+ * Options for including additional elements in the pull request query response.
+ */
+export enum GitPullRequestQueryIncludeOptions {
+    /**
+     * No additional elements included.
+     */
+    NotSet = 0,
+    /**
+     * Enforces adding associated labels to the response.
+     */
+    Labels = 1,
+}
+
+/**
  * Pull request query input parameters.
  */
 export interface GitPullRequestQueryInput {
+    /**
+     * Options for including additional PR properties in the response.
+     */
+    include?: GitPullRequestQueryIncludeOptions;
     /**
      * The list of commit IDs to search for.
      */
@@ -2146,6 +2191,10 @@ export interface GitPullRequestSearchCriteria {
      * If set, search for pull requests into this branch.
      */
     targetRefName?: string;
+    /**
+     * If set, filters pull requests that contain the specified text in the title.
+     */
+    title?: string;
 }
 
 /**
@@ -2467,6 +2516,10 @@ export enum GitRefUpdateStatus {
 
 export interface GitRepository {
     _links?: any;
+    /**
+     * The timestamp when the repository was created.
+     */
+    creationDate?: Date;
     defaultBranch?: string;
     id?: string;
     /**
@@ -4274,6 +4327,12 @@ export var TypeInfo = {
     },
     GitPullRequestQuery: <any>{
     },
+    GitPullRequestQueryIncludeOptions: {
+        enumValues: {
+            "notSet": 0,
+            "labels": 1
+        }
+    },
     GitPullRequestQueryInput: <any>{
     },
     GitPullRequestQueryType: {
@@ -5512,6 +5571,9 @@ TypeInfo.GitPullRequestQuery.fields = {
 };
 
 TypeInfo.GitPullRequestQueryInput.fields = {
+    include: {
+        enumType: TypeInfo.GitPullRequestQueryIncludeOptions
+    },
     type: {
         enumType: TypeInfo.GitPullRequestQueryType
     }
@@ -5630,6 +5692,9 @@ TypeInfo.GitRefUpdateResult.fields = {
 };
 
 TypeInfo.GitRepository.fields = {
+    creationDate: {
+        isDate: true,
+    },
     parentRepository: {
         typeInfo: TypeInfo.GitRepositoryRef
     },

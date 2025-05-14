@@ -3910,7 +3910,7 @@ export class TestApi extends basem.ClientApiBase implements ITestApi {
                 res = await this.rest.create<TestInterfaces.TestToWorkItemLinks>(url, null, options);
 
                 let ret = this.formatResponse(res.result,
-                                              null,
+                                              TestInterfaces.TypeInfo.TestToWorkItemLinks,
                                               false);
 
                 resolve(ret);

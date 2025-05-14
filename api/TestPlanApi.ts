@@ -48,11 +48,16 @@ export interface ITestPlanApi extends basem.ClientApiBase {
     getTestCaseCloneInformation(project: string, cloneOperationId: number): Promise<TestPlanInterfaces.CloneTestCaseOperationInformation>;
     exportTestCases(exportTestCaseRequestBody: TestPlanInterfaces.ExportTestCaseParams, project: string): Promise<NodeJS.ReadableStream>;
     deleteTestCase(project: string, testCaseId: number): Promise<void>;
+    getDeletedTestPlans(project: string, continuationToken?: string): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>;
+    restoreDeletedTestPlan(restoreModel: TestPlanInterfaces.TestPlanAndSuiteRestoreModel, project: string, planId: number): Promise<void>;
     cloneTestPlan(cloneRequestBody: TestPlanInterfaces.CloneTestPlanParams, project: string, deepClone?: boolean): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation>;
     getCloneInformation(project: string, cloneOperationId: number): Promise<TestPlanInterfaces.CloneTestPlanOperationInformation>;
     getPoints(project: string, planId: number, suiteId: number, pointId: string, returnIdentityRef?: boolean, includePointDetails?: boolean): Promise<TestPlanInterfaces.TestPoint[]>;
     getPointsList(project: string, planId: number, suiteId: number, testPointIds?: string, testCaseId?: string, continuationToken?: string, returnIdentityRef?: boolean, includePointDetails?: boolean, isRecursive?: boolean): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>;
     updateTestPoints(testPointUpdateParams: TestPlanInterfaces.TestPointUpdateParams[], project: string, planId: number, suiteId: number, includePointDetails?: boolean, returnIdentityRef?: boolean): Promise<TestPlanInterfaces.TestPoint[]>;
+    getDeletedTestSuitesForPlan(project: string, planId: number, expand?: TestPlanInterfaces.SuiteExpand, continuationToken?: string, asTreeView?: boolean): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
+    getDeletedTestSuitesForProject(project: string, expand?: TestPlanInterfaces.SuiteExpand, continuationToken?: string, asTreeView?: boolean): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
+    restoreDeletedTestSuite(payload: TestPlanInterfaces.TestPlanAndSuiteRestoreModel, project: string, suiteId: number): Promise<void>;
     cloneTestSuite(cloneRequestBody: TestPlanInterfaces.CloneTestSuiteParams, project: string, deepClone?: boolean): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
     getSuiteCloneInformation(project: string, cloneOperationId: number): Promise<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
     createTestVariable(testVariableCreateUpdateParameters: TestPlanInterfaces.TestVariableCreateUpdateParameters, project: string): Promise<TestPlanInterfaces.TestVariable>;
@@ -1510,7 +1515,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 
                 let apiVersion: string = verData.apiVersion!;
                 let accept: string = this.createAcceptHeader("application/octet-stream", apiVersion);
-                resolve((await this.http.get(url, { "Accept": accept })).message);
+                resolve((await this.http.post(url, JSON.stringify(exportTestCaseRequestBody), { "Accept": accept, "Content-Type": "application/json" })).message);
             }
             catch (err) {
                 reject(err);
@@ -1548,6 +1553,100 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
 
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get a list of deleted test plans
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {string} continuationToken - If the list of plans returned is not complete, a continuation token to query next batch of plans is included in the response header as "x-ms-continuationtoken". Omit this parameter to get the first batch of test plans.
+     */
+    public async getDeletedTestPlans(
+        project: string,
+        continuationToken?: string
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>> {
+
+        return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                continuationToken: continuationToken,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testplan",
+                    "04c64b80-239e-426c-b79d-b1ca8951ce26",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestPlanInterfaces.TypeInfo.TestPlan,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Restores the deleted test plan
+     * 
+     * @param {TestPlanInterfaces.TestPlanAndSuiteRestoreModel} restoreModel - The model containing the restore information
+     * @param {string} project - Project ID or project name
+     * @param {number} planId - The ID of the test plan to restore
+     */
+    public async restoreDeletedTestPlan(
+        restoreModel: TestPlanInterfaces.TestPlanAndSuiteRestoreModel,
+        project: string,
+        planId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testplan",
+                    "04c64b80-239e-426c-b79d-b1ca8951ce26",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, restoreModel, options);
 
                 let ret = this.formatResponse(res.result,
                                               null,
@@ -1837,6 +1936,163 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let ret = this.formatResponse(res.result,
                                               TestPlanInterfaces.TypeInfo.TestPoint,
                                               true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Deleted Test Suites for a Test Plan.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {number} planId - ID of the test plan for which suites are requested.
+     * @param {TestPlanInterfaces.SuiteExpand} expand - Include the children suites and testers details.
+     * @param {string} continuationToken - If the list of suites returned is not complete, a continuation token to query next batch of suites is included in the response header as "x-ms-continuationtoken". Omit this parameter to get the first batch of test suites.
+     * @param {boolean} asTreeView - If the suites returned should be in a tree structure.
+     */
+    public async getDeletedTestSuitesForPlan(
+        project: string,
+        planId: number,
+        expand?: TestPlanInterfaces.SuiteExpand,
+        continuationToken?: string,
+        asTreeView?: boolean
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>> {
+
+        return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                planId: planId
+            };
+
+            let queryValues: any = {
+                expand: expand,
+                continuationToken: continuationToken,
+                asTreeView: asTreeView,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testplan",
+                    "d2f1e8a4-3b6e-4f8b-9c8e-2d4f6e4b5a7c",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Get Deleted Test Suites within a Project.
+     * 
+     * @param {string} project - Project ID or project name
+     * @param {TestPlanInterfaces.SuiteExpand} expand - Include the children suites and testers details.
+     * @param {string} continuationToken - If the list of suites returned is not complete, a continuation token to query next batch of suites is included in the response header as "x-ms-continuationtoken". Omit this parameter to get the first batch of test suites.
+     * @param {boolean} asTreeView - If the suites returned should be in a tree structure.
+     */
+    public async getDeletedTestSuitesForProject(
+        project: string,
+        expand?: TestPlanInterfaces.SuiteExpand,
+        continuationToken?: string,
+        asTreeView?: boolean
+        ): Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>> {
+
+        return new Promise<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project
+            };
+
+            let queryValues: any = {
+                expand: expand,
+                continuationToken: continuationToken,
+                asTreeView: asTreeView,
+            };
+            
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testplan",
+                    "f40ae369-855d-4d5e-bee0-5e99c5c42fcb",
+                    routeValues,
+                    queryValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
+                res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
+
+                let ret = this.formatResponse(res.result,
+                                              TestPlanInterfaces.TypeInfo.TestSuite,
+                                              true);
+
+                resolve(ret);
+                
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    /**
+     * Restores the deleted test suite
+     * 
+     * @param {TestPlanInterfaces.TestPlanAndSuiteRestoreModel} payload - The model containing the restore information
+     * @param {string} project - Project ID or project name
+     * @param {number} suiteId - The ID of the test suite to restore
+     */
+    public async restoreDeletedTestSuite(
+        payload: TestPlanInterfaces.TestPlanAndSuiteRestoreModel,
+        project: string,
+        suiteId: number
+        ): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            let routeValues: any = {
+                project: project,
+                suiteId: suiteId
+            };
+
+            try {
+                let verData: vsom.ClientVersioningData = await this.vsoClient.getVersioningData(
+                    "7.2-preview.1",
+                    "testplan",
+                    "f40ae369-855d-4d5e-bee0-5e99c5c42fcb",
+                    routeValues);
+
+                let url: string = verData.requestUrl!;
+                let options: restm.IRequestOptions = this.createRequestOptions('application/json', 
+                                                                                verData.apiVersion);
+
+                let res: restm.IRestResponse<void>;
+                res = await this.rest.update<void>(url, payload, options);
+
+                let ret = this.formatResponse(res.result,
+                                              null,
+                                              false);
 
                 resolve(ret);
                 

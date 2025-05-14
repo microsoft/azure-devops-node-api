@@ -6567,14 +6567,17 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         visibility?: string[],
         scopeLocal?: boolean
         ): Promise<NodeJS.ReadableStream> {
+        if (versionString == null) {
+            throw new TypeError('versionString can not be null or undefined');
+        }
 
         return new Promise<NodeJS.ReadableStream>(async (resolve, reject) => {
             let routeValues: any = {
-                taskId: taskId,
-                versionString: versionString
+                taskId: taskId
             };
 
             let queryValues: any = {
+                versionString: versionString,
                 visibility: visibility,
                 scopeLocal: scopeLocal,
             };
@@ -6611,14 +6614,17 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
         visibility?: string[],
         scopeLocal?: boolean
         ): Promise<TaskAgentInterfaces.TaskDefinition> {
+        if (versionString == null) {
+            throw new TypeError('versionString can not be null or undefined');
+        }
 
         return new Promise<TaskAgentInterfaces.TaskDefinition>(async (resolve, reject) => {
             let routeValues: any = {
-                taskId: taskId,
-                versionString: versionString
+                taskId: taskId
             };
 
             let queryValues: any = {
+                versionString: versionString,
                 visibility: visibility,
                 scopeLocal: scopeLocal,
             };
@@ -7092,7 +7098,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
      * 
      * @param {string} project - Project ID or project name
      * @param {number[]} groupIds - Comma separated list of Ids of variable groups.
-     * @param {boolean} loadSecrets
+     * @param {boolean} loadSecrets - Flag indicating if the secrets within variable groups should be loaded.
      */
     public async getVariableGroupsById(
         project: string,
