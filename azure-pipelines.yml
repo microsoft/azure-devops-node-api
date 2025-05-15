@@ -64,6 +64,7 @@ extends:
             customCommand: publish --tag prerelease
             workingDir: '_build'
             publishRegistry: useExternalRegistry
+            customEndpoint: btt-npm-publish-token
             publishEndpoint: btt-npm-publish-token
           continueOnError: true
     - stage: Release
@@ -92,6 +93,7 @@ extends:
             customCommand: dist-tag remove "$(npm_package)" prerelease
             workingDir: '_build'
             publishRegistry: useExternalRegistry
+            customEndpoint: btt-npm-publish-token
             publishEndpoint: btt-npm-publish-token
         - task: Npm@1
           displayName: Add latest tag for azure-devops-node-api in Npm
@@ -101,4 +103,5 @@ extends:
             customCommand: dist-tag add "$(npm_package)" latest
             workingDir: '_build'
             publishRegistry: useExternalRegistry
+            customEndpoint: btt-npm-publish-token
             publishEndpoint: btt-npm-publish-token
