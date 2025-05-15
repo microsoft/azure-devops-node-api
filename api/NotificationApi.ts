@@ -45,8 +45,8 @@ export interface INotificationApi extends basem.ClientApiBase {
 }
 
 export class NotificationApi extends basem.ClientApiBase implements INotificationApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Notification-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Notification-api', options);
     }
 
     /**

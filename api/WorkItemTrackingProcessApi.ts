@@ -77,8 +77,8 @@ export interface IWorkItemTrackingProcessApi extends basem.ClientApiBase {
 }
 
 export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements IWorkItemTrackingProcessApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-WorkItemTracking-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-WorkItemTracking-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "5264459e-e5e0-4bd8-b118-0985e68a4ec5";

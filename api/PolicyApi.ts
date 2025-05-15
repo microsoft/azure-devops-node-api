@@ -33,8 +33,8 @@ export interface IPolicyApi extends basem.ClientApiBase {
 }
 
 export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Policy-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Policy-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "fb13a388-40dd-4a04-b530-013a739c72ef";

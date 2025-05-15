@@ -16,8 +16,8 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
     private _options: VsoBaseInterfaces.IRequestOptions;
     private _fallbackClient: TaskAgentApi;
 
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, options, userAgent);
 
         // hang on to the handlers in case we need to fall back to an account-level client
         this._handlers = handlers;

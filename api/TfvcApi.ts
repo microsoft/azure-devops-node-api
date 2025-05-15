@@ -45,8 +45,8 @@ export interface ITfvcApi extends basem.ClientApiBase {
 }
 
 export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Tfvc-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Tfvc-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "8aa40520-446d-40e6-89f6-9c9f9ce44c48";

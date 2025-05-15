@@ -177,8 +177,8 @@ export interface ITaskAgentApiBase extends basem.ClientApiBase {
 }
 
 export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentApiBase {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-TaskAgent-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-TaskAgent-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "a85b8835-c1a1-4aac-ae97-1c3d0ba72dbd";

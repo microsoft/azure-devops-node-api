@@ -110,8 +110,8 @@ export interface IReleaseApi extends basem.ClientApiBase {
 }
 
 export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Release-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Release-api', options);
     }
 
     public static readonly RESOURCE_AREA_ID = "efc2f575-36ef-48e9-b672-0c6fb4a48ac5";

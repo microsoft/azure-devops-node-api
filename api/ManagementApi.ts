@@ -49,8 +49,8 @@ export interface IManagementApi extends basem.ClientApiBase {
 }
 
 export class ManagementApi extends basem.ClientApiBase implements IManagementApi {
-    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions) {
-        super(baseUrl, handlers, 'node-Management-api', options);
+    constructor(baseUrl: string, handlers: VsoBaseInterfaces.IRequestHandler[], options?: VsoBaseInterfaces.IRequestOptions, userAgent?: string) {
+        super(baseUrl, handlers, userAgent || 'node-Management-api', options);
     }
 
     /**
