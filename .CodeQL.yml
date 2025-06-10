@@ -1,0 +1,4 @@
+path_classifiers:
+  library:
+    # Classify files in this directory external library code
+    - /api/opensource/
