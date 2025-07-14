@@ -338,7 +338,7 @@ function binaryArray2bytes(array){
 
 function create_NT_hashed_password_v1(password){
 	var buf = new Buffer(password, 'utf16le');
-	var md4 = crypto.createHash('md4');
+	var md4 = crypto.createHash('md4'); // CodeQL [SM04514] Required by NTLM v1 specification
 	md4.update(buf);
 	return new Buffer(md4.digest());
 }
