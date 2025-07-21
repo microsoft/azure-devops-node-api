@@ -339,7 +339,7 @@ function binaryArray2bytes(array){
 function create_NT_hashed_password_v1(password){
 	var buf = new Buffer(password, 'utf16le');
 	var md4 = crypto.createHash('md4'); // CodeQL [SM04514] Required by NTLM v1 specification
-	md4.update(buf);
+	md4.update(buf); // CodeQL [SM01511] Required by NTLM v1 specification
 	return new Buffer(md4.digest());
 }
 
@@ -370,7 +370,7 @@ function ntlm2sr_calc_resp(responseKeyNT, serverChallenge, clientChallenge){
     clientChallenge.copy(lmChallengeResponse, 0, 0, clientChallenge.length);
 
     var buf = Buffer.concat([serverChallenge, clientChallenge]);
-    var md5 = crypto.createHash('md5');
+    var md5 = crypto.createHash('md5'); // CodeQL [SM04514] Required by NTLM v2 specification
     md5.update(buf);
     var sess = md5.digest();
     var ntChallengeResponse = calc_resp(responseKeyNT, sess.slice(0,8));
