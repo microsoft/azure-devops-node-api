@@ -194,6 +194,15 @@ export class VsoClient {
         }
         let queryString: string = '';
 
+        if (Array.isArray(queryParams)) {
+            const paramName = prefix.slice(0, -1); // Remove trailing '.'
+            for (let i = 0; i < queryParams.length; i++) {
+                const value = queryParams[i];
+                queryString += paramName + '=' + encodeURIComponent(value.toString()) + '&';
+            }
+            return queryString;
+        }
+
         if (typeof (queryParams) !== 'string') {
             for (let property in queryParams) {
                 if (queryParams.hasOwnProperty(property)) {
