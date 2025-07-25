@@ -163,6 +163,27 @@ describe('VSOClient Units', function () {
         assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?status.innerstatus=2&version=1&nestedObject.nestedField=value&nestedObject.innerNestedObject.key=val2');
     });
 
+    it('gets versioning data with array-typed query params', async () => {
+        //Arrange
+        nock('https://dev.azure.com/_apis/testArea5', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': 'testAgent'
+            }})
+            .options('')
+            .reply(200, {
+                value: [{id: 'testLocation', maxVersion: '1', releasedVersion: '1', routeTemplate: 'testTemplate', area: 'testArea5', resourceName: 'testName', resourceVersion: '1'}]
+        });
+
+        //Act
+        const queryParams = {states: ["active", "inactive"]};
+        const res: vsom.ClientVersioningData = await vsoClient.getVersioningData('1', 'testArea5', 'testLocation', {'testKey': 'testValue'}, queryParams);
+
+        //Assert
+        assert.equal(res.apiVersion, '1');
+        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?states=active&states=inactive');
+    });
+
     it('gets versioning datafor dates', async () => {
         //Arrange
         nock('https://dev.azure.com/_apis/testArea5', {
