@@ -195,7 +195,8 @@ export class VsoClient {
         let queryString: string = '';
 
         if (Array.isArray(queryParams)) {
-            const paramName = prefix.slice(0, -1); // Remove trailing '.'
+            // Remove trailing '.' from prefix if it exists, otherwise use the prefix as-is
+            const paramName = prefix.endsWith('.') ? prefix.slice(0, -1) : prefix;
             const values = queryParams.map(value => value.toString()).join(',');
             queryString += paramName + '=' + encodeURIComponent(values) + '&';
             return queryString;
@@ -216,9 +217,9 @@ export class VsoClient {
             // Need to specially call `toUTCString()` instead for such cases
             const queryValue = typeof queryParams === 'object' && 'toUTCString' in queryParams ? (queryParams as Date).toUTCString() : queryParams.toString();
 
-
-            // Will always need to chop period off of end of prefix
-            queryString = prefix.slice(0, -1) + '=' + encodeURIComponent(queryValue) + '&';
+            // Will always need to chop period off of end of prefix, if it exists
+            const paramName = prefix.endsWith('.') ? prefix.slice(0, -1) : prefix;
+            queryString = paramName + '=' + encodeURIComponent(queryValue) + '&';
         }
         return queryString;
     }
