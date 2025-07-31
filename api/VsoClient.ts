@@ -196,10 +196,8 @@ export class VsoClient {
 
         if (Array.isArray(queryParams)) {
             const paramName = prefix.slice(0, -1); // Remove trailing '.'
-            for (let i = 0; i < queryParams.length; i++) {
-                const value = queryParams[i];
-                queryString += paramName + '=' + encodeURIComponent(value.toString()) + '&';
-            }
+            const values = queryParams.map(value => value.toString()).join(',');
+            queryString += paramName + '=' + encodeURIComponent(values) + '&';
             return queryString;
         }
 

@@ -181,7 +181,7 @@ describe('VSOClient Units', function () {
 
         //Assert
         assert.equal(res.apiVersion, '1');
-        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?states=active&states=inactive');
+        assert.equal(res.requestUrl, 'https://dev.azure.com/testTemplate?states=active%2Cinactive');
     });
 
     it('gets versioning datafor dates', async () => {
