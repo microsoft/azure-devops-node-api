@@ -53,16 +53,28 @@ extends:
           displayName: npm install
         - script: npm run build
           displayName: npm run build
-        - task: Npm@1
-          displayName: Publish azure-devops-node-api to npm
-          inputs:
-            command: custom
-            customCommand: publish --tag prerelease ${{ eq(parameters.dryRun, true) && '--dry-run' || '' }}
-            workingDir: '_build'
-            publishRegistry: useExternalRegistry
-            customEndpoint: btt-npm-publish-token
-            publishEndpoint: btt-npm-publish-token
-          continueOnError: true
+        - ${{ if eq(parameters.dryRun, true) }}:
+          - task: Npm@1
+            displayName: Publish azure-devops-node-api to npm (dry run)
+            inputs:
+              command: custom
+              customCommand: publish --tag prerelease --dry-run
+              workingDir: '_build'
+              publishRegistry: useExternalRegistry
+              customEndpoint: btt-npm-publish-token
+              publishEndpoint: btt-npm-publish-token
+            continueOnError: true
+        - ${{ if eq(parameters.dryRun, false) }}:
+          - task: Npm@1
+            displayName: Publish azure-devops-node-api to npm
+            inputs:
+              command: custom
+              customCommand: publish --tag prerelease
+              workingDir: '_build'
+              publishRegistry: useExternalRegistry
+              customEndpoint: btt-npm-publish-token
+              publishEndpoint: btt-npm-publish-token
+            continueOnError: true
     - stage: Release
       displayName: Release to Latest
       trigger: manual
