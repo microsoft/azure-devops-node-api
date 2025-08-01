@@ -38,7 +38,7 @@ extends:
       - job: PublishPrerelease
         displayName: Publish Prerelease
         dependsOn: BuildAndTest
-        condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), in(variables['build.sourcebranchname'], 'master', 'ymlfix'))
+        condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
         steps:
         - task: NodeTool@0
           inputs:
