@@ -59,7 +59,6 @@ extends:
     - stage: Release
       displayName: Release to Latest
       trigger: manual
-      dependsOn: Build
       jobs:
       - job: Release
         displayName: Release to Latest
