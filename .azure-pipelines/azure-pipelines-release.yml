@@ -1,6 +1,13 @@
 # Release Pipeline - Build, Test, and Release
 # This pipeline will be extended to the OneESPT template
 trigger: none
+
+parameters:
+- name: dryRun
+  displayName: 'Dry Run (test publish without actually publishing)'
+  type: boolean
+  default: false
+
 resources:
   repositories:
   - repository: 1ESPipelineTemplates
@@ -31,7 +38,7 @@ extends:
       - job: PublishPrerelease
         displayName: Publish Prerelease
         dependsOn: BuildAndTest
-        condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+        condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), in(variables['build.sourcebranchname'], 'master', 'ymlfix'))
         steps:
         - task: NodeTool@0
           inputs:
@@ -50,7 +57,7 @@ extends:
           displayName: Publish azure-devops-node-api to npm
           inputs:
             command: custom
-            customCommand: publish --tag prerelease
+            customCommand: publish --tag prerelease ${{ eq(parameters.dryRun, true) && '--dry-run' || '' }}
             workingDir: '_build'
             publishRegistry: useExternalRegistry
             customEndpoint: btt-npm-publish-token
@@ -83,7 +90,7 @@ extends:
           displayName: Get package name and version
         - task: Npm@1
           displayName: Remove prerelease tag for azure-devops-node-api in Npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'), eq('${{ parameters.dryRun }}', 'false'))
           inputs:
             command: custom
             customCommand: dist-tag remove "$(npm_package)" prerelease
@@ -93,7 +100,7 @@ extends:
             publishEndpoint: btt-npm-publish-token
         - task: Npm@1
           displayName: Add latest tag for azure-devops-node-api in Npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
+          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'), eq('${{ parameters.dryRun }}', 'false'))
           inputs:
             command: custom
             customCommand: dist-tag add "$(npm_package)" latest
