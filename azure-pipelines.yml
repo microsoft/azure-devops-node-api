@@ -1,4 +1,4 @@
-# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
+# CI Pipeline - Build and Test
 # This pipeline will be extended to the OneESPT template
 resources:
   repositories:
@@ -20,95 +20,8 @@ extends:
       name: 1ES-ABTT-Shared-Pool
       image: abtt-ubuntu-2204
       os: linux
-    customBuildTags:
-    - ES365AIMigrationTooling
     stages:
-    - stage: stage
+    - stage: CI
+      displayName: Build And Test
       jobs:
-      - job: job
-        strategy:
-          matrix:
-            'Node 16':
-              versionSpec: '16.x'
-              npmVersion: '8'
-            'Node 18':
-              versionSpec: '18.x'
-              npmVersion: '10'
-            'Node 20':
-              versionSpec: '20.x'
-              npmVersion: '10'
-            'Node 22':
-              versionSpec: '22.x'
-              npmVersion: '10'
-        steps:
-        - task: NodeTool@0
-          inputs:
-            versionSpec: $(versionSpec)
-          displayName: Install node
-        - script: npm install -g npm@$(npmVersion)
-          displayName: Upgrade npm
-        - task: NpmAuthenticate@0
-          inputs:
-            workingFile: .npmrc
-        - script: npm install
-          displayName: npm install
-        - script: npm run build
-          displayName: npm run build
-        - script: npm run units
-          displayName: Run unit tests
-        - task: Npm@1
-          displayName: Publish azure-devops-node-api to npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'), eq(variables['npmVersion'], '8'))
-          inputs:
-            command: custom
-            customCommand: publish --tag prerelease
-            workingDir: '_build'
-            publishRegistry: useExternalRegistry
-            customEndpoint: btt-npm-publish-token
-            publishEndpoint: btt-npm-publish-token
-          continueOnError: true
-    - stage: Release
-      displayName: Release to Latest
-      trigger: manual
-      jobs:
-      - job: Release
-        displayName: Release to Latest
-        steps:
-        - checkout: self
-          clean: true
-        - task: NodeTool@0
-          inputs:
-            versionSpec: 16.x
-          displayName: Install node
-        - task: NpmAuthenticate@0
-          inputs:
-            workingFile: .npmrc
-        - script: npm install
-          displayName: npm install
-        - script: npm run build
-          displayName: npm run build
-        - bash: |
-            package_name=$(npm pkg get name version | jq -r '"\(.name)@\(.version)"')
-            echo "##vso[task.setvariable variable=npm_package]$package_name"
-          workingDirectory: '_build'
-          displayName: Get package name and version
-        - task: Npm@1
-          displayName: Remove prerelease tag for azure-devops-node-api in Npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
-          inputs:
-            command: custom
-            customCommand: dist-tag remove "$(npm_package)" prerelease
-            workingDir: '_build'
-            publishRegistry: useExternalRegistry
-            customEndpoint: btt-npm-publish-token
-            publishEndpoint: btt-npm-publish-token
-        - task: Npm@1
-          displayName: Add latest tag for azure-devops-node-api in Npm
-          condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
-          inputs:
-            command: custom
-            customCommand: dist-tag add "$(npm_package)" latest
-            workingDir: '_build'
-            publishRegistry: useExternalRegistry
-            customEndpoint: btt-npm-publish-token
-            publishEndpoint: btt-npm-publish-token
+      - template: .azure-pipelines/build-template.yml@self
