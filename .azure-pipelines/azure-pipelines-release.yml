@@ -97,6 +97,7 @@ extends:
           displayName: npm run build
         - bash: |
             package_name=$(npm pkg get name version | jq -r '"\(.name)@\(.version)"')
+            echo "Package name and version: $package_name"
             echo "##vso[task.setvariable variable=npm_package]$package_name"
           workingDirectory: '_build'
           displayName: Get package name and version
