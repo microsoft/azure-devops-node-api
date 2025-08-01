@@ -27,7 +27,7 @@ extends:
     - stage: Build
       displayName: Build and Prerelease
       jobs:
-      - template: .azure-pipelines/build-template.yml
+      - template: .azure-pipelines/build-template.yml@self
       - job: PublishPrerelease
         displayName: Publish Prerelease
         dependsOn: BuildAndTest

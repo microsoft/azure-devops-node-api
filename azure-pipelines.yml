@@ -24,4 +24,4 @@ extends:
     - stage: CI
       displayName: Build And Test
       jobs:
-      - template: .azure-pipelines/build-template.yml
+      - template: .azure-pipelines/build-template.yml@self
