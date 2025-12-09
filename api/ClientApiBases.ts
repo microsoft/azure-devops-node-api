@@ -48,4 +48,32 @@ export class ClientApiBase {
             serializationData.responseIsCollection);
         return deserializedResult;
     }
+
+    public extractRateLimitHeaders(headers: any, target: any): void {
+        if (!headers || !target) {
+            return;
+        }
+
+        const rateLimit: VsoBaseInterfaces.RateLimit = {};
+
+        if (headers['x-ratelimit-resource']) {
+            rateLimit.resource = headers['x-ratelimit-resource'];
+        }
+        if (headers['x-ratelimit-delay']) {
+            rateLimit.delay = headers['x-ratelimit-delay'];
+        }
+        if (headers['x-ratelimit-limit']) {
+            rateLimit.limit = headers['x-ratelimit-limit'];
+        }
+        if (headers['x-ratelimit-remaining']) {
+            rateLimit.remaining = headers['x-ratelimit-remaining'];
+        }
+        if (headers['x-ratelimit-reset']) {
+            rateLimit.reset = headers['x-ratelimit-reset'];
+        }
+        if (headers['retry-after']) {
+            rateLimit.retryAfter = headers['retry-after'];
+        }
+        target.rateLimit = rateLimit;
+    }
 }

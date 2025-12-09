@@ -120,3 +120,30 @@ export interface ICertConfiguration {
     keyFile?: string;
     passphrase?: string;
 }
+
+export interface RateLimit {
+    /**
+     * The resource bucket that was rate limited (e.g., "core", "search")
+     */
+    resource?: string;
+    /**
+     * Delay in seconds before the next request (tarpit state)
+     */
+    delay?: string;
+    /**
+     * Maximum number of requests allowed in the time window
+     */
+    limit?: string;
+    /**
+     * Number of requests remaining in the current time window
+     */
+    remaining?: string;
+    /**
+     * UTC timestamp when the rate limit resets
+     */
+    reset?: string;
+    /**
+     * Number of seconds to wait before retrying (block state, HTTP 429)
+     */
+    retryAfter?: string;
+}
