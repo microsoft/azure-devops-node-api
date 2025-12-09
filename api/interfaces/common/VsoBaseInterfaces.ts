@@ -123,27 +123,27 @@ export interface ICertConfiguration {
 
 export interface RateLimit {
     /**
-     * The resource bucket that was rate limited (e.g., "core", "search")
+     * Service and type of threshold reached. For display purposes only.
      */
     resource?: string;
     /**
-     * Delay in seconds before the next request (tarpit state)
+     * Request delay in seconds (tarpit state). Supports up to 3 decimal places.
      */
-    delay?: string;
+    delay?: number;
     /**
-     * Maximum number of requests allowed in the time window
+     * Total TSTUs allowed before delays are imposed.
      */
-    limit?: string;
+    limit?: number;
     /**
-     * Number of requests remaining in the current time window
+     * TSTUs remaining before delays start. 0 if already delayed or blocked.
      */
-    remaining?: string;
+    remaining?: number;
     /**
-     * UTC timestamp when the rate limit resets
+     * Unix epoch time (seconds) when usage resets to 0 TSTUs.
      */
-    reset?: string;
+    reset?: number;
     /**
-     * Number of seconds to wait before retrying (block state, HTTP 429)
+     * Seconds to wait before retrying (HTTP 429 block state).
      */
-    retryAfter?: string;
+    retryAfter?: number;
 }
