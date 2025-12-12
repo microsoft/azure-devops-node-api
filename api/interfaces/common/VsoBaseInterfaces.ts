@@ -120,3 +120,30 @@ export interface ICertConfiguration {
     keyFile?: string;
     passphrase?: string;
 }
+
+export interface RateLimit {
+    /**
+     * Service and type of threshold reached. For display purposes only.
+     */
+    resource?: string;
+    /**
+     * Request delay in seconds (tarpit state). Supports up to 3 decimal places.
+     */
+    delay?: number;
+    /**
+     * Total TSTUs allowed before delays are imposed.
+     */
+    limit?: number;
+    /**
+     * TSTUs remaining before delays start. 0 if already delayed or blocked.
+     */
+    remaining?: number;
+    /**
+     * Unix epoch time (seconds) when usage resets to 0 TSTUs.
+     */
+    reset?: number;
+    /**
+     * Seconds to wait before retrying (HTTP 429 block state).
+     */
+    retryAfter?: number;
+}
