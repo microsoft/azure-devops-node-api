@@ -22,11 +22,11 @@ extends:
         enabled: false
       sourceAnalysisPool:
         name: 1ES-ABTT-Shared-Pool
-        image: abtt-windows-2022
+        image: abtt-windows-2025
         os: windows
     pool:
       name: 1ES-ABTT-Shared-Pool
-      image: abtt-ubuntu-2204
+      image: abtt-ubuntu-2404
       os: linux
     customBuildTags:
     - ES365AIMigrationTooling
