@@ -475,14 +475,25 @@ export class WebApi {
         if (lookupKey && lookupKey.indexOf(':') > 0) {
             let lookupInfo: string[] = lookupKey.split(':', 2);
 
-            // file contains encryption key
-            let keyFile = new Buffer(lookupInfo[0], 'base64').toString('utf8');
-            let encryptKey = new Buffer(fs.readFileSync(keyFile, 'utf8'), 'base64');
+            let keyFile = Buffer.from(lookupInfo[0], 'base64').toString('utf8');
+            let keyAndIv = fs.readFileSync(keyFile, 'utf8');
+            
+            let [keyBase64, ivBase64] = keyAndIv.split(':', 2);
+            
+            if (!keyBase64 || !ivBase64) {
+                throw new Error(
+                    'Invalid encryption key format. Expected "key:iv" format from azure-pipelines-task-lib 5.2.4+. ' +
+                    'This version of azure-devops-node-api (15.2.0+) is not compatible with task-lib <5.2.4.'
+                );
+            }
+            
+            let encryptKey = Buffer.from(keyBase64, 'base64');
+            let iv = Buffer.from(ivBase64, 'base64');
 
-            let encryptedContent: string = new Buffer(lookupInfo[1], 'base64').toString('utf8');
+            let encryptedContent: string = Buffer.from(lookupInfo[1], 'base64').toString('utf8');
 
-            let decipher = crypto.createDecipher("aes-256-ctr", encryptKey)
-            let decryptedContent = decipher.update(encryptedContent, 'hex', 'utf8')
+            let decipher = crypto.createDecipheriv("aes-256-ctr", encryptKey, iv);
+            let decryptedContent = decipher.update(encryptedContent, 'hex', 'utf8');
             decryptedContent += decipher.final('utf8');
 
             return decryptedContent;
