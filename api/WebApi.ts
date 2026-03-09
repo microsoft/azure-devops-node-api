@@ -422,7 +422,7 @@ export class WebApi {
         const noProxyDomains = (process.env.no_proxy || '')
         .split(',')
         .map(v => v.toLowerCase());
-        const serverUrl = url.parse(_url).host.toLowerCase();
+        const serverUrl = new URL(_url).host.toLowerCase();
         // return true if the no_proxy includes the host
         return noProxyDomains.indexOf(serverUrl) !== -1;
     }

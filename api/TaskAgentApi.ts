@@ -226,7 +226,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
     private _getAccountUrl(collectionUrl: string): string {
         // converts a collection URL to an account URL
         // returns null if the conversion can't be made
-        var purl = url.parse(collectionUrl);
+        var purl = new URL(collectionUrl);
         if (!purl.protocol || !purl.host) {
             return null;
         }
@@ -234,7 +234,7 @@ export class TaskAgentApi extends taskagentbasem.TaskAgentApiBase implements ITa
         var accountUrl = purl.protocol + '//' + purl.host;
 
         // purl.path is something like /DefaultCollection or /tfs/DefaultCollection or /DefaultCollection/
-        var splitPath: string[] = purl.path.split('/').slice(1);
+        var splitPath: string[] = purl.pathname.split('/').slice(1);
         if (splitPath.length === 0 || (splitPath.length === 1 && splitPath[0] === '')) {
             return null;
         }
