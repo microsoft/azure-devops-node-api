@@ -45,7 +45,6 @@ import lim = require("./interfaces/LocationsInterfaces");
 import crypto = require('crypto');
 import fs = require('fs');
 import os = require('os');
-import url = require('url');
 import path = require('path');
 
 const isBrowser: boolean = typeof window !== 'undefined';

@@ -1,7 +1,6 @@
 import basem = require('./ClientApiBases');
 import ifm = require("./interfaces/common/VsoBaseInterfaces");
 import taskagentbasem = require('./TaskAgentApiBase');
-import url = require('url');
 import vsom = require('./VsoClient');
 import TaskAgentInterfaces = require("./interfaces/TaskAgentInterfaces");
 import VsoBaseInterfaces = require('./interfaces/common/VsoBaseInterfaces');
