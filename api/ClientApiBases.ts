@@ -48,8 +48,8 @@ export class ClientApiBase {
             false,
             serializationData.responseIsCollection);
 
-        if (response.headers['x-ms-continuationtoken']) {
-            deserializedResult.continuationToken = response.headers['x-ms-continuationtoken'];
+        if (isCollection && response.headers['x-ms-continuationtoken']) {
+            (deserializedResult as any).continuationToken = response.headers['x-ms-continuationtoken'];
         }
         return deserializedResult;
     }
