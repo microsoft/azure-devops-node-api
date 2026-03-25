@@ -162,7 +162,7 @@ export class FileContainerApi extends FileContainerApiBase.FileContainerApiBase 
                 options.additionalHeaders = customHeaders;
                 this.rest.uploadStream<FileContainerInterfaces.FileContainerItem>('PUT', url, contentStream, options)
                     .then((res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem>) => {
-                        let ret = this.formatResponse(res.result,
+                        let ret = this.formatResponse(res,
                             FileContainerInterfaces.TypeInfo.FileContainerItem,
                             false);
                         onResult(null, res.statusCode, ret);

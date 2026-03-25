@@ -222,7 +222,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -276,7 +276,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.AdvSecEnablementStatus[]>;
                 res = await this.rest.get<GitInterfaces.AdvSecEnablementStatus[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.AdvSecEnablementStatus,
                                               true);
 
@@ -322,7 +322,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.get<boolean>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -368,7 +368,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.get<boolean>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -414,7 +414,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -466,7 +466,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -506,7 +506,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, enablementUpdates, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -544,7 +544,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.BillablePusher[]>;
                 res = await this.rest.get<GitInterfaces.BillablePusher[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -585,7 +585,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.BillablePusher[]>;
                 res = await this.rest.get<GitInterfaces.BillablePusher[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -629,7 +629,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.BillableCommitter[]>;
                 res = await this.rest.get<GitInterfaces.BillableCommitter[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -680,7 +680,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.get<boolean>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -726,7 +726,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.create<GitInterfaces.GitAnnotatedTag>(url, tagObject, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitAnnotatedTag,
                                               false);
 
@@ -773,7 +773,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitAnnotatedTag>;
                 res = await this.rest.get<GitInterfaces.GitAnnotatedTag>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitAnnotatedTag,
                                               false);
 
@@ -827,7 +827,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.BillableCommitter[]>;
                 res = await this.rest.get<GitInterfaces.BillableCommitter[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -881,7 +881,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.BillableCommitterDetail[]>;
                 res = await this.rest.get<GitInterfaces.BillableCommitterDetail[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.BillableCommitterDetail,
                                               true);
 
@@ -941,7 +941,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitBlobRef>;
                 res = await this.rest.get<GitInterfaces.GitBlobRef>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1147,7 +1147,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitBranchStats,
                                               false);
 
@@ -1198,7 +1198,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.get<GitInterfaces.GitBranchStats[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitBranchStats,
                                               true);
 
@@ -1244,7 +1244,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitBranchStats[]>;
                 res = await this.rest.create<GitInterfaces.GitBranchStats[]>(url, searchCriteria, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitBranchStats,
                                               true);
 
@@ -1301,7 +1301,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitChanges>;
                 res = await this.rest.get<GitInterfaces.GitCommitChanges>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitChanges,
                                               false);
 
@@ -1351,7 +1351,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -1417,7 +1417,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               true);
 
@@ -1469,7 +1469,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -1518,7 +1518,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflictUpdateResult,
                                               true);
 
@@ -1572,7 +1572,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -1618,7 +1618,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.create<GitInterfaces.GitCherryPick>(url, cherryPickToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCherryPick,
                                               false);
 
@@ -1665,7 +1665,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCherryPick,
                                               false);
 
@@ -1719,7 +1719,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCherryPick>;
                 res = await this.rest.get<GitInterfaces.GitCherryPick>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCherryPick,
                                               false);
 
@@ -1790,7 +1790,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitDiffs>;
                 res = await this.rest.get<GitInterfaces.GitCommitDiffs>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitDiffs,
                                               false);
 
@@ -1844,7 +1844,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommit>;
                 res = await this.rest.get<GitInterfaces.GitCommit>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommit,
                                               false);
 
@@ -1904,7 +1904,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -1967,7 +1967,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -2026,7 +2026,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.create<GitInterfaces.GitCommitRef[]>(url, searchCriteria, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -2067,7 +2067,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitDeletedRepository,
                                               true);
 
@@ -2113,7 +2113,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.FileDiff[]>;
                 res = await this.rest.create<GitInterfaces.FileDiff[]>(url, fileDiffsCriteria, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.FileDiff,
                                               true);
 
@@ -2167,7 +2167,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepositoryRef[]>;
                 res = await this.rest.get<GitInterfaces.GitRepositoryRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepositoryRef,
                                               true);
 
@@ -2220,7 +2220,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest>;
                 res = await this.rest.create<GitInterfaces.GitForkSyncRequest>(url, syncParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitForkSyncRequest,
                                               false);
 
@@ -2274,7 +2274,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest>;
                 res = await this.rest.get<GitInterfaces.GitForkSyncRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitForkSyncRequest,
                                               false);
 
@@ -2328,7 +2328,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitForkSyncRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitForkSyncRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitForkSyncRequest,
                                               true);
 
@@ -2409,7 +2409,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitItem>;
                 res = await this.rest.get<GitInterfaces.GitItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitItem,
                                               false);
 
@@ -2554,7 +2554,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
                 res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitItem,
                                               true);
 
@@ -2746,7 +2746,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.create<GitInterfaces.GitImportRequest>(url, importRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitImportRequest,
                                               false);
 
@@ -2793,7 +2793,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitImportRequest,
                                               false);
 
@@ -2844,7 +2844,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitImportRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitImportRequest,
                                               true);
 
@@ -2893,7 +2893,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitImportRequest>;
                 res = await this.rest.update<GitInterfaces.GitImportRequest>(url, importRequestToUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitImportRequest,
                                               false);
 
@@ -2974,7 +2974,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitItem>;
                 res = await this.rest.get<GitInterfaces.GitItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitItem,
                                               false);
 
@@ -3119,7 +3119,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitItem[]>;
                 res = await this.rest.get<GitInterfaces.GitItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitItem,
                                               true);
 
@@ -3311,7 +3311,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitItem[][]>;
                 res = await this.rest.create<GitInterfaces.GitItem[][]>(url, requestData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitItem,
                                               true);
 
@@ -3374,7 +3374,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -3427,7 +3427,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitMerge>;
                 res = await this.rest.create<GitInterfaces.GitMerge>(url, mergeParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitMerge,
                                               false);
 
@@ -3481,7 +3481,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitMerge>;
                 res = await this.rest.get<GitInterfaces.GitMerge>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitMerge,
                                               false);
 
@@ -3539,7 +3539,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Attachment>;
                 res = await this.rest.uploadStream<GitInterfaces.Attachment>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Attachment,
                                               false);
 
@@ -3588,7 +3588,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3677,7 +3677,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Attachment[]>;
                 res = await this.rest.get<GitInterfaces.Attachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Attachment,
                                               true);
 
@@ -3772,7 +3772,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3825,7 +3825,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3878,7 +3878,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3938,7 +3938,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitCommitRef[]>;
                 res = await this.rest.get<GitInterfaces.GitCommitRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -3985,7 +3985,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitCommitRef>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitCommitRef,
                                               true);
 
@@ -4035,7 +4035,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -4101,7 +4101,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict[]>;
                 res = await this.rest.get<GitInterfaces.GitConflict[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               true);
 
@@ -4153,7 +4153,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -4202,7 +4202,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflictUpdateResult,
                                               true);
 
@@ -4265,7 +4265,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIterationChanges>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIterationChanges>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestIterationChanges,
                                               false);
 
@@ -4315,7 +4315,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestIteration,
                                               false);
 
@@ -4369,7 +4369,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestIteration[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestIteration[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestIteration,
                                               true);
 
@@ -4421,7 +4421,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               false);
 
@@ -4474,7 +4474,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4527,7 +4527,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               false);
 
@@ -4577,7 +4577,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               true);
 
@@ -4634,7 +4634,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchDocument, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4690,7 +4690,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition>;
                 res = await this.rest.create<TfsCoreInterfaces.WebApiTagDefinition>(url, label, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4747,7 +4747,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4804,7 +4804,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition>;
                 res = await this.rest.get<TfsCoreInterfaces.WebApiTagDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4858,7 +4858,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<TfsCoreInterfaces.WebApiTagDefinition[]>;
                 res = await this.rest.get<TfsCoreInterfaces.WebApiTagDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4905,7 +4905,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4959,7 +4959,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.update<any>(url, patchDocument, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5005,7 +5005,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestQuery>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestQuery>(url, queries, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestQuery,
                                               false);
 
@@ -5057,7 +5057,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5106,7 +5106,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.create<GitInterfaces.IdentityRefWithVote[]>(url, reviewers, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5155,7 +5155,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.replace<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5205,7 +5205,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5255,7 +5255,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5302,7 +5302,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote[]>;
                 res = await this.rest.get<GitInterfaces.IdentityRefWithVote[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5354,7 +5354,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.IdentityRefWithVote>;
                 res = await this.rest.update<GitInterfaces.IdentityRefWithVote>(url, reviewer, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5403,7 +5403,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchVotes, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5447,7 +5447,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               false);
 
@@ -5507,7 +5507,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               true);
 
@@ -5560,7 +5560,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.create<GitInterfaces.GitPullRequest>(url, gitPullRequestToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               false);
 
@@ -5626,7 +5626,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               false);
 
@@ -5689,7 +5689,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               true);
 
@@ -5738,7 +5738,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequest>;
                 res = await this.rest.update<GitInterfaces.GitPullRequest>(url, gitPullRequestToUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequest,
                                               false);
 
@@ -5787,7 +5787,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, userMessage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5836,7 +5836,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestStatus>(url, status, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               false);
 
@@ -5886,7 +5886,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5936,7 +5936,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               false);
 
@@ -5983,7 +5983,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestStatus[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestStatus,
                                               true);
 
@@ -6037,7 +6037,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchDocument, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6089,7 +6089,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.create<GitInterfaces.Comment>(url, comment, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -6142,7 +6142,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6195,7 +6195,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.get<GitInterfaces.Comment>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -6245,7 +6245,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Comment[]>;
                 res = await this.rest.get<GitInterfaces.Comment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Comment,
                                               true);
 
@@ -6300,7 +6300,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.Comment>;
                 res = await this.rest.update<GitInterfaces.Comment>(url, comment, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -6349,7 +6349,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.create<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestCommentThread,
                                               false);
 
@@ -6409,7 +6409,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestCommentThread,
                                               false);
 
@@ -6466,7 +6466,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread[]>;
                 res = await this.rest.get<GitInterfaces.GitPullRequestCommentThread[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestCommentThread,
                                               true);
 
@@ -6518,7 +6518,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPullRequestCommentThread>;
                 res = await this.rest.update<GitInterfaces.GitPullRequestCommentThread>(url, commentThread, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPullRequestCommentThread,
                                               false);
 
@@ -6565,7 +6565,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -6611,7 +6611,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.create<GitInterfaces.GitPush>(url, push, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPush,
                                               false);
 
@@ -6668,7 +6668,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPush>;
                 res = await this.rest.get<GitInterfaces.GitPush>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPush,
                                               false);
 
@@ -6725,7 +6725,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitPush[]>;
                 res = await this.rest.get<GitInterfaces.GitPush[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitPush,
                                               true);
 
@@ -6769,7 +6769,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6810,7 +6810,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitDeletedRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitDeletedRepository[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitDeletedRepository,
                                               true);
 
@@ -6856,7 +6856,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.update<GitInterfaces.GitRepository>(url, repositoryDetails, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
 
@@ -6925,7 +6925,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitRef>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitRef>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRef,
                                               true);
 
@@ -6984,7 +6984,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRef>;
                 res = await this.rest.update<GitInterfaces.GitRef>(url, newRefInfo, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRef,
                                               false);
 
@@ -7037,7 +7037,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRefUpdateResult[]>;
                 res = await this.rest.create<GitInterfaces.GitRefUpdateResult[]>(url, refUpdates, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRefUpdateResult,
                                               true);
 
@@ -7080,7 +7080,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.create<GitInterfaces.GitRefFavorite>(url, favorite, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRefFavorite,
                                               false);
 
@@ -7124,7 +7124,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -7168,7 +7168,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRefFavorite,
                                               false);
 
@@ -7219,7 +7219,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRefFavorite,
                                               true);
 
@@ -7265,7 +7265,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRefFavorite[]>;
                 res = await this.rest.get<GitInterfaces.GitRefFavorite[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRefFavorite,
                                               true);
 
@@ -7315,7 +7315,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.create<GitInterfaces.GitRepository>(url, gitRepositoryToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
 
@@ -7359,7 +7359,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -7413,7 +7413,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository[]>;
                 res = await this.rest.get<GitInterfaces.GitRepository[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               true);
 
@@ -7457,7 +7457,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
 
@@ -7511,7 +7511,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.get<GitInterfaces.GitRepository>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
 
@@ -7557,7 +7557,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRepository>;
                 res = await this.rest.update<GitInterfaces.GitRepository>(url, newRepositoryInfo, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               false);
 
@@ -7620,7 +7620,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitRepository>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRepository,
                                               true);
 
@@ -7670,7 +7670,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.get<GitInterfaces.GitConflict>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -7736,7 +7736,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<GitInterfaces.GitConflict>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               true);
 
@@ -7788,7 +7788,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflict>;
                 res = await this.rest.update<GitInterfaces.GitConflict>(url, conflict, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflict,
                                               false);
 
@@ -7837,7 +7837,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitConflictUpdateResult[]>;
                 res = await this.rest.update<GitInterfaces.GitConflictUpdateResult[]>(url, conflictUpdates, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitConflictUpdateResult,
                                               true);
 
@@ -7883,7 +7883,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.create<GitInterfaces.GitRevert>(url, revertToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRevert,
                                               false);
 
@@ -7930,7 +7930,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRevert,
                                               false);
 
@@ -7984,7 +7984,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitRevert>;
                 res = await this.rest.get<GitInterfaces.GitRevert>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitRevert,
                                               false);
 
@@ -8033,7 +8033,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitStatus>;
                 res = await this.rest.create<GitInterfaces.GitStatus>(url, gitCommitStatusToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitStatus,
                                               false);
 
@@ -8093,7 +8093,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitStatus[]>;
                 res = await this.rest.get<GitInterfaces.GitStatus[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitStatus,
                                               true);
 
@@ -8144,7 +8144,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitSuggestion[]>;
                 res = await this.rest.get<GitInterfaces.GitSuggestion[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -8204,7 +8204,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
                 let res: restm.IRestResponse<GitInterfaces.GitTreeRef>;
                 res = await this.rest.get<GitInterfaces.GitTreeRef>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GitInterfaces.TypeInfo.GitTreeRef,
                                               false);
 
