@@ -5,8 +5,9 @@ import os = require('os');
 import vsom = require('../../_build/VsoClient');
 import WebApi = require('../../_build/WebApi');
 import * as rm from 'typed-rest-client/RestClient';
-import { ApiResourceLocation } from '../../_build/interfaces/common/VsoBaseInterfaces';
+import { ApiResourceLocation, RateLimit } from '../../_build/interfaces/common/VsoBaseInterfaces';
 import semver = require('semver');
+import { IRestResponse } from 'typed-rest-client';
 
 describe('VSOClient Units', function () {
     let rest: rm.RestClient;
@@ -314,6 +315,42 @@ describe('WebApi Units', function () {
                                                           undefined, {productName: 'name', productVersion: '1.2.3'});
         const userAgent: string = `name/1.2.3 (${nodeApiName} ${nodeApiVersion}; ${osName} ${osVersion})`;
         assert.equal(userAgent, myWebApi.rest.client.userAgent, 'User agent should be: ' + userAgent);
+    });
+
+    it('AdoRestClient attaches rate limit headers to responses', async () => {
+        // Arrange
+        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+
+        nock('https://dev.azure.com', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': userAgent,
+            },
+        })
+            .defaultReplyHeaders({
+                'x-ratelimit-resource': 'core',
+                'x-ratelimit-delay': '0.5',
+                'x-ratelimit-limit': '1000',
+                'x-ratelimit-remaining': '999',
+                'x-ratelimit-reset': '1625078400',
+                'retry-after': '1',
+            })
+            .get('/test')
+            .reply(200, { success: true });
+        
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com', WebApi.getBasicHandler('user', 'password'));
+
+        // Act
+        const response = (await myWebApi.rest.get<{ success: boolean, rateLimit?: RateLimit }>('https://dev.azure.com/test')) as IRestResponse<{ success: boolean, rateLimit?: RateLimit }>;
+        // Assert
+        assert(response.result?.success === true, 'Response body should indicate success');
+        assert(response.result?.rateLimit, 'Response should have rateLimit property');
+        assert.equal(response.result.rateLimit?.resource, 'core', 'Rate limit resource should be "core"');
+        assert.equal(response.result.rateLimit?.delay, 0.5, 'Rate limit delay should be 0.5');
+        assert.equal(response.result.rateLimit?.limit, 1000, 'Rate limit limit should be 1000');
+        assert.equal(response.result.rateLimit?.remaining, 999, 'Rate limit remaining should be 999');
+        assert.equal(response.result.rateLimit?.reset, 1625078400, 'Rate limit reset should be 1625078400');
+        assert.equal(response.result.rateLimit?.retryAfter, 1, 'Rate limit retryAfter should be 1');
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {
