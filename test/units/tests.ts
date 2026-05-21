@@ -7,7 +7,6 @@ import WebApi = require('../../_build/WebApi');
 import * as rm from 'typed-rest-client/RestClient';
 import { ApiResourceLocation, RateLimit } from '../../_build/interfaces/common/VsoBaseInterfaces';
 import semver = require('semver');
-import { IRestResponse } from 'typed-rest-client';
 
 describe('VSOClient Units', function () {
     let rest: rm.RestClient;
@@ -341,7 +340,7 @@ describe('WebApi Units', function () {
         const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com', WebApi.getBasicHandler('user', 'password'));
 
         // Act
-        const response = (await myWebApi.rest.get<{ success: boolean, rateLimit?: RateLimit }>('https://dev.azure.com/test')) as IRestResponse<{ success: boolean, rateLimit?: RateLimit }>;
+        const response = await myWebApi.rest.get<{ success: boolean, rateLimit?: RateLimit }>('https://dev.azure.com/test');
         // Assert
         assert(response.result?.success === true, 'Response body should indicate success');
         assert(response.result?.rateLimit, 'Response should have rateLimit property');
@@ -351,6 +350,63 @@ describe('WebApi Units', function () {
         assert.equal(response.result.rateLimit?.remaining, 999, 'Rate limit remaining should be 999');
         assert.equal(response.result.rateLimit?.reset, 1625078400, 'Rate limit reset should be 1625078400');
         assert.equal(response.result.rateLimit?.retryAfter, 1, 'Rate limit retryAfter should be 1');
+    });
+
+    it('AdoRestClient attaches rate limit headers to error on 429', async () => {
+        // Arrange
+        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+
+        nock('https://dev.azure.com', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': userAgent,
+            },
+        })
+            .defaultReplyHeaders({
+                'x-ratelimit-resource': 'core',
+                'x-ratelimit-delay': '5.0',
+                'x-ratelimit-limit': '1000',
+                'x-ratelimit-remaining': '0',
+                'x-ratelimit-reset': '1625078400',
+                'retry-after': '30',
+            })
+            .get('/blocked')
+            .reply(429, { message: 'Too Many Requests' });
+        
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com', WebApi.getBasicHandler('user', 'password'));
+
+        // Act & Assert
+        try {
+            await myWebApi.rest.get<any>('https://dev.azure.com/blocked');
+            assert.fail('Should have thrown on 429');
+        } catch (err: any) {
+            assert(err.rateLimit, 'Error should have rateLimit property');
+            assert.equal(err.rateLimit.resource, 'core', 'Rate limit resource should be "core"');
+            assert.equal(err.rateLimit.remaining, 0, 'Rate limit remaining should be 0');
+            assert.equal(err.rateLimit.retryAfter, 30, 'Rate limit retryAfter should be 30');
+        }
+    });
+
+    it('AdoRestClient does not attach rateLimit when no rate limit headers present', async () => {
+        // Arrange
+        const userAgent: string = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
+
+        nock('https://dev.azure.com', {
+            reqheaders: {
+                'accept': 'application/json',
+                'user-agent': userAgent,
+            },
+        })
+            .get('/no-ratelimit')
+            .reply(200, { data: 'hello' });
+        
+        const myWebApi: WebApi.WebApi = new WebApi.WebApi('https://dev.azure.com', WebApi.getBasicHandler('user', 'password'));
+
+        // Act
+        const response = await myWebApi.rest.get<{ data: string, rateLimit?: RateLimit }>('https://dev.azure.com/no-ratelimit');
+        // Assert
+        assert(response.result?.data === 'hello', 'Response body should have data');
+        assert.equal(response.result?.rateLimit, undefined, 'rateLimit should not be present when no rate limit headers');
     });
 
     it('sets the user agent correctly when request settings are not specified', async () => {

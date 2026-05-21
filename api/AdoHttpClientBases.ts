@@ -34,6 +34,10 @@ export class AdoRestClient extends rm.RestClient {
             const response = await super.processResponse(res, options);
             if (response && response.result && typeof response.result === 'object') {
                 extractRateLimitHeaders(headers, response.result);
+                // For collection responses (e.g., { count, value: [...] }), also attach to the array
+                if (Array.isArray((response.result as any).value)) {
+                    extractRateLimitHeaders(headers, (response.result as any).value);
+                }
             }
             return response as rm.IRestResponse<T>;
         } catch (err: any) {

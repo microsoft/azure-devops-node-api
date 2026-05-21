@@ -14,24 +14,34 @@ export function extractRateLimitHeaders(headers: any, target: any): void {
     }
 
     const rateLimit: VsoBaseInterfaces.RateLimit = {};
+    let hasRateLimitHeader = false;
 
     if (headers['x-ratelimit-resource']) {
         rateLimit.resource = headers['x-ratelimit-resource'];
+        hasRateLimitHeader = true;
     }
     if (headers['x-ratelimit-delay']) {
         rateLimit.delay = parseFloat(headers['x-ratelimit-delay']);
+        hasRateLimitHeader = true;
     }
     if (headers['x-ratelimit-limit']) {
         rateLimit.limit = parseInt(headers['x-ratelimit-limit'], 10);
+        hasRateLimitHeader = true;
     }
     if (headers['x-ratelimit-remaining']) {
         rateLimit.remaining = parseInt(headers['x-ratelimit-remaining'], 10);
+        hasRateLimitHeader = true;
     }
     if (headers['x-ratelimit-reset']) {
         rateLimit.reset = parseInt(headers['x-ratelimit-reset'], 10);
+        hasRateLimitHeader = true;
     }
     if (headers['retry-after']) {
         rateLimit.retryAfter = parseInt(headers['retry-after'], 10);
+        hasRateLimitHeader = true;
     }
-    target.rateLimit = rateLimit;
+
+    if (hasRateLimitHeader) {
+        target.rateLimit = rateLimit;
+    }
 }
