@@ -37,7 +37,7 @@ import basicm = require('./handlers/basiccreds');
 import bearm = require('./handlers/bearertoken');
 import ntlmm = require('./handlers/ntlm');
 import patm = require('./handlers/personalaccesstoken');
-
+import AdoHttpClientBases = require('./AdoHttpClientBases');
 import * as rm from 'typed-rest-client/RestClient';
 import vsom = require('./VsoClient');
 import lim = require("./interfaces/LocationsInterfaces");
@@ -172,7 +172,7 @@ export class WebApi {
                 userAgent = `${nodeApiName}/${nodeApiVersion} (${osName} ${osVersion})`;
             }
         }
-        this.rest = new rm.RestClient(userAgent, null, [this.authHandler], this.options);
+        this.rest = new AdoHttpClientBases.AdoRestClient(userAgent, null, [this.authHandler], this.options);
         this.vsoClient = new vsom.VsoClient(defaultUrl, this.rest);
     }
 
