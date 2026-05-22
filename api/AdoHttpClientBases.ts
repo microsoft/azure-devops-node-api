@@ -17,7 +17,6 @@ export class AdoHttpClient extends hm.HttpClient {
         const resHeaders = res?.message?.headers;
 
         extractRateLimitHeaders(resHeaders, res);
-        extractRateLimitHeaders(resHeaders, res?.message);
 
         return res;
     }
@@ -32,6 +31,8 @@ export class AdoRestClient extends rm.RestClient {
 
         try {
             const response = await super.processResponse(res, options);
+            // Always attach rateLimit to the response object itself
+            extractRateLimitHeaders(headers, response);
             if (response && response.result && typeof response.result === 'object') {
                 extractRateLimitHeaders(headers, response.result);
                 // For collection responses (e.g., { count, value: [...] }), also attach to the array
