@@ -2615,9 +2615,9 @@ export interface ScheduleTrigger extends BuildTrigger {
  */
 export interface SecureFileReference extends ResourceReference {
     /**
-     * The ID of the secure file.
+     * The name of the secure file
      */
-    id?: string;
+    name?: string;
 }
 
 /**
