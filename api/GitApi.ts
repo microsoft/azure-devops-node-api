@@ -117,7 +117,7 @@ export interface IGitApi extends basem.ClientApiBase {
     getPullRequestReviewers(repositoryId: string, pullRequestId: number, project?: string): Promise<GitInterfaces.IdentityRefWithVote[]>;
     updatePullRequestReviewer(reviewer: GitInterfaces.IdentityRefWithVote, repositoryId: string, pullRequestId: number, reviewerId: string, project?: string): Promise<GitInterfaces.IdentityRefWithVote>;
     updatePullRequestReviewers(patchVotes: GitInterfaces.IdentityRefWithVote[], repositoryId: string, pullRequestId: number, project?: string): Promise<void>;
-    getPullRequestById(pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequest>;
+    getPullRequestById(pullRequestId: number, project?: string): Promise<GitInterfaces.GitPullRequest | null>;
     getPullRequestsByProject(project: string, searchCriteria: GitInterfaces.GitPullRequestSearchCriteria, maxCommentLength?: number, skip?: number, top?: number): Promise<GitInterfaces.GitPullRequest[]>;
     createPullRequest(gitPullRequestToCreate: GitInterfaces.GitPullRequest, repositoryId: string, project?: string, supportsIterations?: boolean): Promise<GitInterfaces.GitPullRequest>;
     getPullRequest(repositoryId: string, pullRequestId: number, project?: string, maxCommentLength?: number, skip?: number, top?: number, includeCommits?: boolean, includeWorkItemRefs?: boolean): Promise<GitInterfaces.GitPullRequest>;
@@ -5425,7 +5425,7 @@ export class GitApi extends basem.ClientApiBase implements IGitApi {
     public async getPullRequestById(
         pullRequestId: number,
         project?: string
-        ): Promise<GitInterfaces.GitPullRequest> {
+        ): Promise<GitInterfaces.GitPullRequest | null> {
 
         return new Promise<GitInterfaces.GitPullRequest>(async (resolve, reject) => {
             let routeValues: any = {
