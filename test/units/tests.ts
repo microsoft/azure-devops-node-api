@@ -467,6 +467,116 @@ describe('WebApi Units', function () {
         assert.equal(myWebApi.isNoProxyHost('https://my-tfs-instance.host/myproject'), true);
         assert.equal(myWebApi.isNoProxyHost('https://my-other-tfs-instance.host/myproject'), false);
     });
+
+    describe('getServiceEndpointApi', function () {
+        const baseUrl: string = 'https://dev.azure.com/';
+        const serviceEndpointResourceAreaId: string = '1814ab31-2f4f-4a9f-8761-f4d77dc5a5d7';
+        const resourceAreasLocationId: string = 'e81700f7-3be2-46de-8624-2eb35882fcaa';
+
+        afterEach(() => {
+            nock.cleanAll();
+        });
+
+        // Mocks the Location-area OPTIONS discovery call so the resourceAreas GET routes to `_apis/resourceAreas`.
+        function mockLocationOptions(server: string): void {
+            nock(server + '_apis/Location')
+                .options('')
+                .reply(200, {
+                    value: [{
+                        id: resourceAreasLocationId,
+                        maxVersion: '7.2',
+                        releasedVersion: '7.2',
+                        routeTemplate: '_apis/resourceAreas',
+                        area: 'Location',
+                        resourceName: 'ResourceAreas',
+                        resourceVersion: '1'
+                    }]
+                });
+        }
+
+        it('returns a ServiceEndpointApi using the resolved resource area URL', async () => {
+            // Arrange
+            const resolvedUrl: string = 'https://serviceendpoint.dev.azure.com/';
+            mockLocationOptions(baseUrl);
+            nock(baseUrl)
+                .get('/_apis/resourceAreas')
+                .reply(200, {
+                    value: [{
+                        id: serviceEndpointResourceAreaId,
+                        name: 'serviceendpoint',
+                        locationUrl: resolvedUrl
+                    }]
+                });
+            const myWebApi: WebApi.WebApi = new WebApi.WebApi(baseUrl, WebApi.getBasicHandler('user', 'password'));
+
+            // Act
+            const serviceEndpointApi = await myWebApi.getServiceEndpointApi();
+
+            // Assert
+            assert(serviceEndpointApi, 'ServiceEndpointApi should be created');
+            assert.equal(serviceEndpointApi.baseUrl, resolvedUrl, 'baseUrl should match the resolved resource area locationUrl');
+        });
+
+        it('falls back to the server URL when resource areas are empty (on-prem)', async () => {
+            // Arrange
+            const onPremUrl: string = 'https://my-tfs-instance.host/';
+            mockLocationOptions(onPremUrl);
+            nock(onPremUrl)
+                .get('/_apis/resourceAreas')
+                .reply(200, { count: 0, value: null });
+            const myWebApi: WebApi.WebApi = new WebApi.WebApi(onPremUrl, WebApi.getBasicHandler('user', 'password'));
+
+            // Act
+            const serviceEndpointApi = await myWebApi.getServiceEndpointApi();
+
+            // Assert
+            assert(serviceEndpointApi, 'ServiceEndpointApi should be created');
+            assert.equal(serviceEndpointApi.baseUrl, onPremUrl, 'baseUrl should fall back to the server URL on-prem');
+        });
+
+        it('uses provided handlers instead of the default auth handler', async () => {
+            // Arrange
+            const resolvedUrl: string = 'https://serviceendpoint.dev.azure.com/';
+            mockLocationOptions(baseUrl);
+            nock(baseUrl)
+                .get('/_apis/resourceAreas')
+                .reply(200, {
+                    value: [{
+                        id: serviceEndpointResourceAreaId,
+                        name: 'serviceendpoint',
+                        locationUrl: resolvedUrl
+                    }]
+                });
+            const customHandler = WebApi.getBearerHandler('custom-token');
+            const myWebApi: WebApi.WebApi = new WebApi.WebApi(baseUrl, WebApi.getBasicHandler('user', 'password'));
+
+            // Act
+            const serviceEndpointApi = await myWebApi.getServiceEndpointApi(undefined, [customHandler]);
+
+            // Assert
+            assert(serviceEndpointApi, 'ServiceEndpointApi should be created when custom handlers are provided');
+            assert.equal(serviceEndpointApi.baseUrl, resolvedUrl, 'baseUrl should still resolve from resource areas');
+        });
+
+        it('uses the provided serverUrl as the fallback baseUrl when resource areas are empty', async () => {
+            // Arrange
+            const defaultUrl: string = baseUrl;
+            const customUrl: string = 'https://custom-tfs.contoso.com/';
+            // Resource area discovery happens against the WebApi's default serverUrl (via its own LocationsApi),
+            // but the custom serverUrl is used as the fallback when no resource areas are returned.
+            mockLocationOptions(defaultUrl);
+            nock(defaultUrl)
+                .get('/_apis/resourceAreas')
+                .reply(200, { count: 0, value: null });
+            const myWebApi: WebApi.WebApi = new WebApi.WebApi(defaultUrl, WebApi.getBasicHandler('user', 'password'));
+
+            // Act
+            const serviceEndpointApi = await myWebApi.getServiceEndpointApi(customUrl);
+
+            // Assert
+            assert.equal(serviceEndpointApi.baseUrl, customUrl, 'baseUrl should use the custom serverUrl fallback, not the WebApi default');
+        });
+    });
 });
 
 describe('Auth Handlers Units', function () {
