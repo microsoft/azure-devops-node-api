@@ -49,8 +49,6 @@ extends:
         - task: NpmAuthenticate@0
           inputs:
             workingFile: .npmrc
-        - script: npm install -g npm@8
-          displayName: Upgrade npm    
         - script: npm install
           displayName: npm install
         - script: npm run build
