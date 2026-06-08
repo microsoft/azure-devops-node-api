@@ -20,6 +20,7 @@ import profilem = require('./ProfileApi');
 import projectm = require('./ProjectAnalysisApi');
 import releasem = require('./ReleaseApi');
 import securityrolesm = require('./SecurityRolesApi');
+import serviceendpointm = require('./ServiceEndpointApi');
 import taskagentm = require('./TaskAgentApi');
 import taskm = require('./TaskApi');
 import testm = require('./TestApi');
@@ -314,6 +315,12 @@ export class WebApi {
         return new securityrolesm.SecurityRolesApi(serverUrl, handlers, this.options, this.userAgent);
     }
 
+    public async getServiceEndpointApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<serviceendpointm.IServiceEndpointApi> {
+        serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "1814ab31-2f4f-4a9f-8761-f4d77dc5a5d7");
+        handlers = handlers || [this.authHandler];
+        return new serviceendpointm.ServiceEndpointApi(serverUrl, handlers, this.options, this.userAgent);
+    }
+
     public async getReleaseApi(serverUrl?: string, handlers?: VsoBaseInterfaces.IRequestHandler[]): Promise<releasem.IReleaseApi> {
         // TODO: Load RESOURCE_AREA_ID correctly.
         serverUrl = await this._getResourceAreaUrl(serverUrl || this.serverUrl, "efc2f575-36ef-48e9-b672-0c6fb4a48ac5");
@@ -477,16 +484,16 @@ export class WebApi {
 
             let keyFile = Buffer.from(lookupInfo[0], 'base64').toString('utf8');
             let keyAndIv = fs.readFileSync(keyFile, 'utf8');
-            
+
             let [keyBase64, ivBase64] = keyAndIv.split(':', 2);
-            
+
             if (!keyBase64 || !ivBase64) {
                 throw new Error(
                     'Invalid encryption key format. Expected "key:iv" format from azure-pipelines-task-lib 5.2.4+. ' +
                     'This version of azure-devops-node-api (15.2.0+) is not compatible with task-lib <5.2.4.'
                 );
             }
-            
+
             let encryptKey = Buffer.from(keyBase64, 'base64');
             let iv = Buffer.from(ivBase64, 'base64');
 
