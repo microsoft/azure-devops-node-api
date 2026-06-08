@@ -17,6 +17,8 @@ resources:
 extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    settings:
+      networkIsolationPolicy: Preferred,CFSClean,NodeTool
     sdl:
       sbom:
         enabled: false
@@ -40,15 +42,22 @@ extends:
         dependsOn: BuildAndTest
         condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['build.sourcebranchname'], 'master'))
         steps:
-        - task: NodeTool@0
+        - task: UseNode@1
           inputs:
-            versionSpec: '16.x'
+            version: '16.x'
           displayName: Install node
-        - script: npm install -g npm@8
-          displayName: Upgrade npm
         - task: NpmAuthenticate@0
           inputs:
             workingFile: .npmrc
+        - script: |
+            CURRENT_MAJOR=$(npm --version | cut -d. -f1)
+            if [ "$CURRENT_MAJOR" -lt 8 ]; then
+              echo "Required npm 8 not present (current: $CURRENT_MAJOR). Installing..."
+              npm install -g npm@8 --userconfig=$(Build.SourcesDirectory)/.npmrc
+            else
+              echo "Required npm 8 is already present (current: $CURRENT_MAJOR). Skipping."
+            fi
+          displayName: Upgrade npm (if needed)
         - script: npm install
           displayName: npm install
         - script: npm run build
@@ -84,9 +93,9 @@ extends:
         steps:
         - checkout: self
           clean: true
-        - task: NodeTool@0
+        - task: UseNode@1
           inputs:
-            versionSpec: 16.x
+            version: 16.x
           displayName: Install node
         - task: NpmAuthenticate@0
           inputs:
