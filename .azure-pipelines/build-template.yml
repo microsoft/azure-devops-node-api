@@ -33,13 +33,7 @@ jobs:
     inputs:
       workingFile: .npmrc
   - script: |
-      CURRENT_MAJOR=$(npm --version | cut -d. -f1)
-      if [ "$CURRENT_MAJOR" -lt "$(npmVersion)" ]; then
-        echo "Required npm $(npmVersion) not present (current: $CURRENT_MAJOR). Installing..."
-        npm install -g npm@$(npmVersion) --userconfig=$(Build.SourcesDirectory)/.npmrc
-      else
-        echo "Required npm $(npmVersion) is already present (current: $CURRENT_MAJOR). Skipping."
-      fi
+      npm install -g npm@$(npmVersion)
     displayName: Upgrade npm (if needed)
   - script: npm install
     displayName: npm install
