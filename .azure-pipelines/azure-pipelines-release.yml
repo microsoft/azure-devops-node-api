@@ -18,7 +18,8 @@ extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     settings:
-      networkIsolationPolicy: Preferred,NodeTool,Npm
+      networkIsolationPolicy: NodeTool,Npm
+      networkIsolationMode: Audit
     sdl:
       sbom:
         enabled: false
