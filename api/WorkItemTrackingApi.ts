@@ -150,7 +150,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountMyWorkResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountMyWorkResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.AccountMyWorkResult,
                                               false);
 
@@ -188,7 +188,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel2[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountRecentActivityWorkItemModel2[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.AccountRecentActivityWorkItemModel2,
                                               true);
 
@@ -226,7 +226,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AccountRecentMentionWorkItemModel[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.AccountRecentMentionWorkItemModel[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.AccountRecentMentionWorkItemModel,
                                               true);
 
@@ -264,7 +264,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkArtifactLink[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkArtifactLink[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -307,7 +307,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ArtifactUriQueryResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ArtifactUriQueryResult>(url, artifactUriQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -369,7 +369,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.AttachmentReference>;
                 res = await this.rest.uploadStream<WorkItemTrackingInterfaces.AttachmentReference>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -517,7 +517,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               true);
 
@@ -565,7 +565,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               true);
 
@@ -614,7 +614,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               false);
 
@@ -668,7 +668,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -722,7 +722,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               false);
 
@@ -771,7 +771,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemClassificationNode>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemClassificationNode>(url, postedNode, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemClassificationNode,
                                               false);
 
@@ -831,7 +831,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -877,7 +877,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.Comment>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.Comment>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -924,7 +924,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -981,7 +981,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.Comment>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.Comment>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -1044,7 +1044,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentList>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.CommentList>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentList,
                                               false);
 
@@ -1104,7 +1104,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentList>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.CommentList>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentList,
                                               false);
 
@@ -1153,7 +1153,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.Comment>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.Comment>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.Comment,
                                               false);
 
@@ -1203,7 +1203,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentReaction>;
                 res = await this.rest.replace<WorkItemTrackingInterfaces.CommentReaction>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentReaction,
                                               false);
 
@@ -1253,7 +1253,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentReaction>;
                 res = await this.rest.del<WorkItemTrackingInterfaces.CommentReaction>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentReaction,
                                               false);
 
@@ -1300,7 +1300,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentReaction[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.CommentReaction[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentReaction,
                                               true);
 
@@ -1348,7 +1348,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentVersion>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.CommentVersion>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentVersion,
                                               false);
 
@@ -1393,7 +1393,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.CommentVersion[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.CommentVersion[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.CommentVersion,
                                               true);
 
@@ -1436,7 +1436,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemField>(url, workItemField, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
                                               false);
 
@@ -1480,7 +1480,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1524,7 +1524,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
                                               false);
 
@@ -1572,7 +1572,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemField[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
                                               true);
 
@@ -1618,7 +1618,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemField>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemField>(url, payload, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemField,
                                               false);
 
@@ -1661,7 +1661,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProcessMigrationResultModel>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProcessMigrationResultModel>(url, newProcess, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1714,7 +1714,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, postedQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
                                               false);
 
@@ -1758,7 +1758,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1812,7 +1812,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
                                               true);
 
@@ -1872,7 +1872,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
                                               false);
 
@@ -1932,7 +1932,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.QueryHierarchyItemsResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItemsResult,
                                               false);
 
@@ -1985,7 +1985,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.QueryHierarchyItem>(url, queryUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
                                               false);
 
@@ -2028,7 +2028,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.QueryHierarchyItem[]>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.QueryHierarchyItem[]>(url, queryGetRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.QueryHierarchyItem,
                                               true);
 
@@ -2072,7 +2072,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2116,7 +2116,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2167,7 +2167,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2208,7 +2208,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemDeleteShallowReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2254,7 +2254,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemDelete>(url, payload, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2308,7 +2308,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2365,7 +2365,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2408,7 +2408,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, body, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2450,7 +2450,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2492,7 +2492,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTagDefinition>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTagDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2531,7 +2531,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTagDefinition[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTagDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2575,7 +2575,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTagDefinition>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItemTagDefinition>(url, tagData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2626,7 +2626,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemTemplate>(url, template, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2682,7 +2682,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplateReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2734,7 +2734,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2786,7 +2786,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTemplate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2840,7 +2840,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTemplate>;
                 res = await this.rest.replace<WorkItemTrackingInterfaces.WorkItemTemplate>(url, templateContent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2887,7 +2887,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
                                               false);
 
@@ -2941,7 +2941,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemUpdate[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemUpdate[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemUpdate,
                                               true);
 
@@ -3002,7 +3002,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, wiql, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
                                               false);
 
@@ -3064,7 +3064,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemQueryResult>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemQueryResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingInterfaces.TypeInfo.WorkItemQueryResult,
                                               false);
 
@@ -3115,7 +3115,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemIcon>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemIcon>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3153,7 +3153,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemIcon[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemIcon[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3296,7 +3296,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemLinksBatch>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3337,7 +3337,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3375,7 +3375,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemRelationType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemRelationType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3453,7 +3453,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3509,7 +3509,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, filter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3558,7 +3558,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.ReportingWorkItemRevisionsBatch>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3625,7 +3625,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3682,7 +3682,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3733,7 +3733,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemDelete>;
                 res = await this.rest.del<WorkItemTrackingInterfaces.WorkItemDelete>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3790,7 +3790,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3853,7 +3853,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3920,7 +3920,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem>;
                 res = await this.rest.update<WorkItemTrackingInterfaces.WorkItem>(url, document, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3963,7 +3963,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItem[]>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.WorkItem[]>(url, workItemGetRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4003,7 +4003,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProjectWorkItemStateColors[]>(url, projectNames, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4054,7 +4054,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemNextStateOnTransition[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemNextStateOnTransition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4095,7 +4095,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4139,7 +4139,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeCategory>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeCategory>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4179,7 +4179,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>;
                 res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColor[] }[]>(url, projectNames, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4219,7 +4219,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>;
                 res = await this.rest.create<{ key: string; value: WorkItemTrackingInterfaces.WorkItemTypeColorAndIcon[] }[]>(url, projectNames, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4263,7 +4263,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4304,7 +4304,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemType[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4355,7 +4355,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4409,7 +4409,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeFieldWithReferences>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4453,7 +4453,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemStateColor[]>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemStateColor[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4504,7 +4504,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.WorkItemTypeTemplate>;
                 res = await this.rest.get<WorkItemTrackingInterfaces.WorkItemTypeTemplate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4547,7 +4547,7 @@ export class WorkItemTrackingApi extends basem.ClientApiBase implements IWorkIte
                 let res: restm.IRestResponse<WorkItemTrackingInterfaces.ProvisioningResult>;
                 res = await this.rest.create<WorkItemTrackingInterfaces.ProvisioningResult>(url, updateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

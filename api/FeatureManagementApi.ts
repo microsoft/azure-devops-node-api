@@ -61,7 +61,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -106,7 +106,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeature[]>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeature[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -150,7 +150,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
                                               false);
 
@@ -206,7 +206,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
                                               false);
 
@@ -256,7 +256,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.get<FeatureManagementInterfaces.ContributedFeatureState>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
                                               false);
 
@@ -318,7 +318,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureState>;
                 res = await this.rest.update<FeatureManagementInterfaces.ContributedFeatureState>(url, feature, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureState,
                                               false);
 
@@ -358,7 +358,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
                                               false);
 
@@ -401,7 +401,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
                                               false);
 
@@ -450,7 +450,7 @@ export class FeatureManagementApi extends basem.ClientApiBase implements IFeatur
                 let res: restm.IRestResponse<FeatureManagementInterfaces.ContributedFeatureStateQuery>;
                 res = await this.rest.create<FeatureManagementInterfaces.ContributedFeatureStateQuery>(url, query, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FeatureManagementInterfaces.TypeInfo.ContributedFeatureStateQuery,
                                               false);
 

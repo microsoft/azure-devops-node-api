@@ -208,7 +208,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloud>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentCloud>(url, agentCloud, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -247,7 +247,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloud>;
                 res = await this.rest.del<TaskAgentInterfaces.TaskAgentCloud>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -286,7 +286,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloud>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentCloud>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -322,7 +322,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloud[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentCloud[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -363,7 +363,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloud>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentCloud>(url, updatedCloud, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -401,7 +401,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloudType[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentCloudType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentCloudType,
                                               true);
 
@@ -456,7 +456,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -500,7 +500,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentJobRequest>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               false);
 
@@ -543,7 +543,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -587,7 +587,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -647,7 +647,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgent>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -710,7 +710,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgent[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               true);
 
@@ -756,7 +756,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -802,7 +802,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgent>(url, agent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -840,7 +840,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.AzureManagementGroupQueryResult>;
                 res = await this.rest.get<TaskAgentInterfaces.AzureManagementGroupQueryResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -878,7 +878,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.AzureSubscriptionQueryResult>;
                 res = await this.rest.get<TaskAgentInterfaces.AzureSubscriptionQueryResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -922,7 +922,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -965,7 +965,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentGroup>(url, deploymentGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
                                               false);
 
@@ -1009,7 +1009,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1063,7 +1063,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
                                               false);
 
@@ -1126,7 +1126,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroup>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
                                               true);
 
@@ -1172,7 +1172,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentGroup>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentGroup>(url, deploymentGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroup,
                                               false);
 
@@ -1226,7 +1226,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentGroupMetrics>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentGroupMetrics,
                                               true);
 
@@ -1281,7 +1281,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -1333,7 +1333,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -1375,7 +1375,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1416,7 +1416,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1467,7 +1467,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentPoolSummary[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentPoolSummary[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentPoolSummary,
                                               true);
 
@@ -1524,7 +1524,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -1584,7 +1584,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -1628,7 +1628,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1668,7 +1668,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, endpoint, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1722,7 +1722,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentDeploymentExecutionRecord>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentDeploymentExecutionRecord,
                                               true);
 
@@ -1765,7 +1765,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.EnvironmentInstance>;
                 res = await this.rest.create<TaskAgentInterfaces.EnvironmentInstance>(url, environmentCreateParameter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentInstance,
                                               false);
 
@@ -1809,7 +1809,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1860,7 +1860,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.EnvironmentInstance>;
                 res = await this.rest.get<TaskAgentInterfaces.EnvironmentInstance>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentInstance,
                                               false);
 
@@ -1914,7 +1914,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.EnvironmentInstance>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentInstance,
                                               true);
 
@@ -1960,7 +1960,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.EnvironmentInstance>;
                 res = await this.rest.update<TaskAgentInterfaces.EnvironmentInstance>(url, environmentUpdateParameter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.EnvironmentInstance,
                                               false);
 
@@ -2009,7 +2009,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskHubLicenseDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2050,7 +2050,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubLicenseDetails>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskHubLicenseDetails>(url, taskHubLicenseDetails, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2088,7 +2088,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.InputValidationRequest>;
                 res = await this.rest.create<TaskAgentInterfaces.InputValidationRequest>(url, inputValidationRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2146,7 +2146,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2195,7 +2195,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               false);
 
@@ -2247,7 +2247,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.TaskAgentJobRequest>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -2299,7 +2299,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -2348,7 +2348,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -2400,7 +2400,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJobRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               true);
 
@@ -2441,7 +2441,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentJobRequest>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               false);
 
@@ -2498,7 +2498,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJobRequest>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentJobRequest>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJobRequest,
                                               false);
 
@@ -2542,7 +2542,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.KubernetesResource>;
                 res = await this.rest.create<TaskAgentInterfaces.KubernetesResource>(url, createParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.KubernetesResource,
                                               false);
 
@@ -2587,7 +2587,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2632,7 +2632,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.KubernetesResource>;
                 res = await this.rest.get<TaskAgentInterfaces.KubernetesResource>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.KubernetesResource,
                                               false);
 
@@ -2674,7 +2674,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2715,7 +2715,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentMachineGroup>(url, machineGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
                                               false);
 
@@ -2757,7 +2757,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2806,7 +2806,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachineGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
                                               false);
 
@@ -2855,7 +2855,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachineGroup[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
                                               true);
 
@@ -2899,7 +2899,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachineGroup>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachineGroup>(url, machineGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachineGroup,
                                               false);
 
@@ -2948,7 +2948,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -2992,7 +2992,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, deploymentMachines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -3036,7 +3036,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -3081,7 +3081,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3133,7 +3133,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -3188,7 +3188,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -3235,7 +3235,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.replace<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -3282,7 +3282,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -3326,7 +3326,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, machines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -3367,7 +3367,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, definition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
                                               false);
 
@@ -3409,7 +3409,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3451,7 +3451,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
                                               false);
 
@@ -3490,7 +3490,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
                                               true);
 
@@ -3534,7 +3534,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgentPoolMaintenanceDefinition>(url, definition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceDefinition,
                                               false);
 
@@ -3576,7 +3576,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3618,7 +3618,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
                                               false);
 
@@ -3698,7 +3698,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
                                               true);
 
@@ -3739,7 +3739,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, job, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
                                               false);
 
@@ -3783,7 +3783,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentPoolMaintenanceJob>(url, job, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPoolMaintenanceJob,
                                               false);
 
@@ -3835,7 +3835,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3887,7 +3887,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentMessage>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentMessage>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3936,7 +3936,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3975,7 +3975,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4026,7 +4026,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, message, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4071,7 +4071,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata>;
                 res = await this.rest.get<TaskAgentInterfaces.PackageMetadata>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.PackageMetadata,
                                               false);
 
@@ -4120,7 +4120,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.PackageMetadata[]>;
                 res = await this.rest.get<TaskAgentInterfaces.PackageMetadata[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.PackageMetadata,
                                               true);
 
@@ -4197,7 +4197,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, agentPoolMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4241,7 +4241,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.get<boolean>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4281,7 +4281,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentPool>(url, pool, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPool,
                                               false);
 
@@ -4322,7 +4322,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4373,7 +4373,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPool,
                                               false);
 
@@ -4427,7 +4427,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPool,
                                               true);
 
@@ -4478,7 +4478,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentPool[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPool,
                                               true);
 
@@ -4521,7 +4521,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentPool>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskAgentPool>(url, pool, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentPool,
                                               false);
 
@@ -4571,7 +4571,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentQueue>(url, queue, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               false);
 
@@ -4612,7 +4612,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4656,7 +4656,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4707,7 +4707,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               false);
 
@@ -4758,7 +4758,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               true);
 
@@ -4812,7 +4812,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               true);
 
@@ -4866,7 +4866,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               true);
 
@@ -4920,7 +4920,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentQueue[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentQueue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentQueue,
                                               true);
 
@@ -4959,7 +4959,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentCloudRequest[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentCloudRequest[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentCloudRequest,
                                               true);
 
@@ -4995,7 +4995,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.ResourceLimit[]>;
                 res = await this.rest.get<TaskAgentInterfaces.ResourceLimit[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5044,7 +5044,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.ResourceUsage>;
                 res = await this.rest.get<TaskAgentInterfaces.ResourceUsage>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.ResourceUsage,
                                               false);
 
@@ -5086,7 +5086,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroupRevision[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskGroupRevision[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroupRevision,
                                               true);
 
@@ -5130,7 +5130,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5233,7 +5233,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               false);
 
@@ -5287,7 +5287,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               true);
 
@@ -5344,7 +5344,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               true);
 
@@ -5401,7 +5401,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.get<TaskAgentInterfaces.SecureFile[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               true);
 
@@ -5451,7 +5451,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.create<TaskAgentInterfaces.SecureFile[]>(url, condition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               true);
 
@@ -5497,7 +5497,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.update<TaskAgentInterfaces.SecureFile>(url, secureFile, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               false);
 
@@ -5540,7 +5540,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile[]>;
                 res = await this.rest.update<TaskAgentInterfaces.SecureFile[]>(url, secureFiles, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               true);
 
@@ -5602,7 +5602,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.SecureFile>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.SecureFile>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.SecureFile,
                                               false);
 
@@ -5642,7 +5642,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentSession>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskAgentSession>(url, session, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentSession,
                                               false);
 
@@ -5684,7 +5684,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5730,7 +5730,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.create<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -5777,7 +5777,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5831,7 +5831,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.get<TaskAgentInterfaces.DeploymentMachine>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -5909,7 +5909,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.DeploymentMachine>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -5958,7 +5958,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.replace<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -6007,7 +6007,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine>(url, machine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               false);
 
@@ -6053,7 +6053,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.DeploymentMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.DeploymentMachine[]>(url, machines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.DeploymentMachine,
                                               true);
 
@@ -6096,7 +6096,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskGroup>(url, taskGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               false);
 
@@ -6147,7 +6147,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6204,7 +6204,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               false);
 
@@ -6314,7 +6314,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskGroup[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               true);
 
@@ -6365,7 +6365,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskGroup[]>(url, taskGroupMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               true);
 
@@ -6406,7 +6406,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskGroup[]>(url, taskGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               true);
 
@@ -6452,7 +6452,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskGroup>(url, taskGroup, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               false);
 
@@ -6503,7 +6503,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskGroup[]>;
                 res = await this.rest.update<TaskAgentInterfaces.TaskGroup[]>(url, taskGroupUpdateProperties, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskGroup,
                                               true);
 
@@ -6542,7 +6542,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6644,7 +6644,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskDefinition,
                                               false);
 
@@ -6696,7 +6696,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskDefinition[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskDefinition,
                                               true);
 
@@ -6748,7 +6748,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -6792,7 +6792,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgent>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAgent>(url, userCapabilities, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgent,
                                               false);
 
@@ -6832,7 +6832,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.VariableGroup>(url, variableGroupParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VariableGroup,
                                               false);
 
@@ -6883,7 +6883,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6933,7 +6933,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, variableGroupProjectReferences, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6976,7 +6976,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.replace<TaskAgentInterfaces.VariableGroup>(url, variableGroupParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VariableGroup,
                                               false);
 
@@ -7020,7 +7020,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VariableGroup,
                                               false);
 
@@ -7080,7 +7080,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VariableGroup,
                                               true);
 
@@ -7134,7 +7134,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VariableGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.VariableGroup[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VariableGroup,
                                               true);
 
@@ -7178,7 +7178,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VirtualMachineGroup>;
                 res = await this.rest.create<TaskAgentInterfaces.VirtualMachineGroup>(url, createParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachineGroup,
                                               false);
 
@@ -7223,7 +7223,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -7268,7 +7268,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VirtualMachineGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.VirtualMachineGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachineGroup,
                                               false);
 
@@ -7312,7 +7312,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VirtualMachineGroup>;
                 res = await this.rest.update<TaskAgentInterfaces.VirtualMachineGroup>(url, resource, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachineGroup,
                                               false);
 
@@ -7376,7 +7376,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TaskAgentInterfaces.VirtualMachine>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachine,
                                               true);
 
@@ -7423,7 +7423,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<TaskAgentInterfaces.VirtualMachine[]>;
                 res = await this.rest.update<TaskAgentInterfaces.VirtualMachine[]>(url, machines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.VirtualMachine,
                                               true);
 
@@ -7484,7 +7484,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.create<string>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -7520,7 +7520,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -7565,7 +7565,7 @@ export class TaskAgentApiBase extends basem.ClientApiBase implements ITaskAgentA
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

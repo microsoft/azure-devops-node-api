@@ -157,7 +157,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
                 res = await this.rest.create<BuildInterfaces.BuildArtifact>(url, artifact, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -211,7 +211,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact>;
                 res = await this.rest.get<BuildInterfaces.BuildArtifact>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -301,7 +301,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildArtifact[]>;
                 res = await this.rest.get<BuildInterfaces.BuildArtifact[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -406,7 +406,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Attachment[]>;
                 res = await this.rest.get<BuildInterfaces.Attachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -495,7 +495,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
                 res = await this.rest.update<BuildInterfaces.DefinitionResourceReference[]>(url, resources, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -544,7 +544,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
                 res = await this.rest.get<BuildInterfaces.DefinitionResourceReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -595,7 +595,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -652,7 +652,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -706,7 +706,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildBadge>;
                 res = await this.rest.get<BuildInterfaces.BuildBadge>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -760,7 +760,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -804,7 +804,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
                 res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
 
@@ -848,7 +848,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -899,7 +899,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.get<BuildInterfaces.Build>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               false);
 
@@ -1004,7 +1004,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<BuildInterfaces.Build>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<BuildInterfaces.Build>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               true);
 
@@ -1063,7 +1063,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.create<BuildInterfaces.Build>(url, build, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               false);
 
@@ -1116,7 +1116,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.update<BuildInterfaces.Build>(url, build, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               false);
 
@@ -1159,7 +1159,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Build[]>;
                 res = await this.rest.update<BuildInterfaces.Build[]>(url, builds, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               true);
 
@@ -1216,7 +1216,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<BuildInterfaces.Change>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<BuildInterfaces.Change>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Change,
                                               true);
 
@@ -1270,7 +1270,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Change[]>;
                 res = await this.rest.get<BuildInterfaces.Change[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Change,
                                               true);
 
@@ -1311,7 +1311,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildController>;
                 res = await this.rest.get<BuildInterfaces.BuildController>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildController,
                                               false);
 
@@ -1356,7 +1356,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildController[]>;
                 res = await this.rest.get<BuildInterfaces.BuildController[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildController,
                                               true);
 
@@ -1409,7 +1409,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.create<BuildInterfaces.BuildDefinition>(url, definition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinition,
                                               false);
 
@@ -1453,7 +1453,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1513,7 +1513,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinition,
                                               false);
 
@@ -1606,7 +1606,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<BuildInterfaces.BuildDefinitionReference>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<BuildInterfaces.BuildDefinitionReference>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinitionReference,
                                               true);
 
@@ -1660,7 +1660,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.update<BuildInterfaces.BuildDefinition>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinition,
                                               false);
 
@@ -1716,7 +1716,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinition>;
                 res = await this.rest.replace<BuildInterfaces.BuildDefinition>(url, definition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinition,
                                               false);
 
@@ -1821,7 +1821,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
                 res = await this.rest.replace<BuildInterfaces.Folder>(url, folder, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Folder,
                                               false);
 
@@ -1872,7 +1872,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1923,7 +1923,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Folder[]>;
                 res = await this.rest.get<BuildInterfaces.Folder[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Folder,
                                               true);
 
@@ -1976,7 +1976,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Folder>;
                 res = await this.rest.create<BuildInterfaces.Folder>(url, folder, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Folder,
                                               false);
 
@@ -2017,7 +2017,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.PipelineGeneralSettings>;
                 res = await this.rest.get<BuildInterfaces.PipelineGeneralSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2060,7 +2060,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.PipelineGeneralSettings>;
                 res = await this.rest.update<BuildInterfaces.PipelineGeneralSettings>(url, newSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2105,7 +2105,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildRetentionHistory>;
                 res = await this.rest.get<BuildInterfaces.BuildRetentionHistory>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildRetentionHistory,
                                               false);
 
@@ -2156,7 +2156,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Build>;
                 res = await this.rest.get<BuildInterfaces.Build>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Build,
                                               false);
 
@@ -2199,7 +2199,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
                 res = await this.rest.create<BuildInterfaces.RetentionLease[]>(url, newLeases, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
 
@@ -2250,7 +2250,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2294,7 +2294,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease>;
                 res = await this.rest.get<BuildInterfaces.RetentionLease>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               false);
 
@@ -2345,7 +2345,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
                 res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
 
@@ -2399,7 +2399,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
                 res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
 
@@ -2456,7 +2456,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease[]>;
                 res = await this.rest.get<BuildInterfaces.RetentionLease[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               true);
 
@@ -2502,7 +2502,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RetentionLease>;
                 res = await this.rest.update<BuildInterfaces.RetentionLease>(url, leaseUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RetentionLease,
                                               false);
 
@@ -2608,7 +2608,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2652,7 +2652,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildLog[]>;
                 res = await this.rest.get<BuildInterfaces.BuildLog[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildLog,
                                               true);
 
@@ -2788,7 +2788,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
                 res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildMetric,
                                               true);
 
@@ -2839,7 +2839,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildMetric[]>;
                 res = await this.rest.get<BuildInterfaces.BuildMetric[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildMetric,
                                               true);
 
@@ -2880,7 +2880,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildOptionDefinition[]>;
                 res = await this.rest.get<BuildInterfaces.BuildOptionDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildOptionDefinition,
                                               true);
 
@@ -2940,7 +2940,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.SourceRepositoryItem[]>;
                 res = await this.rest.get<BuildInterfaces.SourceRepositoryItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2991,7 +2991,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3042,7 +3042,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.update<any>(url, document, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3093,7 +3093,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3144,7 +3144,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.update<any>(url, document, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3201,7 +3201,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.PullRequest>;
                 res = await this.rest.get<BuildInterfaces.PullRequest>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3252,7 +3252,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildReportMetadata>;
                 res = await this.rest.get<BuildInterfaces.BuildReportMetadata>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3358,7 +3358,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.SourceRepositories>;
                 res = await this.rest.get<BuildInterfaces.SourceRepositories>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3402,7 +3402,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
                 res = await this.rest.update<BuildInterfaces.DefinitionResourceReference[]>(url, resources, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3444,7 +3444,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.DefinitionResourceReference[]>;
                 res = await this.rest.get<BuildInterfaces.DefinitionResourceReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3482,7 +3482,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildResourceUsage>;
                 res = await this.rest.get<BuildInterfaces.BuildResourceUsage>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3523,7 +3523,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.ProjectRetentionSetting>;
                 res = await this.rest.get<BuildInterfaces.ProjectRetentionSetting>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3566,7 +3566,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.ProjectRetentionSetting>;
                 res = await this.rest.update<BuildInterfaces.ProjectRetentionSetting>(url, updateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3610,7 +3610,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionRevision[]>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionRevision[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinitionRevision,
                                               true);
 
@@ -3651,7 +3651,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
                 res = await this.rest.get<BuildInterfaces.BuildSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3694,7 +3694,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildSettings>;
                 res = await this.rest.update<BuildInterfaces.BuildSettings>(url, settings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3735,7 +3735,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.SourceProviderAttributes[]>;
                 res = await this.rest.get<BuildInterfaces.SourceProviderAttributes[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.SourceProviderAttributes,
                                               true);
 
@@ -3784,7 +3784,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3847,7 +3847,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3894,7 +3894,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.replace<string[]>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3940,7 +3940,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3987,7 +3987,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4031,7 +4031,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4077,7 +4077,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4124,7 +4124,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.replace<string[]>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4170,7 +4170,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4217,7 +4217,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4268,7 +4268,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4314,7 +4314,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4358,7 +4358,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4399,7 +4399,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4443,7 +4443,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4487,7 +4487,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
                                               false);
 
@@ -4528,7 +4528,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate[]>;
                 res = await this.rest.get<BuildInterfaces.BuildDefinitionTemplate[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
                                               true);
 
@@ -4574,7 +4574,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.BuildDefinitionTemplate>;
                 res = await this.rest.replace<BuildInterfaces.BuildDefinitionTemplate>(url, template, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.BuildDefinitionTemplate,
                                               false);
 
@@ -4631,7 +4631,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.Timeline>;
                 res = await this.rest.get<BuildInterfaces.Timeline>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.Timeline,
                                               false);
 
@@ -4687,7 +4687,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, triggerTypes, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4741,7 +4741,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.RepositoryWebhook[]>;
                 res = await this.rest.get<BuildInterfaces.RepositoryWebhook[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               BuildInterfaces.TypeInfo.RepositoryWebhook,
                                               true);
 
@@ -4792,7 +4792,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4845,7 +4845,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.create<VSSInterfaces.ResourceRef[]>(url, commitIds, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4905,7 +4905,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<VSSInterfaces.ResourceRef[]>;
                 res = await this.rest.get<VSSInterfaces.ResourceRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4965,7 +4965,7 @@ export class BuildApi extends basem.ClientApiBase implements IBuildApi {
                 let res: restm.IRestResponse<BuildInterfaces.YamlBuild>;
                 res = await this.rest.get<BuildInterfaces.YamlBuild>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

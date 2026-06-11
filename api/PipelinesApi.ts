@@ -81,7 +81,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Artifact>;
                 res = await this.rest.get<PipelinesInterfaces.Artifact>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Artifact,
                                               false);
 
@@ -138,7 +138,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Log>;
                 res = await this.rest.get<PipelinesInterfaces.Log>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Log,
                                               false);
 
@@ -192,7 +192,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.LogCollection>;
                 res = await this.rest.get<PipelinesInterfaces.LogCollection>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.LogCollection,
                                               false);
 
@@ -235,7 +235,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Pipeline>;
                 res = await this.rest.create<PipelinesInterfaces.Pipeline>(url, inputParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Pipeline,
                                               false);
 
@@ -286,7 +286,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Pipeline>;
                 res = await this.rest.get<PipelinesInterfaces.Pipeline>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Pipeline,
                                               false);
 
@@ -340,7 +340,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Pipeline[]>;
                 res = await this.rest.get<PipelinesInterfaces.Pipeline[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Pipeline,
                                               true);
 
@@ -393,7 +393,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.PreviewRun>;
                 res = await this.rest.create<PipelinesInterfaces.PreviewRun>(url, runParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -440,7 +440,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Run>;
                 res = await this.rest.get<PipelinesInterfaces.Run>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Run,
                                               false);
 
@@ -484,7 +484,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Run[]>;
                 res = await this.rest.get<PipelinesInterfaces.Run[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Run,
                                               true);
 
@@ -537,7 +537,7 @@ export class PipelinesApi extends basem.ClientApiBase implements IPipelinesApi {
                 let res: restm.IRestResponse<PipelinesInterfaces.Run>;
                 res = await this.rest.create<PipelinesInterfaces.Run>(url, runParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PipelinesInterfaces.TypeInfo.Run,
                                               false);
 
