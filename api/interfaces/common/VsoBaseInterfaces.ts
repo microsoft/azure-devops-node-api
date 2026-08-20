@@ -7,7 +7,6 @@
 
 import Serialization = require('../../Serialization');
 import http = require("http");
-import url = require("url");
 
 /**
  * Information about the location of a REST API resource
@@ -69,7 +68,7 @@ export interface IHttpClient {
 
 export interface IRequestInfo {
     options: http.RequestOptions;
-    parsedUrl: url.Url;
+    parsedUrl: URL;
     httpModule: any;
 }
 
