@@ -95,7 +95,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranch>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcBranch,
                                               false);
 
@@ -152,7 +152,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranch[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranch[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcBranch,
                                               true);
 
@@ -209,7 +209,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcBranchRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcBranchRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcBranchRef,
                                               true);
 
@@ -260,7 +260,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TfvcInterfaces.TfvcChange>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TfvcInterfaces.TfvcChange>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChange,
                                               true);
 
@@ -303,7 +303,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef>;
                 res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef>(url, changeset, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChangesetRef,
                                               false);
 
@@ -378,7 +378,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangeset>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChangeset>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChangeset,
                                               false);
 
@@ -438,7 +438,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChangesetRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChangesetRef,
                                               true);
 
@@ -478,7 +478,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChangesetRef[]>;
                 res = await this.rest.create<TfvcInterfaces.TfvcChangesetRef[]>(url, changesetsRequestData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChangesetRef,
                                               true);
 
@@ -519,7 +519,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
                 res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -562,7 +562,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[][]>;
                 res = await this.rest.create<TfvcInterfaces.TfvcItem[][]>(url, itemRequestData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcItem,
                                               true);
 
@@ -666,7 +666,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcItem,
                                               false);
 
@@ -784,7 +784,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcItem,
                                               true);
 
@@ -957,7 +957,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcItem[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcItem,
                                               true);
 
@@ -1011,7 +1011,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcLabel>;
                 res = await this.rest.get<TfvcInterfaces.TfvcLabel>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcLabel,
                                               false);
 
@@ -1068,7 +1068,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcLabelRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcLabelRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcLabelRef,
                                               true);
 
@@ -1122,7 +1122,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcChange[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcChange[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcChange,
                                               true);
 
@@ -1173,7 +1173,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcShelveset>;
                 res = await this.rest.get<TfvcInterfaces.TfvcShelveset>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcShelveset,
                                               false);
 
@@ -1224,7 +1224,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcShelvesetRef[]>;
                 res = await this.rest.get<TfvcInterfaces.TfvcShelvesetRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TfvcInterfaces.TypeInfo.TfvcShelvesetRef,
                                               true);
 
@@ -1272,7 +1272,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.AssociatedWorkItem[]>;
                 res = await this.rest.get<TfvcInterfaces.AssociatedWorkItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1320,7 +1320,7 @@ export class TfvcApi extends basem.ClientApiBase implements ITfvcApi {
                 let res: restm.IRestResponse<TfvcInterfaces.TfvcStatistics>;
                 res = await this.rest.get<TfvcInterfaces.TfvcStatistics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

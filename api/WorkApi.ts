@@ -124,7 +124,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, ruleRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -173,7 +173,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BacklogConfiguration>;
                 res = await this.rest.get<WorkInterfaces.BacklogConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.BacklogConfiguration,
                                               false);
 
@@ -225,7 +225,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BacklogLevelWorkItems>;
                 res = await this.rest.get<WorkInterfaces.BacklogLevelWorkItems>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -277,7 +277,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BacklogLevelConfiguration>;
                 res = await this.rest.get<WorkInterfaces.BacklogLevelConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.BacklogLevelConfiguration,
                                               false);
 
@@ -326,7 +326,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BacklogLevelConfiguration[]>;
                 res = await this.rest.get<WorkInterfaces.BacklogLevelConfiguration[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.BacklogLevelConfiguration,
                                               true);
 
@@ -388,7 +388,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardBadge>;
                 res = await this.rest.get<WorkInterfaces.BoardBadge>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -450,7 +450,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -491,7 +491,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardSuggestedValue[]>;
                 res = await this.rest.get<WorkInterfaces.BoardSuggestedValue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -556,7 +556,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.ParentChildWIMap[]>;
                 res = await this.rest.get<WorkInterfaces.ParentChildWIMap[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -597,7 +597,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardSuggestedValue[]>;
                 res = await this.rest.get<WorkInterfaces.BoardSuggestedValue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -649,7 +649,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.Board>;
                 res = await this.rest.get<WorkInterfaces.Board>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.Board,
                                               false);
 
@@ -698,7 +698,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardReference[]>;
                 res = await this.rest.get<WorkInterfaces.BoardReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -752,7 +752,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<{ [key: string] : string; }>;
                 res = await this.rest.replace<{ [key: string] : string; }>(url, options, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -804,7 +804,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardUserSettings>;
                 res = await this.rest.get<WorkInterfaces.BoardUserSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -858,7 +858,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardUserSettings>;
                 res = await this.rest.update<WorkInterfaces.BoardUserSettings>(url, boardUserSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -910,7 +910,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamCapacity>;
                 res = await this.rest.get<WorkInterfaces.TeamCapacity>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamCapacity,
                                               false);
 
@@ -965,7 +965,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacityIdentityRef>;
                 res = await this.rest.get<WorkInterfaces.TeamMemberCapacityIdentityRef>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamMemberCapacityIdentityRef,
                                               false);
 
@@ -1019,7 +1019,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacityIdentityRef[]>;
                 res = await this.rest.replace<WorkInterfaces.TeamMemberCapacityIdentityRef[]>(url, capacities, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamMemberCapacityIdentityRef,
                                               true);
 
@@ -1076,7 +1076,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamMemberCapacityIdentityRef>;
                 res = await this.rest.update<WorkInterfaces.TeamMemberCapacityIdentityRef>(url, patch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamMemberCapacityIdentityRef,
                                               false);
 
@@ -1128,7 +1128,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardRuleSettings>;
                 res = await this.rest.get<WorkInterfaces.BoardCardRuleSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1182,7 +1182,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardRuleSettings>;
                 res = await this.rest.update<WorkInterfaces.BoardCardRuleSettings>(url, boardCardRuleSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1233,7 +1233,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, boardCardRuleSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1285,7 +1285,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardSettings>;
                 res = await this.rest.get<WorkInterfaces.BoardCardSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1339,7 +1339,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardCardSettings>;
                 res = await this.rest.replace<WorkInterfaces.BoardCardSettings>(url, boardCardSettingsToSave, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1390,7 +1390,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, boardCardSettingsToSave, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1445,7 +1445,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardChart>;
                 res = await this.rest.get<WorkInterfaces.BoardChart>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1497,7 +1497,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardChartReference[]>;
                 res = await this.rest.get<WorkInterfaces.BoardChartReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1554,7 +1554,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardChart>;
                 res = await this.rest.update<WorkInterfaces.BoardChart>(url, chart, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1606,7 +1606,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardColumn[]>;
                 res = await this.rest.get<WorkInterfaces.BoardColumn[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.BoardColumn,
                                               true);
 
@@ -1660,7 +1660,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardColumn[]>;
                 res = await this.rest.replace<WorkInterfaces.BoardColumn[]>(url, boardColumns, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.BoardColumn,
                                               true);
 
@@ -1717,7 +1717,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.DeliveryViewData>;
                 res = await this.rest.get<WorkInterfaces.DeliveryViewData>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.DeliveryViewData,
                                               false);
 
@@ -1761,7 +1761,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.IterationCapacity>;
                 res = await this.rest.get<WorkInterfaces.IterationCapacity>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1813,7 +1813,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1865,7 +1865,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration>;
                 res = await this.rest.get<WorkInterfaces.TeamSettingsIteration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSettingsIteration,
                                               false);
 
@@ -1921,7 +1921,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration[]>;
                 res = await this.rest.get<WorkInterfaces.TeamSettingsIteration[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSettingsIteration,
                                               true);
 
@@ -1972,7 +1972,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsIteration>;
                 res = await this.rest.create<WorkInterfaces.TeamSettingsIteration>(url, iteration, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSettingsIteration,
                                               false);
 
@@ -2015,7 +2015,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
                 res = await this.rest.create<WorkInterfaces.Plan>(url, postedPlan, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.Plan,
                                               false);
 
@@ -2059,7 +2059,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2103,7 +2103,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
                 res = await this.rest.get<WorkInterfaces.Plan>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.Plan,
                                               false);
 
@@ -2144,7 +2144,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.Plan[]>;
                 res = await this.rest.get<WorkInterfaces.Plan[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.Plan,
                                               true);
 
@@ -2190,7 +2190,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.Plan>;
                 res = await this.rest.replace<WorkInterfaces.Plan>(url, updatedPlan, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.Plan,
                                               false);
 
@@ -2231,7 +2231,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.PredefinedQuery[]>;
                 res = await this.rest.get<WorkInterfaces.PredefinedQuery[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2285,7 +2285,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.PredefinedQuery>;
                 res = await this.rest.get<WorkInterfaces.PredefinedQuery>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2326,7 +2326,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.ProcessConfiguration>;
                 res = await this.rest.get<WorkInterfaces.ProcessConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2378,7 +2378,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardRow[]>;
                 res = await this.rest.get<WorkInterfaces.BoardRow[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2432,7 +2432,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.BoardRow[]>;
                 res = await this.rest.replace<WorkInterfaces.BoardRow[]>(url, boardRows, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2479,7 +2479,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TaskboardColumns>;
                 res = await this.rest.get<WorkInterfaces.TaskboardColumns>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2528,7 +2528,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TaskboardColumns>;
                 res = await this.rest.replace<WorkInterfaces.TaskboardColumns>(url, updateColumns, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2578,7 +2578,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TaskboardWorkItemColumn[]>;
                 res = await this.rest.get<WorkInterfaces.TaskboardWorkItemColumn[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2633,7 +2633,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, updateColumn, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2685,7 +2685,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsDaysOff>;
                 res = await this.rest.get<WorkInterfaces.TeamSettingsDaysOff>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSettingsDaysOff,
                                               false);
 
@@ -2739,7 +2739,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSettingsDaysOff>;
                 res = await this.rest.update<WorkInterfaces.TeamSettingsDaysOff>(url, daysOffPatch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSettingsDaysOff,
                                               false);
 
@@ -2788,7 +2788,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamFieldValues>;
                 res = await this.rest.get<WorkInterfaces.TeamFieldValues>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2839,7 +2839,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamFieldValues>;
                 res = await this.rest.update<WorkInterfaces.TeamFieldValues>(url, patch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2888,7 +2888,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSetting>;
                 res = await this.rest.get<WorkInterfaces.TeamSetting>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSetting,
                                               false);
 
@@ -2939,7 +2939,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.TeamSetting>;
                 res = await this.rest.update<WorkInterfaces.TeamSetting>(url, teamSettingsPatch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkInterfaces.TypeInfo.TeamSetting,
                                               false);
 
@@ -2991,7 +2991,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.IterationWorkItems>;
                 res = await this.rest.get<WorkInterfaces.IterationWorkItems>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3042,7 +3042,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.ReorderResult[]>;
                 res = await this.rest.update<WorkInterfaces.ReorderResult[]>(url, operation, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3096,7 +3096,7 @@ export class WorkApi extends basem.ClientApiBase implements IWorkApi {
                 let res: restm.IRestResponse<WorkInterfaces.ReorderResult[]>;
                 res = await this.rest.update<WorkInterfaces.ReorderResult[]>(url, operation, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 

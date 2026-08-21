@@ -76,7 +76,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -121,7 +121,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileAttribute>;
                 res = await this.rest.get<ProfileInterfaces.ProfileAttribute>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.ProfileAttribute,
                     false);
 
@@ -178,7 +178,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileAttribute[]>;
                 res = await this.rest.get<ProfileInterfaces.ProfileAttribute[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.ProfileAttribute,
                     true);
 
@@ -225,7 +225,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, container, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -265,7 +265,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, attributesCollection, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -313,7 +313,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Avatar>;
                 res = await this.rest.get<ProfileInterfaces.Avatar>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Avatar,
                     false);
 
@@ -366,7 +366,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Avatar>;
                 res = await this.rest.create<ProfileInterfaces.Avatar>(url, container, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Avatar,
                     false);
 
@@ -404,7 +404,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -444,7 +444,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, container, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -488,7 +488,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.GeoRegion>;
                 res = await this.rest.get<ProfileInterfaces.GeoRegion>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -534,7 +534,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.create<ProfileInterfaces.Profile>(url, createProfileContext, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Profile,
                     false);
 
@@ -591,7 +591,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.get<ProfileInterfaces.Profile>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Profile,
                     false);
 
@@ -633,7 +633,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, profile, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -668,7 +668,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.ProfileRegions>;
                 res = await this.rest.get<ProfileInterfaces.ProfileRegions>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -703,7 +703,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     true);
 
@@ -745,7 +745,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.get<ProfileInterfaces.Profile>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Profile,
                     false);
 
@@ -783,7 +783,7 @@ export class ProfileApi extends basem.ClientApiBase implements IProfileApi {
                 let res: restm.IRestResponse<ProfileInterfaces.Profile>;
                 res = await this.rest.replace<ProfileInterfaces.Profile>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     ProfileInterfaces.TypeInfo.Profile,
                     false);
 

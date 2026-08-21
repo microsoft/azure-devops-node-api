@@ -91,7 +91,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.RepoEnablementSettings>;
                 res = await this.rest.get<ManagementInterfaces.RepoEnablementSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.RepoEnablementSettings,
                                               false);
 
@@ -137,7 +137,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, savedAdvSecEnablementStatus, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -178,7 +178,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, meterUsage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -224,7 +224,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.BillableCommitterDetails[]>;
                 res = await this.rest.get<ManagementInterfaces.BillableCommitterDetails[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.BillableCommitterDetails,
                                               true);
 
@@ -261,7 +261,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsage>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsage>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.MeterUsage,
                                               false);
 
@@ -307,7 +307,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsage>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsage>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.MeterUsage,
                                               false);
 
@@ -358,7 +358,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, meterUsage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -410,7 +410,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.BillableCommitterDetails[]>;
                 res = await this.rest.get<ManagementInterfaces.BillableCommitterDetails[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.BillableCommitterDetails,
                                               true);
 
@@ -457,7 +457,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsageForPlan>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsageForPlan>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.MeterUsageForPlan,
                                               false);
 
@@ -509,7 +509,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsageForPlan>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsageForPlan>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.MeterUsageForPlan,
                                               false);
 
@@ -554,7 +554,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.AdvSecEnablementSettings>;
                 res = await this.rest.get<ManagementInterfaces.AdvSecEnablementSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.AdvSecEnablementSettings,
                                               false);
 
@@ -594,7 +594,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, savedAdvSecEnablementStatus, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -639,7 +639,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.OrgEnablementSettings>;
                 res = await this.rest.get<ManagementInterfaces.OrgEnablementSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.OrgEnablementSettings,
                                               false);
 
@@ -679,7 +679,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, orgEnablementSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -718,7 +718,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
                 res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -757,7 +757,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -806,7 +806,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsageEstimate>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsageEstimate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -854,7 +854,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.AdvSecEnablementSettings>;
                 res = await this.rest.get<ManagementInterfaces.AdvSecEnablementSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.AdvSecEnablementSettings,
                                               false);
 
@@ -897,7 +897,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, savedAdvSecEnablementStatus, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -945,7 +945,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.ProjectEnablementSettings>;
                 res = await this.rest.get<ManagementInterfaces.ProjectEnablementSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.ProjectEnablementSettings,
                                               false);
 
@@ -988,7 +988,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, projectEnablementSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1030,7 +1030,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
                 res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1072,7 +1072,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1121,7 +1121,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsageEstimate>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsageEstimate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1172,7 +1172,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.AdvSecEnablementStatus>;
                 res = await this.rest.get<ManagementInterfaces.AdvSecEnablementStatus>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ManagementInterfaces.TypeInfo.AdvSecEnablementStatus,
                                               false);
 
@@ -1218,7 +1218,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, savedAdvSecEnablementStatus, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1263,7 +1263,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.BilledCommitter[]>;
                 res = await this.rest.get<ManagementInterfaces.BilledCommitter[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1308,7 +1308,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1360,7 +1360,7 @@ export class ManagementApi extends basem.ClientApiBase implements IManagementApi
                 let res: restm.IRestResponse<ManagementInterfaces.MeterUsageEstimate>;
                 res = await this.rest.get<ManagementInterfaces.MeterUsageEstimate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

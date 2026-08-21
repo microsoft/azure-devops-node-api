@@ -113,7 +113,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessBehavior>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.ProcessBehavior>(url, behavior, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessBehavior,
                                               false);
 
@@ -157,7 +157,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -208,7 +208,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessBehavior>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessBehavior>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessBehavior,
                                               false);
 
@@ -256,7 +256,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessBehavior[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessBehavior[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessBehavior,
                                               true);
 
@@ -302,7 +302,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessBehavior>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.ProcessBehavior>(url, behaviorData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessBehavior,
                                               false);
 
@@ -351,7 +351,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.Control>(url, control, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -410,7 +410,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.Control>(url, control, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -460,7 +460,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -512,7 +512,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.Control>(url, control, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -558,7 +558,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>(url, field, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemTypeField,
                                               false);
 
@@ -602,7 +602,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemTypeField,
                                               true);
 
@@ -656,7 +656,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemTypeField,
                                               false);
 
@@ -703,7 +703,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -752,7 +752,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.ProcessWorkItemTypeField>(url, field, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemTypeField,
                                               false);
 
@@ -804,7 +804,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Group>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.Group>(url, group, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -875,7 +875,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Group>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.Group>(url, group, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -940,7 +940,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Group>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.Group>(url, group, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -993,7 +993,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1048,7 +1048,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Group>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.Group>(url, group, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1092,7 +1092,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.FormLayout>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.FormLayout>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.FormLayout,
                                               false);
 
@@ -1132,7 +1132,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.PickList>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.PickList>(url, picklist, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1173,7 +1173,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1214,7 +1214,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.PickList>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.PickList>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1252,7 +1252,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.PickListMetadata[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.PickListMetadata[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1295,7 +1295,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.PickList>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.PickList>(url, picklist, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1341,7 +1341,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Page>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.Page>(url, page, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.Page,
                                               false);
 
@@ -1388,7 +1388,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1434,7 +1434,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Page>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.Page>(url, page, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.Page,
                                               false);
 
@@ -1474,7 +1474,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessInfo>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.ProcessInfo>(url, createRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessInfo,
                                               false);
 
@@ -1515,7 +1515,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1558,7 +1558,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessInfo>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.ProcessInfo>(url, updateRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessInfo,
                                               false);
 
@@ -1603,7 +1603,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessInfo[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessInfo[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessInfo,
                                               true);
 
@@ -1651,7 +1651,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessInfo>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessInfo>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessInfo,
                                               false);
 
@@ -1697,7 +1697,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessRule>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.ProcessRule>(url, processRuleCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessRule,
                                               false);
 
@@ -1744,7 +1744,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1791,7 +1791,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessRule>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessRule>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessRule,
                                               false);
 
@@ -1835,7 +1835,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessRule[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessRule[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessRule,
                                               true);
 
@@ -1884,7 +1884,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessRule>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.ProcessRule>(url, processRule, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessRule,
                                               false);
 
@@ -1930,7 +1930,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>(url, stateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.WorkItemStateResultModel,
                                               false);
 
@@ -1977,7 +1977,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2024,7 +2024,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.WorkItemStateResultModel,
                                               false);
 
@@ -2068,7 +2068,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.WorkItemStateResultModel,
                                               true);
 
@@ -2117,7 +2117,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>;
                 res = await this.rest.replace<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>(url, hideStateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.WorkItemStateResultModel,
                                               false);
 
@@ -2166,7 +2166,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.WorkItemStateResultModel>(url, stateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.WorkItemStateResultModel,
                                               false);
 
@@ -2213,7 +2213,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control[]>;
                 res = await this.rest.del<WorkItemTrackingProcessInterfaces.Control[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2257,7 +2257,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.Control[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2306,7 +2306,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.Control>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.Control>(url, control, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2349,7 +2349,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>(url, workItemType, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemType,
                                               false);
 
@@ -2393,7 +2393,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2444,7 +2444,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemType,
                                               false);
 
@@ -2492,7 +2492,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemType[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.ProcessWorkItemType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemType,
                                               true);
 
@@ -2538,7 +2538,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.ProcessWorkItemType>(url, workItemTypeUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WorkItemTrackingProcessInterfaces.TypeInfo.ProcessWorkItemType,
                                               false);
 
@@ -2584,7 +2584,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>;
                 res = await this.rest.create<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>(url, behavior, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2631,7 +2631,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2675,7 +2675,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior[]>;
                 res = await this.rest.get<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2722,7 +2722,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2768,7 +2768,7 @@ export class WorkItemTrackingProcessApi extends basem.ClientApiBase implements I
                 let res: restm.IRestResponse<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>;
                 res = await this.rest.update<WorkItemTrackingProcessInterfaces.WorkItemTypeBehavior>(url, behavior, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

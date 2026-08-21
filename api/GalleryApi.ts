@@ -140,7 +140,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -182,7 +182,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -227,7 +227,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -272,7 +272,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -327,7 +327,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.AcquisitionOptions>;
                 res = await this.rest.get<GalleryInterfaces.AcquisitionOptions>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.AcquisitionOptions,
                                               false);
 
@@ -365,7 +365,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionAcquisitionRequest>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionAcquisitionRequest>(url, acquisitionRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionAcquisitionRequest,
                                               false);
 
@@ -576,7 +576,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.replace<GalleryInterfaces.AzurePublisher>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -615,7 +615,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.AzurePublisher>;
                 res = await this.rest.get<GalleryInterfaces.AzurePublisher>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -658,7 +658,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -707,7 +707,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.CategoriesResult>;
                 res = await this.rest.get<GalleryInterfaces.CategoriesResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -771,7 +771,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ProductCategory>;
                 res = await this.rest.get<GalleryInterfaces.ProductCategory>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -829,7 +829,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ProductCategoriesResult>;
                 res = await this.rest.get<GalleryInterfaces.ProductCategoriesResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -904,7 +904,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, customerSupportRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -946,7 +946,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionDraft>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -993,7 +993,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.update<GalleryInterfaces.ExtensionDraft>(url, draftPatch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -1049,7 +1049,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -1104,7 +1104,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraftAsset>;
                 res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraftAsset>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1156,7 +1156,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -1199,7 +1199,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.update<GalleryInterfaces.ExtensionDraft>(url, draftPatch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -1252,7 +1252,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraft>;
                 res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraft>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDraft,
                                               false);
 
@@ -1304,7 +1304,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDraftAsset>;
                 res = await this.rest.uploadStream<GalleryInterfaces.ExtensionDraftAsset>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1447,7 +1447,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionEvents>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionEvents>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionEvents,
                                               false);
 
@@ -1487,7 +1487,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, extensionEvents, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1539,7 +1539,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionQueryResult>(url, extensionQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionQueryResult,
                                               false);
 
@@ -1593,7 +1593,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -1638,7 +1638,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1687,7 +1687,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -1733,7 +1733,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -1790,7 +1790,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -1838,7 +1838,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1900,7 +1900,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -1965,7 +1965,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -2016,7 +2016,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.update<GalleryInterfaces.PublishedExtension>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -2064,7 +2064,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2112,7 +2112,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2152,7 +2152,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, azureRestApiRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2192,7 +2192,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, notificationData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2354,7 +2354,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2453,7 +2453,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<{ [key: string] : string; }>;
                 res = await this.rest.uploadStream<{ [key: string] : string; }>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2491,7 +2491,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2530,7 +2530,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2568,7 +2568,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublisherQueryResult>;
                 res = await this.rest.create<GalleryInterfaces.PublisherQueryResult>(url, publisherQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublisherQueryResult,
                                               false);
 
@@ -2606,7 +2606,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.create<GalleryInterfaces.Publisher>(url, publisher, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Publisher,
                                               false);
 
@@ -2645,7 +2645,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2691,7 +2691,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Publisher,
                                               false);
 
@@ -2732,7 +2732,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.replace<GalleryInterfaces.Publisher>(url, publisher, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Publisher,
                                               false);
 
@@ -2782,7 +2782,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublisherRoleAssignment[]>;
                 res = await this.rest.create<GalleryInterfaces.PublisherRoleAssignment[]>(url, roleAssignments, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublisherRoleAssignment,
                                               true);
 
@@ -2845,7 +2845,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.uploadStream<GalleryInterfaces.PublishedExtension>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -2883,7 +2883,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Publisher>;
                 res = await this.rest.get<GalleryInterfaces.Publisher>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Publisher,
                                               false);
 
@@ -2940,7 +2940,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.QuestionsResult>;
                 res = await this.rest.get<GalleryInterfaces.QuestionsResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.QuestionsResult,
                                               false);
 
@@ -2989,7 +2989,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Concern>;
                 res = await this.rest.create<GalleryInterfaces.Concern>(url, concern, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Concern,
                                               false);
 
@@ -3035,7 +3035,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.create<GalleryInterfaces.Question>(url, question, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Question,
                                               false);
 
@@ -3082,7 +3082,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3131,7 +3131,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Question>;
                 res = await this.rest.update<GalleryInterfaces.Question>(url, question, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Question,
                                               false);
 
@@ -3180,7 +3180,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.create<GalleryInterfaces.Response>(url, response, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Response,
                                               false);
 
@@ -3230,7 +3230,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3282,7 +3282,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Response>;
                 res = await this.rest.update<GalleryInterfaces.Response>(url, response, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Response,
                                               false);
 
@@ -3339,7 +3339,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<any>;
                 res = await this.rest.get<any>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3399,7 +3399,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewsResult>;
                 res = await this.rest.get<GalleryInterfaces.ReviewsResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ReviewsResult,
                                               false);
 
@@ -3453,7 +3453,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewSummary>;
                 res = await this.rest.get<GalleryInterfaces.ReviewSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3499,7 +3499,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.Review>;
                 res = await this.rest.create<GalleryInterfaces.Review>(url, review, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.Review,
                                               false);
 
@@ -3546,7 +3546,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3595,7 +3595,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ReviewPatch>;
                 res = await this.rest.update<GalleryInterfaces.ReviewPatch>(url, reviewPatch, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ReviewPatch,
                                               false);
 
@@ -3633,7 +3633,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionCategory>;
                 res = await this.rest.create<GalleryInterfaces.ExtensionCategory>(url, category, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3677,7 +3677,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<{ [key: string] : any; }>;
                 res = await this.rest.get<{ [key: string] : any; }>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3720,7 +3720,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, entries, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3766,7 +3766,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3805,7 +3805,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3849,7 +3849,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, extensionStatisticsUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3904,7 +3904,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDailyStats,
                                               false);
 
@@ -3951,7 +3951,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.ExtensionDailyStats>;
                 res = await this.rest.get<GalleryInterfaces.ExtensionDailyStats>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.ExtensionDailyStats,
                                               false);
 
@@ -4011,7 +4011,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4099,7 +4099,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.get<GalleryInterfaces.PublishedExtension>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               GalleryInterfaces.TypeInfo.PublishedExtension,
                                               false);
 
@@ -4144,7 +4144,7 @@ export class GalleryApi extends compatBase.GalleryCompatHttpClientBase implement
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

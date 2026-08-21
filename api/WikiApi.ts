@@ -93,7 +93,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.CommentAttachment>;
                 res = await this.rest.uploadStream<Comments_Contracts.CommentAttachment>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.CommentAttachment,
                                               false);
 
@@ -187,7 +187,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.CommentReaction>;
                 res = await this.rest.replace<Comments_Contracts.CommentReaction>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.CommentReaction,
                                               false);
 
@@ -240,7 +240,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.CommentReaction>;
                 res = await this.rest.del<Comments_Contracts.CommentReaction>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.CommentReaction,
                                               false);
 
@@ -303,7 +303,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -352,7 +352,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.Comment>;
                 res = await this.rest.create<Comments_Contracts.Comment>(url, request, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.Comment,
                                               false);
 
@@ -402,7 +402,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -462,7 +462,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.Comment>;
                 res = await this.rest.get<Comments_Contracts.Comment>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.Comment,
                                               false);
 
@@ -531,7 +531,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.CommentList>;
                 res = await this.rest.get<Comments_Contracts.CommentList>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.CommentList,
                                               false);
 
@@ -583,7 +583,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<Comments_Contracts.Comment>;
                 res = await this.rest.update<Comments_Contracts.Comment>(url, comment, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Comments_Contracts.TypeInfo.Comment,
                                               false);
 
@@ -838,7 +838,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<WikiInterfaces.WikiPageDetail>>;
                 res = await this.rest.create<VSSInterfaces.PagedList<WikiInterfaces.WikiPageDetail>>(url, pagesBatchRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiPageDetail,
                                               true);
 
@@ -892,7 +892,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiPageDetail>;
                 res = await this.rest.get<WikiInterfaces.WikiPageDetail>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiPageDetail,
                                               false);
 
@@ -955,7 +955,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiPageViewStats>;
                 res = await this.rest.create<WikiInterfaces.WikiPageViewStats>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiPageViewStats,
                                               false);
 
@@ -998,7 +998,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiV2>;
                 res = await this.rest.create<WikiInterfaces.WikiV2>(url, wikiCreateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiV2,
                                               false);
 
@@ -1042,7 +1042,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiV2>;
                 res = await this.rest.del<WikiInterfaces.WikiV2>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiV2,
                                               false);
 
@@ -1083,7 +1083,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiV2[]>;
                 res = await this.rest.get<WikiInterfaces.WikiV2[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiV2,
                                               true);
 
@@ -1127,7 +1127,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiV2>;
                 res = await this.rest.get<WikiInterfaces.WikiV2>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiV2,
                                               false);
 
@@ -1173,7 +1173,7 @@ export class WikiApi extends basem.ClientApiBase implements IWikiApi {
                 let res: restm.IRestResponse<WikiInterfaces.WikiV2>;
                 res = await this.rest.update<WikiInterfaces.WikiV2>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               WikiInterfaces.TypeInfo.WikiV2,
                                               false);
 

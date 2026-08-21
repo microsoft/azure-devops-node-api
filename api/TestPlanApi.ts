@@ -102,7 +102,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.create<TestPlanInterfaces.TestConfiguration>(url, testConfigurationCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestConfiguration,
                                               false);
 
@@ -153,7 +153,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -197,7 +197,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.get<TestPlanInterfaces.TestConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestConfiguration,
                                               false);
 
@@ -245,7 +245,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestConfiguration>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestConfiguration,
                                               true);
 
@@ -298,7 +298,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestConfiguration>;
                 res = await this.rest.update<TestPlanInterfaces.TestConfiguration>(url, testConfigurationCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestConfiguration,
                                               false);
 
@@ -362,7 +362,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestEntityCount[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestEntityCount[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -405,7 +405,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.create<TestPlanInterfaces.TestPlan>(url, testPlanCreateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPlan,
                                               false);
 
@@ -449,7 +449,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -493,7 +493,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.get<TestPlanInterfaces.TestPlan>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPlan,
                                               false);
 
@@ -550,7 +550,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPlan,
                                               true);
 
@@ -596,7 +596,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPlan>;
                 res = await this.rest.update<TestPlanInterfaces.TestPlan>(url, testPlanUpdateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPlan,
                                               false);
 
@@ -647,7 +647,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.SuiteEntry[]>;
                 res = await this.rest.get<TestPlanInterfaces.SuiteEntry[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.SuiteEntry,
                                               true);
 
@@ -693,7 +693,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.SuiteEntry[]>;
                 res = await this.rest.update<TestPlanInterfaces.SuiteEntry[]>(url, suiteEntries, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.SuiteEntry,
                                               true);
 
@@ -742,7 +742,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite[]>;
                 res = await this.rest.create<TestPlanInterfaces.TestSuite[]>(url, testSuiteCreateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               true);
 
@@ -788,7 +788,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.create<TestPlanInterfaces.TestSuite>(url, testSuiteCreateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               false);
 
@@ -835,7 +835,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -889,7 +889,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.get<TestPlanInterfaces.TestSuite>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               false);
 
@@ -946,7 +946,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               true);
 
@@ -995,7 +995,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite>;
                 res = await this.rest.update<TestPlanInterfaces.TestSuite>(url, testSuiteUpdateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               false);
 
@@ -1043,7 +1043,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestSuite[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestSuite[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               true);
 
@@ -1092,7 +1092,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.create<TestPlanInterfaces.TestCase[]>(url, suiteTestCaseCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestCase,
                                               true);
 
@@ -1152,7 +1152,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestCase[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestCase,
                                               true);
 
@@ -1227,7 +1227,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestCase>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestCase,
                                               true);
 
@@ -1284,7 +1284,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1341,7 +1341,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1390,7 +1390,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestCase[]>;
                 res = await this.rest.update<TestPlanInterfaces.TestCase[]>(url, suiteTestCaseCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestCase,
                                               true);
 
@@ -1431,7 +1431,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestCaseOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestCaseOperationInformation>(url, cloneRequestBody, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
                                               false);
 
@@ -1475,7 +1475,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestCaseOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestCaseOperationInformation>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestCaseOperationInformation,
                                               false);
 
@@ -1554,7 +1554,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1602,7 +1602,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPlan>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPlan,
                                               true);
 
@@ -1648,7 +1648,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, restoreModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1698,7 +1698,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestPlanOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestPlanOperationInformation>(url, cloneRequestBody, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
                                               false);
 
@@ -1742,7 +1742,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestPlanOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestPlanOperationInformation>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestPlanOperationInformation,
                                               false);
 
@@ -1805,7 +1805,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPoint[]>;
                 res = await this.rest.get<TestPlanInterfaces.TestPoint[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPoint,
                                               true);
 
@@ -1874,7 +1874,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestPoint>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPoint,
                                               true);
 
@@ -1933,7 +1933,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestPoint[]>;
                 res = await this.rest.update<TestPlanInterfaces.TestPoint[]>(url, testPointUpdateParams, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestPoint,
                                               true);
 
@@ -1990,7 +1990,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               true);
 
@@ -2044,7 +2044,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestSuite>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestSuite,
                                               true);
 
@@ -2090,7 +2090,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, payload, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2140,7 +2140,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
                 res = await this.rest.create<TestPlanInterfaces.CloneTestSuiteOperationInformation>(url, cloneRequestBody, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
                                               false);
 
@@ -2184,7 +2184,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.CloneTestSuiteOperationInformation>;
                 res = await this.rest.get<TestPlanInterfaces.CloneTestSuiteOperationInformation>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.CloneTestSuiteOperationInformation,
                                               false);
 
@@ -2227,7 +2227,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.create<TestPlanInterfaces.TestVariable>(url, testVariableCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestVariable,
                                               false);
 
@@ -2271,7 +2271,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2315,7 +2315,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.get<TestPlanInterfaces.TestVariable>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestVariable,
                                               false);
 
@@ -2363,7 +2363,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<TestPlanInterfaces.TestVariable>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestVariable,
                                               true);
 
@@ -2409,7 +2409,7 @@ export class TestPlanApi extends basem.ClientApiBase implements ITestPlanApi {
                 let res: restm.IRestResponse<TestPlanInterfaces.TestVariable>;
                 res = await this.rest.update<TestPlanInterfaces.TestVariable>(url, testVariableCreateUpdateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TestPlanInterfaces.TypeInfo.TestVariable,
                                               false);
 
