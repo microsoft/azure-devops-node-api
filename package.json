@@ -1,7 +1,7 @@
 {
     "name": "azure-devops-node-api",
     "description": "Node client for Azure DevOps and TFS REST APIs",
-    "version": "17.0.0",
+    "version": "17.0.1",
     "main": "./WebApi.js",
     "types": "./WebApi.d.ts",
     "scripts": {
@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "tunnel": "0.0.6",
-        "typed-rest-client": "3.1.0"
+        "typed-rest-client": "3.1.2"
     },
     "devDependencies": {
         "@types/glob": "5.0.35",
@@ -44,7 +44,7 @@
     "overrides": {
         "brace-expansion@1.x": { ".": "1.1.18" },
         "brace-expansion@2.x": { ".": "2.1.4" },
-        "js-yaml": "^4.3.1",
+        "js-yaml": "^4.3.2",
         "lodash": "^4.18.1",
         "minimatch@3.x": { ".": "3.1.5" },
         "minimatch@5.x": { ".": "5.1.9" },
