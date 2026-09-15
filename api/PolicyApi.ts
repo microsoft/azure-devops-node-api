@@ -69,7 +69,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyConfiguration>;
                 res = await this.rest.create<PolicyInterfaces.PolicyConfiguration>(url, configuration, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               false);
 
@@ -113,7 +113,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -157,7 +157,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyConfiguration>;
                 res = await this.rest.get<PolicyInterfaces.PolicyConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               false);
 
@@ -208,7 +208,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<PolicyInterfaces.PolicyConfiguration>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<PolicyInterfaces.PolicyConfiguration>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               true);
 
@@ -254,7 +254,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyConfiguration>;
                 res = await this.rest.replace<PolicyInterfaces.PolicyConfiguration>(url, configuration, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               false);
 
@@ -298,7 +298,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyEvaluationRecord>;
                 res = await this.rest.get<PolicyInterfaces.PolicyEvaluationRecord>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyEvaluationRecord,
                                               false);
 
@@ -342,7 +342,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyEvaluationRecord>;
                 res = await this.rest.update<PolicyInterfaces.PolicyEvaluationRecord>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyEvaluationRecord,
                                               false);
 
@@ -402,7 +402,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyEvaluationRecord[]>;
                 res = await this.rest.get<PolicyInterfaces.PolicyEvaluationRecord[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyEvaluationRecord,
                                               true);
 
@@ -449,7 +449,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyConfiguration>;
                 res = await this.rest.get<PolicyInterfaces.PolicyConfiguration>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               false);
 
@@ -503,7 +503,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyConfiguration[]>;
                 res = await this.rest.get<PolicyInterfaces.PolicyConfiguration[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               PolicyInterfaces.TypeInfo.PolicyConfiguration,
                                               true);
 
@@ -547,7 +547,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyType>;
                 res = await this.rest.get<PolicyInterfaces.PolicyType>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -588,7 +588,7 @@ export class PolicyApi extends basem.ClientApiBase implements IPolicyApi {
                 let res: restm.IRestResponse<PolicyInterfaces.PolicyType[]>;
                 res = await this.rest.get<PolicyInterfaces.PolicyType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 

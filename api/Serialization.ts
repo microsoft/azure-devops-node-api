@@ -81,19 +81,19 @@ export module ContractSerializer {
      * @param preserveOriginal If true, don't modify the original object. False modifies the original object (the return value points to the data argument).
      * @param unwrapWrappedCollections If true check for wrapped arrays (REST apis will not return arrays directly as the root result but will instead wrap them in a { values: [], count: 0 } object.
      */
-    export function deserialize(data: any, contractMetadata: ContractMetadata, preserveOriginal: boolean, unwrapWrappedCollections: boolean) {
+    export function deserialize<T>(data: T, contractMetadata: ContractMetadata, preserveOriginal: boolean, unwrapWrappedCollections: boolean) {
         if (data) {
-            if (unwrapWrappedCollections && Array.isArray((<IWebApiArrayResult>data).value)) {
+            if (unwrapWrappedCollections && Array.isArray((data as unknown as IWebApiArrayResult).value)) {
                 // Wrapped json array - unwrap it and send the array as the result
-                data = (<IWebApiArrayResult>data).value;
+                data = (data as unknown as IWebApiArrayResult).value as unknown as T;
             }
 
             if (contractMetadata) {
                 if (Array.isArray(data)) {
-                    data = _getTranslatedArray(data, contractMetadata, false, preserveOriginal);
+                    data = _getTranslatedArray(data, contractMetadata, false, preserveOriginal) as unknown as T;
                 }
                 else {
-                    data = _getTranslatedObject(data, contractMetadata, false, preserveOriginal);
+                    data = _getTranslatedObject(data, contractMetadata, false, preserveOriginal) as unknown as T;
                 }
             }
         }

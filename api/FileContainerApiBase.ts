@@ -66,7 +66,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
                 res = await this.rest.create<FileContainerInterfaces.FileContainerItem[]>(url, items, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FileContainerInterfaces.TypeInfo.FileContainerItem,
                                               true);
 
@@ -120,7 +120,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -168,7 +168,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainer[]>;
                 res = await this.rest.get<FileContainerInterfaces.FileContainer[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FileContainerInterfaces.TypeInfo.FileContainer,
                                               true);
 
@@ -246,7 +246,7 @@ export class FileContainerApiBase extends basem.ClientApiBase implements IFileCo
                 let res: restm.IRestResponse<FileContainerInterfaces.FileContainerItem[]>;
                 res = await this.rest.get<FileContainerInterfaces.FileContainerItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               FileContainerInterfaces.TypeInfo.FileContainerItem,
                                               true);
 

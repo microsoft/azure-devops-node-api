@@ -74,7 +74,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, operation, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -128,7 +128,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.INotificationDiagnosticLog[]>;
                 res = await this.rest.get<NotificationInterfaces.INotificationDiagnosticLog[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.INotificationDiagnosticLog,
                                               true);
 
@@ -169,7 +169,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.SubscriptionDiagnostics>;
                 res = await this.rest.get<NotificationInterfaces.SubscriptionDiagnostics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.SubscriptionDiagnostics,
                                               false);
 
@@ -212,7 +212,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.SubscriptionDiagnostics>;
                 res = await this.rest.replace<NotificationInterfaces.SubscriptionDiagnostics>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.SubscriptionDiagnostics,
                                               false);
 
@@ -252,7 +252,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<VSSInterfaces.VssNotificationEvent>;
                 res = await this.rest.create<VSSInterfaces.VssNotificationEvent>(url, notificationEvent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               VSSInterfaces.TypeInfo.VssNotificationEvent,
                                               false);
 
@@ -292,7 +292,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.EventTransformResult>;
                 res = await this.rest.create<NotificationInterfaces.EventTransformResult>(url, transformRequest, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -333,7 +333,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationEventField[]>;
                 res = await this.rest.create<NotificationInterfaces.NotificationEventField[]>(url, inputValuesQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationEventField,
                                               true);
 
@@ -374,7 +374,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationEventType>;
                 res = await this.rest.get<NotificationInterfaces.NotificationEventType>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationEventType,
                                               false);
 
@@ -419,7 +419,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationEventType[]>;
                 res = await this.rest.get<NotificationInterfaces.NotificationEventType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationEventType,
                                               true);
 
@@ -458,7 +458,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationReason>;
                 res = await this.rest.get<NotificationInterfaces.NotificationReason>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationReason,
                                               false);
 
@@ -501,7 +501,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationReason[]>;
                 res = await this.rest.get<NotificationInterfaces.NotificationReason[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationReason,
                                               true);
 
@@ -537,7 +537,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationAdminSettings>;
                 res = await this.rest.get<NotificationInterfaces.NotificationAdminSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationAdminSettings,
                                               false);
 
@@ -575,7 +575,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationAdminSettings>;
                 res = await this.rest.update<NotificationInterfaces.NotificationAdminSettings>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationAdminSettings,
                                               false);
 
@@ -616,7 +616,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscriber>;
                 res = await this.rest.get<NotificationInterfaces.NotificationSubscriber>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscriber,
                                               false);
 
@@ -659,7 +659,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscriber>;
                 res = await this.rest.update<NotificationInterfaces.NotificationSubscriber>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscriber,
                                               false);
 
@@ -699,7 +699,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription[]>;
                 res = await this.rest.create<NotificationInterfaces.NotificationSubscription[]>(url, subscriptionQuery, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscription,
                                               true);
 
@@ -739,7 +739,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
                 res = await this.rest.create<NotificationInterfaces.NotificationSubscription>(url, createParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscription,
                                               false);
 
@@ -780,7 +780,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -828,7 +828,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
                 res = await this.rest.get<NotificationInterfaces.NotificationSubscription>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscription,
                                               false);
 
@@ -879,7 +879,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription[]>;
                 res = await this.rest.get<NotificationInterfaces.NotificationSubscription[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscription,
                                               true);
 
@@ -922,7 +922,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscription>;
                 res = await this.rest.update<NotificationInterfaces.NotificationSubscription>(url, updateParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscription,
                                               false);
 
@@ -960,7 +960,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.NotificationSubscriptionTemplate[]>;
                 res = await this.rest.get<NotificationInterfaces.NotificationSubscriptionTemplate[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               NotificationInterfaces.TypeInfo.NotificationSubscriptionTemplate,
                                               true);
 
@@ -1000,7 +1000,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<VSSInterfaces.VssNotificationEvent>;
                 res = await this.rest.create<VSSInterfaces.VssNotificationEvent>(url, notificationEvent, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               VSSInterfaces.TypeInfo.VssNotificationEvent,
                                               false);
 
@@ -1046,7 +1046,7 @@ export class NotificationApi extends basem.ClientApiBase implements INotificatio
                 let res: restm.IRestResponse<NotificationInterfaces.SubscriptionUserSettings>;
                 res = await this.rest.replace<NotificationInterfaces.SubscriptionUserSettings>(url, userSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

@@ -53,7 +53,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.create<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     GalleryInterfaces.TypeInfo.PublishedExtension,
                     false);
 
@@ -93,7 +93,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     GalleryInterfaces.TypeInfo.PublishedExtension,
                     false);
 
@@ -133,7 +133,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.create<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     GalleryInterfaces.TypeInfo.PublishedExtension,
                     false);
 
@@ -176,7 +176,7 @@ export class GalleryCompatHttpClientBase extends basem.ClientApiBase implements 
                 let res: restm.IRestResponse<GalleryInterfaces.PublishedExtension>;
                 res = await this.rest.replace<GalleryInterfaces.PublishedExtension>(url, extensionPackage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     GalleryInterfaces.TypeInfo.PublishedExtension,
                     false);
 

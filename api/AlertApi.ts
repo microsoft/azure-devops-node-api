@@ -82,7 +82,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.Alert>;
                 res = await this.rest.get<AlertInterfaces.Alert>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.Alert,
                                               false);
 
@@ -145,7 +145,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<AlertInterfaces.Alert>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<AlertInterfaces.Alert>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.Alert,
                                               true);
 
@@ -202,7 +202,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -251,7 +251,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.Alert>;
                 res = await this.rest.update<AlertInterfaces.Alert>(url, stateUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.Alert,
                                               false);
 
@@ -318,7 +318,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.Branch[]>;
                 res = await this.rest.get<AlertInterfaces.Branch[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.Branch,
                                               true);
 
@@ -371,7 +371,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.UxFilters>;
                 res = await this.rest.get<AlertInterfaces.UxFilters>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.UxFilters,
                                               false);
 
@@ -425,7 +425,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.AlertAnalysisInstance[]>;
                 res = await this.rest.get<AlertInterfaces.AlertAnalysisInstance[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.AlertAnalysisInstance,
                                               true);
 
@@ -482,7 +482,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.LegalReview>;
                 res = await this.rest.create<AlertInterfaces.LegalReview>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -528,7 +528,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.AlertMetadataChange[]>;
                 res = await this.rest.update<AlertInterfaces.AlertMetadataChange[]>(url, alertsMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.AlertMetadataChange,
                                               true);
 
@@ -583,7 +583,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.uploadStream<number>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -623,7 +623,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.SarifUploadStatus>;
                 res = await this.rest.get<AlertInterfaces.SarifUploadStatus>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.SarifUploadStatus,
                                               false);
 
@@ -670,7 +670,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.ValidationRequestInfo>;
                 res = await this.rest.get<AlertInterfaces.ValidationRequestInfo>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.ValidationRequestInfo,
                                               false);
 
@@ -717,7 +717,7 @@ export class AlertApi extends basem.ClientApiBase implements IAlertApi {
                 let res: restm.IRestResponse<AlertInterfaces.AlertValidationRequestStatus>;
                 res = await this.rest.create<AlertInterfaces.AlertValidationRequestStatus>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               AlertInterfaces.TypeInfo.AlertValidationRequestStatus,
                                               false);
 

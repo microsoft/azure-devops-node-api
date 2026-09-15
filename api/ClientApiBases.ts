@@ -39,15 +39,20 @@ export class ClientApiBase {
         return options;
     }
 
-    public formatResponse(data: any, responseTypeMetadata: any, isCollection: boolean): any {
+    public formatResponse<T>(response: rm.IRestResponse<T>, responseTypeMetadata: any, isCollection: boolean): T {
         let serializationData = {
             responseTypeMetadata: responseTypeMetadata,
             responseIsCollection: isCollection
         };
-        let deserializedResult = serm.ContractSerializer.deserialize(data,
+        let deserializedResult = serm.ContractSerializer.deserialize(response.result,
+
             serializationData.responseTypeMetadata,
             false,
             serializationData.responseIsCollection);
+
+        if (isCollection && response.headers['x-ms-continuationtoken']) {
+            (deserializedResult as any).continuationToken = response.headers['x-ms-continuationtoken'];
+        }
         return deserializedResult;
     }
 

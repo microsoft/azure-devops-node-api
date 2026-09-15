@@ -195,7 +195,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachmentReference>;
                 res = await this.rest.create<Contracts.TestAttachmentReference>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -242,7 +242,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachmentReference>;
                 res = await this.rest.create<Contracts.TestAttachmentReference>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -299,7 +299,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachmentReference>;
                 res = await this.rest.create<Contracts.TestAttachmentReference>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -347,7 +347,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -538,7 +538,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachment[]>;
                 res = await this.rest.get<Contracts.TestAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestAttachment,
                                               true);
 
@@ -689,7 +689,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachment[]>;
                 res = await this.rest.get<Contracts.TestAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestAttachment,
                                               true);
 
@@ -785,7 +785,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachmentReference>;
                 res = await this.rest.create<Contracts.TestAttachmentReference>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -830,7 +830,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -911,7 +911,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestAttachment[]>;
                 res = await this.rest.get<Contracts.TestAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestAttachment,
                                               true);
 
@@ -995,7 +995,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.WorkItemReference[]>;
                 res = await this.rest.get<Contracts.WorkItemReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1044,7 +1044,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.SourceViewBuildCoverage[]>;
                 res = await this.rest.get<Contracts.SourceViewBuildCoverage[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.SourceViewBuildCoverage,
                                               true);
 
@@ -1099,7 +1099,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.BuildCoverage[]>;
                 res = await this.rest.get<Contracts.BuildCoverage[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.BuildCoverage,
                                               true);
 
@@ -1153,7 +1153,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.CodeCoverageSummary>;
                 res = await this.rest.get<Contracts.CodeCoverageSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.CodeCoverageSummary,
                                               false);
 
@@ -1206,7 +1206,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, coverageData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1258,7 +1258,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRunCoverage[]>;
                 res = await this.rest.get<Contracts.TestRunCoverage[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1301,7 +1301,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.CustomTestFieldDefinition[]>;
                 res = await this.rest.create<Contracts.CustomTestFieldDefinition[]>(url, newFields, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.CustomTestFieldDefinition,
                                               true);
 
@@ -1352,7 +1352,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.CustomTestFieldDefinition[]>;
                 res = await this.rest.get<Contracts.CustomTestFieldDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.CustomTestFieldDefinition,
                                               true);
 
@@ -1396,7 +1396,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1439,7 +1439,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.CustomTestFieldDefinition>;
                 res = await this.rest.update<Contracts.CustomTestFieldDefinition>(url, updateCustomTestField, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.CustomTestFieldDefinition,
                                               false);
 
@@ -1529,7 +1529,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -1571,7 +1571,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -1612,7 +1612,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultHistory>;
                 res = await this.rest.create<Contracts.TestResultHistory>(url, filter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultHistory,
                                               false);
 
@@ -1656,7 +1656,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestMessageLogDetails[]>;
                 res = await this.rest.get<Contracts.TestMessageLogDetails[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestMessageLogDetails,
                                               true);
 
@@ -1722,7 +1722,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.PipelineTestMetrics>;
                 res = await this.rest.get<Contracts.PipelineTestMetrics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.PipelineTestMetrics,
                                               false);
 
@@ -1789,7 +1789,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsDetails>;
                 res = await this.rest.get<Contracts.TestResultsDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsDetails,
                                               false);
 
@@ -1862,7 +1862,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsDetails>;
                 res = await this.rest.get<Contracts.TestResultsDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsDetails,
                                               false);
 
@@ -1906,7 +1906,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultDocument>;
                 res = await this.rest.create<Contracts.TestResultDocument>(url, document, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1967,7 +1967,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.FieldDetailsForTestResults>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.FieldDetailsForTestResults>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2031,7 +2031,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.FieldDetailsForTestResults>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.FieldDetailsForTestResults>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2081,7 +2081,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultMetaData[]>;
                 res = await this.rest.create<Contracts.TestResultMetaData[]>(url, testCaseReferenceIds, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2127,7 +2127,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultMetaData>;
                 res = await this.rest.update<Contracts.TestResultMetaData>(url, testResultMetaDataUpdateInput, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2168,7 +2168,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsQuery>;
                 res = await this.rest.create<Contracts.TestResultsQuery>(url, query, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsQuery,
                                               false);
 
@@ -2225,7 +2225,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.create<Contracts.TestCaseResult[]>(url, queryModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -2269,7 +2269,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.create<Contracts.TestCaseResult[]>(url, results, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -2321,7 +2321,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult>;
                 res = await this.rest.get<Contracts.TestCaseResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               false);
 
@@ -2382,7 +2382,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -2426,7 +2426,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.update<Contracts.TestCaseResult[]>(url, results, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -2487,7 +2487,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2563,7 +2563,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2627,7 +2627,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.ShallowTestCaseResult>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2693,7 +2693,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsDetails>;
                 res = await this.rest.get<Contracts.TestResultsDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsDetails,
                                               false);
 
@@ -2751,7 +2751,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultSummary>;
                 res = await this.rest.get<Contracts.TestResultSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultSummary,
                                               false);
 
@@ -2814,7 +2814,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultSummary>;
                 res = await this.rest.get<Contracts.TestResultSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultSummary,
                                               false);
 
@@ -2878,7 +2878,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultSummary>;
                 res = await this.rest.get<Contracts.TestResultSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultSummary,
                                               false);
 
@@ -2919,7 +2919,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultSummary[]>;
                 res = await this.rest.create<Contracts.TestResultSummary[]>(url, releases, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultSummary,
                                               true);
 
@@ -2967,7 +2967,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestSummaryForWorkItem[]>;
                 res = await this.rest.create<Contracts.TestSummaryForWorkItem[]>(url, resultsContext, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestSummaryForWorkItem,
                                               true);
 
@@ -3008,7 +3008,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.AggregatedDataForResultTrend[]>;
                 res = await this.rest.create<Contracts.AggregatedDataForResultTrend[]>(url, filter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.AggregatedDataForResultTrend,
                                               true);
 
@@ -3049,7 +3049,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.AggregatedDataForResultTrend[]>;
                 res = await this.rest.create<Contracts.AggregatedDataForResultTrend[]>(url, filter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.AggregatedDataForResultTrend,
                                               true);
 
@@ -3090,7 +3090,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRun>;
                 res = await this.rest.create<Contracts.TestRun>(url, testRun, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRun,
                                               false);
 
@@ -3132,7 +3132,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3184,7 +3184,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRun>;
                 res = await this.rest.get<Contracts.TestRun>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRun,
                                               false);
 
@@ -3251,7 +3251,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRun[]>;
                 res = await this.rest.get<Contracts.TestRun[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRun,
                                               true);
 
@@ -3350,7 +3350,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestRun>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestRun>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRun,
                                               true);
 
@@ -3394,7 +3394,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRun>;
                 res = await this.rest.update<Contracts.TestRun>(url, runUpdateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRun,
                                               false);
 
@@ -3438,7 +3438,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRunStatistic>;
                 res = await this.rest.get<Contracts.TestRunStatistic>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRunStatistic,
                                               false);
 
@@ -3486,7 +3486,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsSettings>;
                 res = await this.rest.get<Contracts.TestResultsSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsSettings,
                                               false);
 
@@ -3529,7 +3529,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsSettings>;
                 res = await this.rest.update<Contracts.TestResultsSettings>(url, testResultsUpdateSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsSettings,
                                               false);
 
@@ -3596,7 +3596,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -3640,7 +3640,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestRunStatistic>;
                 res = await this.rest.get<Contracts.TestRunStatistic>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestRunStatistic,
                                               false);
 
@@ -3694,7 +3694,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3745,7 +3745,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestTag[]>;
                 res = await this.rest.get<Contracts.TestTag[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3802,7 +3802,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestTag[]>;
                 res = await this.rest.get<Contracts.TestTag[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3848,7 +3848,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestTag[]>;
                 res = await this.rest.update<Contracts.TestTag[]>(url, testTagsUpdateModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3899,7 +3899,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestTagSummary>;
                 res = await this.rest.get<Contracts.TestTagSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3956,7 +3956,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestTagSummary>;
                 res = await this.rest.get<Contracts.TestTagSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4002,7 +4002,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4048,7 +4048,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreAttachmentReference>;
                 res = await this.rest.create<Contracts.TestLogStoreAttachmentReference>(url, attachmentRequestModel, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4102,7 +4102,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4192,7 +4192,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreAttachment[]>;
                 res = await this.rest.get<Contracts.TestLogStoreAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreAttachment,
                                               true);
 
@@ -4281,7 +4281,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultFailureType>;
                 res = await this.rest.create<Contracts.TestResultFailureType>(url, testResultFailureType, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4325,7 +4325,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -4366,7 +4366,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultFailureType[]>;
                 res = await this.rest.get<Contracts.TestResultFailureType[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4409,7 +4409,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestHistoryQuery>;
                 res = await this.rest.create<Contracts.TestHistoryQuery>(url, filter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestHistoryQuery,
                                               false);
 
@@ -4485,7 +4485,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestLog>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestLog>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLog,
                                               true);
 
@@ -4561,7 +4561,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestLog>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestLog>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLog,
                                               true);
 
@@ -4643,7 +4643,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestLog>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestLog>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLog,
                                               true);
 
@@ -4716,7 +4716,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestLog>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestLog>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLog,
                                               true);
 
@@ -4779,7 +4779,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.get<Contracts.TestLogStoreEndpointDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -4836,7 +4836,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.create<Contracts.TestLogStoreEndpointDetails>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -4899,7 +4899,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.get<Contracts.TestLogStoreEndpointDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -4968,7 +4968,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.get<Contracts.TestLogStoreEndpointDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -5037,7 +5037,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.create<Contracts.TestLogStoreEndpointDetails>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -5097,7 +5097,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.get<Contracts.TestLogStoreEndpointDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -5157,7 +5157,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestLogStoreEndpointDetails>;
                 res = await this.rest.create<Contracts.TestLogStoreEndpointDetails>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestLogStoreEndpointDetails,
                                               false);
 
@@ -5200,7 +5200,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.create<number>(url, session, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5251,7 +5251,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultsSession[]>;
                 res = await this.rest.get<Contracts.TestResultsSession[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestResultsSession,
                                               true);
 
@@ -5295,7 +5295,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<any[]>;
                 res = await this.rest.get<any[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5341,7 +5341,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.update<number>(url, session, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5387,7 +5387,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.AnalysisFailureGroupReturn[]>;
                 res = await this.rest.create<Contracts.AnalysisFailureGroupReturn[]>(url, analysis, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5430,7 +5430,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, environments, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5476,7 +5476,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, sessionEnvironmentAndMachine, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5520,7 +5520,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<any[]>;
                 res = await this.rest.get<any[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5566,7 +5566,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number[]>;
                 res = await this.rest.create<number[]>(url, notifications, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5610,7 +5610,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestSessionNotification[]>;
                 res = await this.rest.get<Contracts.TestSessionNotification[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5656,7 +5656,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.create<Contracts.TestCaseResult[]>(url, results, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -5717,7 +5717,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestCaseResult[]>;
                 res = await this.rest.get<Contracts.TestCaseResult[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -5763,7 +5763,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number[]>;
                 res = await this.rest.update<number[]>(url, results, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5809,7 +5809,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, testResultMachines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -5853,7 +5853,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestResultMachine[]>;
                 res = await this.rest.get<Contracts.TestResultMachine[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -5929,7 +5929,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<Contracts.TestCaseResult>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<Contracts.TestCaseResult>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestCaseResult,
                                               true);
 
@@ -5973,7 +5973,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number[]>;
                 res = await this.rest.get<number[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -6019,7 +6019,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number[]>;
                 res = await this.rest.update<number[]>(url, testRunIds, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -6060,7 +6060,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<number>;
                 res = await this.rest.create<number>(url, testSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6109,7 +6109,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6158,7 +6158,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestSettings>;
                 res = await this.rest.get<Contracts.TestSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6199,7 +6199,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.WorkItemToTestLinks>;
                 res = await this.rest.create<Contracts.WorkItemToTestLinks>(url, workItemToTestLinks, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.WorkItemToTestLinks,
                                               false);
 
@@ -6254,7 +6254,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<boolean>;
                 res = await this.rest.del<boolean>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -6303,7 +6303,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.TestToWorkItemLinks>;
                 res = await this.rest.create<Contracts.TestToWorkItemLinks>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               Contracts.TypeInfo.TestToWorkItemLinks,
                                               false);
 
@@ -6348,7 +6348,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.WorkItemReference[]>;
                 res = await this.rest.get<Contracts.WorkItemReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -6414,7 +6414,7 @@ export class TestResultsApi extends basem.ClientApiBase implements ITestResultsA
                 let res: restm.IRestResponse<Contracts.WorkItemReference[]>;
                 res = await this.rest.get<Contracts.WorkItemReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 

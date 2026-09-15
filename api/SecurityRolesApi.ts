@@ -61,7 +61,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.RoleAssignment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     SecurityRolesInterfaces.TypeInfo.RoleAssignment,
                     true);
 
@@ -106,7 +106,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -150,7 +150,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, identityIds, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     false);
 
@@ -197,7 +197,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment>(url, roleAssignment, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     SecurityRolesInterfaces.TypeInfo.RoleAssignment,
                     false);
 
@@ -241,7 +241,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<SecurityRolesInterfaces.RoleAssignment[]>;
                 res = await this.rest.replace<SecurityRolesInterfaces.RoleAssignment[]>(url, roleAssignments, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     SecurityRolesInterfaces.TypeInfo.RoleAssignment,
                     true);
 
@@ -280,7 +280,7 @@ export class SecurityRolesApi extends basem.ClientApiBase implements ISecurityRo
                 let res: restm.IRestResponse<SecurityRolesInterfaces.SecurityRole[]>;
                 res = await this.rest.get<SecurityRolesInterfaces.SecurityRole[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                     null,
                     true);
 

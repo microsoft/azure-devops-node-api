@@ -78,7 +78,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.create<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
@@ -130,7 +130,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -182,7 +182,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.get<DashboardInterfaces.Dashboard>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
@@ -231,7 +231,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard[]>;
                 res = await this.rest.get<DashboardInterfaces.Dashboard[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Dashboard,
                                               true);
 
@@ -285,7 +285,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.replace<DashboardInterfaces.Dashboard>(url, dashboard, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
@@ -336,7 +336,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.DashboardGroup>;
                 res = await this.rest.replace<DashboardInterfaces.DashboardGroup>(url, group, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.DashboardGroup,
                                               false);
 
@@ -390,7 +390,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.create<DashboardInterfaces.Widget>(url, widget, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
@@ -445,7 +445,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Dashboard>;
                 res = await this.rest.del<DashboardInterfaces.Dashboard>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Dashboard,
                                               false);
 
@@ -500,7 +500,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.get<DashboardInterfaces.Widget>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
@@ -557,7 +557,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.replace<DashboardInterfaces.Widget>(url, widget, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
@@ -614,7 +614,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.Widget>;
                 res = await this.rest.update<DashboardInterfaces.Widget>(url, widget, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.Widget,
                                               false);
 
@@ -658,7 +658,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetMetadataResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetMetadataResponse>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.WidgetMetadataResponse,
                                               false);
 
@@ -709,7 +709,7 @@ export class DashboardApi extends basem.ClientApiBase implements IDashboardApi {
                 let res: restm.IRestResponse<DashboardInterfaces.WidgetTypesResponse>;
                 res = await this.rest.get<DashboardInterfaces.WidgetTypesResponse>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               DashboardInterfaces.TypeInfo.WidgetTypesResponse,
                                               false);
 

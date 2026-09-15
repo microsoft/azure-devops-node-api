@@ -147,7 +147,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.AgentArtifactDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.AgentArtifactDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.AgentArtifactDefinition,
                                               true);
 
@@ -216,7 +216,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<ReleaseInterfaces.ReleaseApproval>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<ReleaseInterfaces.ReleaseApproval>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseApproval,
                                               true);
 
@@ -260,7 +260,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseApproval,
                                               false);
 
@@ -311,7 +311,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseApproval>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseApproval,
                                               false);
 
@@ -357,7 +357,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseApproval>(url, approval, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseApproval,
                                               false);
 
@@ -398,7 +398,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseApproval[]>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseApproval[]>(url, approvals, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseApproval,
                                               true);
 
@@ -565,7 +565,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTaskAttachment[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTaskAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseTaskAttachment,
                                               true);
 
@@ -621,7 +621,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTaskAttachment[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTaskAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseTaskAttachment,
                                               true);
 
@@ -682,7 +682,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.AutoTriggerIssue[]>;
                 res = await this.rest.get<ReleaseInterfaces.AutoTriggerIssue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.AutoTriggerIssue,
                                               true);
 
@@ -732,7 +732,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string>;
                 res = await this.rest.get<string>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -787,7 +787,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Change[]>;
                 res = await this.rest.get<ReleaseInterfaces.Change[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Change,
                                               true);
 
@@ -836,7 +836,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.DefinitionEnvironmentReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.DefinitionEnvironmentReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -879,7 +879,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinition,
                                               false);
 
@@ -933,7 +933,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -987,7 +987,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinition,
                                               false);
 
@@ -1120,7 +1120,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<ReleaseInterfaces.ReleaseDefinition>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<ReleaseInterfaces.ReleaseDefinition>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinition,
                                               true);
 
@@ -1166,7 +1166,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinitionUndeleteParameter, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinition,
                                               false);
 
@@ -1216,7 +1216,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinition>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseDefinition>(url, releaseDefinition, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinition,
                                               false);
 
@@ -1306,7 +1306,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<ReleaseInterfaces.Deployment>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<ReleaseInterfaces.Deployment>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Deployment,
                                               true);
 
@@ -1347,7 +1347,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Deployment[]>;
                 res = await this.rest.create<ReleaseInterfaces.Deployment[]>(url, queryParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Deployment,
                                               true);
 
@@ -1401,7 +1401,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseEnvironment>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
                                               false);
 
@@ -1450,7 +1450,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseEnvironment>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseEnvironment>(url, environmentUpdateData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseEnvironment,
                                               false);
 
@@ -1493,7 +1493,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.create<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, template, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
                                               false);
 
@@ -1544,7 +1544,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1595,7 +1595,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
                                               false);
 
@@ -1643,7 +1643,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
                                               true);
 
@@ -1694,7 +1694,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseDefinitionEnvironmentTemplate>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionEnvironmentTemplate,
                                               false);
 
@@ -1745,7 +1745,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.create<ReleaseInterfaces.FavoriteItem[]>(url, favoriteItems, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1797,7 +1797,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1846,7 +1846,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.FavoriteItem[]>;
                 res = await this.rest.get<ReleaseInterfaces.FavoriteItem[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1889,7 +1889,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1935,7 +1935,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.create<ReleaseInterfaces.Folder>(url, folder, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Folder,
                                               false);
 
@@ -1979,7 +1979,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2030,7 +2030,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder[]>;
                 res = await this.rest.get<ReleaseInterfaces.Folder[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Folder,
                                               true);
 
@@ -2076,7 +2076,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Folder>;
                 res = await this.rest.update<ReleaseInterfaces.Folder>(url, folder, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Folder,
                                               false);
 
@@ -2122,7 +2122,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseGates>;
                 res = await this.rest.update<ReleaseInterfaces.ReleaseGates>(url, gateUpdateMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseGates,
                                               false);
 
@@ -2164,7 +2164,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseRevision[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseRevision,
                                               true);
 
@@ -2205,7 +2205,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<FormInputInterfaces.InputValuesQuery>;
                 res = await this.rest.create<FormInputInterfaces.InputValuesQuery>(url, query, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2254,7 +2254,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.AutoTriggerIssue[]>;
                 res = await this.rest.get<ReleaseInterfaces.AutoTriggerIssue[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.AutoTriggerIssue,
                                               true);
 
@@ -2544,7 +2544,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ManualIntervention,
                                               false);
 
@@ -2588,7 +2588,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention[]>;
                 res = await this.rest.get<ReleaseInterfaces.ManualIntervention[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ManualIntervention,
                                               true);
 
@@ -2637,7 +2637,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ManualIntervention>;
                 res = await this.rest.update<ReleaseInterfaces.ManualIntervention>(url, manualInterventionUpdateMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ManualIntervention,
                                               false);
 
@@ -2683,7 +2683,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Metric[]>;
                 res = await this.rest.get<ReleaseInterfaces.Metric[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -2721,7 +2721,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.OrgPipelineReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.OrgPipelineReleaseSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2761,7 +2761,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.OrgPipelineReleaseSettings>;
                 res = await this.rest.update<ReleaseInterfaces.OrgPipelineReleaseSettings>(url, newSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2802,7 +2802,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectPipelineReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.ProjectPipelineReleaseSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2845,7 +2845,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectPipelineReleaseSettings>;
                 res = await this.rest.update<ReleaseInterfaces.ProjectPipelineReleaseSettings>(url, newSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -2897,7 +2897,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ProjectReference[]>;
                 res = await this.rest.get<ReleaseInterfaces.ProjectReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3005,7 +3005,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Release[]>;
                 res = await this.rest.get<ReleaseInterfaces.Release[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Release,
                                               true);
 
@@ -3048,7 +3048,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.create<ReleaseInterfaces.Release>(url, releaseStartMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Release,
                                               false);
 
@@ -3099,7 +3099,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3162,7 +3162,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.get<ReleaseInterfaces.Release>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Release,
                                               false);
 
@@ -3225,7 +3225,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionSummary>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionSummary>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionSummary,
                                               false);
 
@@ -3325,7 +3325,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3371,7 +3371,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.replace<ReleaseInterfaces.Release>(url, release, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Release,
                                               false);
 
@@ -3417,7 +3417,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.Release>;
                 res = await this.rest.update<ReleaseInterfaces.Release>(url, releaseUpdateMetadata, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.Release,
                                               false);
 
@@ -3458,7 +3458,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseSettings>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3501,7 +3501,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseSettings>;
                 res = await this.rest.replace<ReleaseInterfaces.ReleaseSettings>(url, releaseSettings, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3584,7 +3584,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseDefinitionRevision[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseDefinitionRevision[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseDefinitionRevision,
                                               true);
 
@@ -3626,7 +3626,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.SummaryMailSection[]>;
                 res = await this.rest.get<ReleaseInterfaces.SummaryMailSection[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.SummaryMailSection,
                                               true);
 
@@ -3670,7 +3670,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mailMessage, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -3712,7 +3712,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3759,7 +3759,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3805,7 +3805,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3852,7 +3852,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3896,7 +3896,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3943,7 +3943,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.update<string[]>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -3989,7 +3989,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.create<string[]>(url, tags, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4036,7 +4036,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.del<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4080,7 +4080,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4119,7 +4119,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -4167,7 +4167,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseTask,
                                               true);
 
@@ -4218,7 +4218,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseTask,
                                               true);
 
@@ -4270,7 +4270,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseTask[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseTask[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ReleaseTask,
                                               true);
 
@@ -4309,7 +4309,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactTypeDefinition[]>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactTypeDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ArtifactTypeDefinition,
                                               true);
 
@@ -4358,7 +4358,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.get<ReleaseInterfaces.ArtifactVersionQueryResult>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ArtifactVersionQueryResult,
                                               false);
 
@@ -4399,7 +4399,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ArtifactVersionQueryResult>;
                 res = await this.rest.create<ReleaseInterfaces.ArtifactVersionQueryResult>(url, artifacts, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ReleaseInterfaces.TypeInfo.ArtifactVersionQueryResult,
                                               false);
 
@@ -4454,7 +4454,7 @@ export class ReleaseApi extends basem.ClientApiBase implements IReleaseApi {
                 let res: restm.IRestResponse<ReleaseInterfaces.ReleaseWorkItemRef[]>;
                 res = await this.rest.get<ReleaseInterfaces.ReleaseWorkItemRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 

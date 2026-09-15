@@ -85,7 +85,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAttachment,
                                               true);
 
@@ -150,7 +150,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.TaskAttachment>("PUT", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAttachment,
                                               false);
 
@@ -222,7 +222,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
                 res = await this.rest.replace<TaskAgentInterfaces.TaskAttachment>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAttachment,
                                               false);
 
@@ -279,7 +279,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAttachment,
                                               false);
 
@@ -382,7 +382,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAttachment[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAttachment[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAttachment,
                                               true);
 
@@ -437,7 +437,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, lines, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -507,7 +507,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecordFeedLinesWrapper>;
                 res = await this.rest.get<TaskAgentInterfaces.TimelineRecordFeedLinesWrapper>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -552,7 +552,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskAgentJob>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskAgentJob>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskAgentJob,
                                               false);
 
@@ -610,7 +610,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
                 res = await this.rest.uploadStream<TaskAgentInterfaces.TaskLog>("POST", url, contentStream, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskLog,
                                               false);
 
@@ -673,7 +673,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskLog>(url, null, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskLog,
                                               false);
 
@@ -722,7 +722,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskLog>(url, log, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskLog,
                                               false);
 
@@ -780,7 +780,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<string[]>;
                 res = await this.rest.get<string[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -825,7 +825,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskLog[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskLog[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskLog,
                                               true);
 
@@ -867,7 +867,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationPlanGroupsQueueMetrics[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationPlanGroupsQueueMetrics[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskOrchestrationPlanGroupsQueueMetrics,
                                               true);
 
@@ -924,7 +924,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskHubOidcToken>;
                 res = await this.rest.create<TaskAgentInterfaces.TaskHubOidcToken>(url, claims, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -976,7 +976,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskOrchestrationQueuedPlanGroup,
                                               true);
 
@@ -1021,7 +1021,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationQueuedPlanGroup>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskOrchestrationQueuedPlanGroup,
                                               false);
 
@@ -1066,7 +1066,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TaskOrchestrationPlan>;
                 res = await this.rest.get<TaskAgentInterfaces.TaskOrchestrationPlan>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TaskOrchestrationPlan,
                                               false);
 
@@ -1121,7 +1121,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
                 res = await this.rest.get<TaskAgentInterfaces.TimelineRecord[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TimelineRecord,
                                               true);
 
@@ -1173,7 +1173,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.TimelineRecord[]>;
                 res = await this.rest.update<TaskAgentInterfaces.TimelineRecord[]>(url, records, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.TimelineRecord,
                                               true);
 
@@ -1220,7 +1220,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
                 res = await this.rest.create<TaskAgentInterfaces.Timeline>(url, timeline, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.Timeline,
                                               false);
 
@@ -1268,7 +1268,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1326,7 +1326,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline>;
                 res = await this.rest.get<TaskAgentInterfaces.Timeline>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.Timeline,
                                               false);
 
@@ -1371,7 +1371,7 @@ export class TaskApi extends basem.ClientApiBase implements ITaskApi {
                 let res: restm.IRestResponse<TaskAgentInterfaces.Timeline[]>;
                 res = await this.rest.get<TaskAgentInterfaces.Timeline[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               TaskAgentInterfaces.TypeInfo.Timeline,
                                               true);
 

@@ -73,7 +73,7 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
                 let res: restm.IRestResponse<CIXInterfaces.ConfigurationFile[]>;
                 res = await this.rest.get<CIXInterfaces.ConfigurationFile[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -123,7 +123,7 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
                 let res: restm.IRestResponse<CIXInterfaces.PipelineConnection>;
                 res = await this.rest.create<CIXInterfaces.PipelineConnection>(url, createConnectionInputs, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -183,7 +183,7 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
                 let res: restm.IRestResponse<CIXInterfaces.DetectedBuildFramework[]>;
                 res = await this.rest.get<CIXInterfaces.DetectedBuildFramework[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -224,7 +224,7 @@ export class CixApi extends basem.ClientApiBase implements ICixApi {
                 let res: restm.IRestResponse<CIXInterfaces.CreatedResources>;
                 res = await this.rest.create<CIXInterfaces.CreatedResources>(url, creationParameters, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

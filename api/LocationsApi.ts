@@ -73,7 +73,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ConnectionData>;
                 res = await this.rest.get<LocationsInterfaces.ConnectionData>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               LocationsInterfaces.TypeInfo.ConnectionData,
                                               false);
 
@@ -125,7 +125,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -177,7 +177,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -232,7 +232,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -278,7 +278,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo[]>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -324,7 +324,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ResourceAreaInfo[]>;
                 res = await this.rest.get<LocationsInterfaces.ResourceAreaInfo[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -366,7 +366,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -420,7 +420,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ServiceDefinition>;
                 res = await this.rest.get<LocationsInterfaces.ServiceDefinition>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               LocationsInterfaces.TypeInfo.ServiceDefinition,
                                               false);
 
@@ -459,7 +459,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<LocationsInterfaces.ServiceDefinition[]>;
                 res = await this.rest.get<LocationsInterfaces.ServiceDefinition[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               LocationsInterfaces.TypeInfo.ServiceDefinition,
                                               true);
 
@@ -497,7 +497,7 @@ export class LocationsApi extends basem.ClientApiBase implements ILocationsApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, serviceDefinitions, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 

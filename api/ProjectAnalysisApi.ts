@@ -56,7 +56,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                 let res: restm.IRestResponse<ProjectAnalysisInterfaces.ProjectLanguageAnalytics>;
                 res = await this.rest.get<ProjectAnalysisInterfaces.ProjectLanguageAnalytics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ProjectAnalysisInterfaces.TypeInfo.ProjectLanguageAnalytics,
                                               false);
 
@@ -111,7 +111,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                 let res: restm.IRestResponse<ProjectAnalysisInterfaces.ProjectActivityMetrics>;
                 res = await this.rest.get<ProjectAnalysisInterfaces.ProjectActivityMetrics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ProjectAnalysisInterfaces.TypeInfo.ProjectActivityMetrics,
                                               false);
 
@@ -180,7 +180,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                 let res: restm.IRestResponse<ProjectAnalysisInterfaces.RepositoryActivityMetrics[]>;
                 res = await this.rest.get<ProjectAnalysisInterfaces.RepositoryActivityMetrics[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ProjectAnalysisInterfaces.TypeInfo.RepositoryActivityMetrics,
                                               true);
 
@@ -238,7 +238,7 @@ export class ProjectAnalysisApi extends basem.ClientApiBase implements IProjectA
                 let res: restm.IRestResponse<ProjectAnalysisInterfaces.RepositoryActivityMetrics>;
                 res = await this.rest.get<ProjectAnalysisInterfaces.RepositoryActivityMetrics>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               ProjectAnalysisInterfaces.TypeInfo.RepositoryActivityMetrics,
                                               false);
 

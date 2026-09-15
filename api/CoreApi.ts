@@ -89,7 +89,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse<void>(res,
                                               null,
                                               false);
 
@@ -132,7 +132,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.replace<void>(url, avatarBlob, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -186,7 +186,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.CategorizedWebApiTeams>;
                 res = await this.rest.get<CoreInterfaces.CategorizedWebApiTeams>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -227,7 +227,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService>;
                 res = await this.rest.create<CoreInterfaces.WebApiConnectedService>(url, connectedServiceCreationData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.WebApiConnectedService,
                                               false);
 
@@ -269,7 +269,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedServiceDetails>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedServiceDetails>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.WebApiConnectedServiceDetails,
                                               false);
 
@@ -315,7 +315,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiConnectedService[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiConnectedService[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.WebApiConnectedService,
                                               true);
 
@@ -356,7 +356,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.create<void>(url, mruData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -397,7 +397,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -436,7 +436,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<VSSInterfaces.IdentityRef[]>;
                 res = await this.rest.get<VSSInterfaces.IdentityRef[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -477,7 +477,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, mruData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -531,7 +531,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<VSSInterfaces.TeamMember[]>;
                 res = await this.rest.get<VSSInterfaces.TeamMember[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -572,7 +572,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.Process>;
                 res = await this.rest.get<CoreInterfaces.Process>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.Process,
                                               false);
 
@@ -610,7 +610,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.Process[]>;
                 res = await this.rest.get<CoreInterfaces.Process[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.Process,
                                               true);
 
@@ -651,7 +651,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollection>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollection>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.TeamProjectCollection,
                                               false);
 
@@ -699,7 +699,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.TeamProjectCollectionReference[]>;
                 res = await this.rest.get<CoreInterfaces.TeamProjectCollectionReference[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -744,7 +744,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.ProjectInfo[]>;
                 res = await this.rest.get<CoreInterfaces.ProjectInfo[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.ProjectInfo,
                                               true);
 
@@ -795,7 +795,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.TeamProject>;
                 res = await this.rest.get<CoreInterfaces.TeamProject>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.TeamProject,
                                               false);
 
@@ -852,7 +852,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<VSSInterfaces.PagedList<CoreInterfaces.TeamProjectReference>>;
                 res = await this.rest.get<VSSInterfaces.PagedList<CoreInterfaces.TeamProjectReference>>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               CoreInterfaces.TypeInfo.TeamProjectReference,
                                               true);
 
@@ -892,7 +892,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.create<OperationsInterfaces.OperationReference>(url, projectToCreate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               OperationsInterfaces.TypeInfo.OperationReference,
                                               false);
 
@@ -933,7 +933,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.del<OperationsInterfaces.OperationReference>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               OperationsInterfaces.TypeInfo.OperationReference,
                                               false);
 
@@ -976,7 +976,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<OperationsInterfaces.OperationReference>;
                 res = await this.rest.update<OperationsInterfaces.OperationReference>(url, projectUpdate, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               OperationsInterfaces.TypeInfo.OperationReference,
                                               false);
 
@@ -1027,7 +1027,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.ProjectProperties[]>;
                 res = await this.rest.get<CoreInterfaces.ProjectProperties[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1075,7 +1075,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.ProjectProperty[]>;
                 res = await this.rest.get<CoreInterfaces.ProjectProperty[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1123,7 +1123,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.update<void>(url, patchDocument, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1161,7 +1161,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.Proxy>;
                 res = await this.rest.replace<CoreInterfaces.Proxy>(url, proxy, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1210,7 +1210,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1253,7 +1253,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.Proxy[]>;
                 res = await this.rest.get<CoreInterfaces.Proxy[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1307,7 +1307,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1350,7 +1350,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.create<CoreInterfaces.WebApiTeam>(url, team, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1394,7 +1394,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<void>;
                 res = await this.rest.del<void>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1445,7 +1445,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
@@ -1502,7 +1502,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam[]>;
                 res = await this.rest.get<CoreInterfaces.WebApiTeam[]>(url, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               true);
 
@@ -1548,7 +1548,7 @@ export class CoreApi extends basem.ClientApiBase implements ICoreApi {
                 let res: restm.IRestResponse<CoreInterfaces.WebApiTeam>;
                 res = await this.rest.update<CoreInterfaces.WebApiTeam>(url, teamData, options);
 
-                let ret = this.formatResponse(res.result,
+                let ret = this.formatResponse(res,
                                               null,
                                               false);
 
