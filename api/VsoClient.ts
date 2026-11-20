@@ -49,7 +49,7 @@ export class VsoClient {
 
     constructor(baseUrl: string, restClient: restm.RestClient) {
         this.baseUrl = baseUrl;
-        this.basePath = url.parse(baseUrl).pathname;
+        this.basePath = new URL(baseUrl).pathname;
         this.restClient = restClient;
         this._locationsByAreaPromises = {};
         this._initializationPromise = Promise.resolve(true);
